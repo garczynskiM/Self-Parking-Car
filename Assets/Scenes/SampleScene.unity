@@ -2474,7 +2474,7 @@ MonoBehaviour:
     rightWheel: {fileID: 242101070}
     addWheelTorque: 0
     shouldSteer: 0
-  maxTorque: 400
+  maxTorque: 600
   maxSteerAngle: 30
   massCenter: {fileID: 2057643208}
 --- !u!1 &963194225

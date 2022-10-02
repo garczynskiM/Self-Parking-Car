@@ -19,7 +19,7 @@ public class CarControl : MonoBehaviour
     public List<WheelElements> wheelData;
 
     public float maxTorque;
-    public float maxSteerAngle = 30;
+    public float maxSteerAngle;
 
     private Rigidbody rb;
     public Transform massCenter;
@@ -57,8 +57,8 @@ public class CarControl : MonoBehaviour
             if (brake == true)
             {
 
-                element.leftWheel.brakeTorque = 1000;
-                element.rightWheel.brakeTorque = 1000;
+                element.leftWheel.brakeTorque = 4000;
+                element.rightWheel.brakeTorque = 4000;
 
             }
 
