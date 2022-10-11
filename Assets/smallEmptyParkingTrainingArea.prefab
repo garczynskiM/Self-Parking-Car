@@ -1,5 +1,64 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2112986922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2112986923}
+  - component: {fileID: 2112986924}
+  m_Layer: 0
+  m_Name: reversedRaycasts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2112986923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112986922}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7024547555805794454}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &2112986924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112986922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: ReversedRayPerceptionSensor
+  m_DetectableTags:
+  - Obstacle
+  m_RaysPerDirection: 1
+  m_MaxRayDegrees: 45
+  m_SphereCastRadius: 0.5
+  m_RayLength: 10
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0.5
+  m_EndVerticalOffset: 0.5
 --- !u!1 &4520232910479971020
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,7 +898,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6986964843010744998, guid: 1dfdb83eb82a2a44882d156e09a2afc9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1dfdb83eb82a2a44882d156e09a2afc9, type: 3}
 --- !u!1 &1063744902648220674 stripped
 GameObject:
@@ -1340,7 +1400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3299428545759708289, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3299428545759708300, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
       propertyPath: m_RootOrder
@@ -1542,7 +1602,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: car-root2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8542547967751026741, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
 --- !u!1 &7024547555805794453 stripped
 GameObject:
@@ -1564,8 +1625,8 @@ MonoBehaviour:
   m_SensorName: RayPerceptionSensor
   m_DetectableTags:
   - Obstacle
-  m_RaysPerDirection: 4
-  m_MaxRayDegrees: 180
+  m_RaysPerDirection: 2
+  m_MaxRayDegrees: 90
   m_SphereCastRadius: 0.5
   m_RayLength: 10
   m_RayLayerMask:
@@ -1574,8 +1635,8 @@ MonoBehaviour:
   m_ObservationStacks: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
-  m_StartVerticalOffset: 0
-  m_EndVerticalOffset: 0
+  m_StartVerticalOffset: 0.5
+  m_EndVerticalOffset: 0.5
 --- !u!4 &7024547555805794454 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3299428545759708300, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}

@@ -35,12 +35,12 @@ public class ParkingSlot
     private float currentCollisionPenalty;
     [Tooltip("Liczba przez któr¹ przemna¿amy karê za uderzenie za ka¿de kolejne uderzenie. Iloraz ci¹gu geometrycznego o sumie 0.5.")]
     public float collisionPenaltyMultiplier = 1 / 2f; // 1/3, 4/5
-    private float collisionPenalty = 0.1f;
-
-    [Tooltip("Maksymalny zasiêg od œrodka celu, w jakim zatrzymanie siê uznawane jest za parkowanie, pobierane z wymiarów celu. \nWyœwietlane dla podgl¹du.")]
-    public float maxAcceptableParkingRange = 5f;
+    private float collisionPenalty = 0.2f;
 
     private float existencePenalty;
+
+    public float distanceRewardMultiplier = 0.3f;
+    private float targetRewardMultiplier;
 
     public List<WheelElements> wheelData;
     public Transform wheelSteer;
@@ -72,20 +72,19 @@ public class ParkingSlot
     private bool enteredTargetFirstTime = false;
     private float enteredBoundsFirstTimeReward = 0.1f;
     private float enteredTargetFirstTimeReward = 0.1f;
-    private float baseReward;
 
-    private void Awake()
-    {
-        CarCollisionDetection2 carCollisionDetection = carCollider.gameObject.GetComponent<CarCollisionDetection2>();
-        carCollisionDetection.Initialize(this);
-    }
+
+    private bool firstStep = true;
+    private float lastDistance;
+
+    private readonly string tagObstacle = "Obstacle";
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
-        existencePenalty = 1f / (2f * MaxStep);
-        baseReward = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward;
+        existencePenalty = 1f / (MaxStep);
+        targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier;
 
         parkingSlots = new List<ParkingSlot>();
         int count = 0;
@@ -117,6 +116,9 @@ public class ParkingSlot
 
         enteredBoundsCount = 0;
         enteredTarget = false;
+        enteredBoundsFirstTime = false;
+        enteredTargetFirstTime = false;
+        firstStep = true;
 
         currentCollisionPenalty = startingCollisionPenalty;
 
@@ -140,16 +142,24 @@ public class ParkingSlot
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(parkingSlots[currentSlotNumber].target.transform.localPosition.x);
-        sensor.AddObservation(parkingSlots[currentSlotNumber].target.transform.localPosition.z);
-        sensor.AddObservation(parkingSlots[currentSlotNumber].target.transform.localEulerAngles.y);
+        sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
+        
+        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
 
         sensor.AddObservation(transform.localPosition.x);
         sensor.AddObservation(transform.localPosition.z);
         sensor.AddObservation(transform.localEulerAngles.y);
         sensor.AddObservation(rigidBody.velocity.x);
         sensor.AddObservation(rigidBody.velocity.z);
-        sensor.AddObservation(wheelSteer.localEulerAngles.y);
+        sensor.AddObservation(wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f);
+
+        /*
+        Debug.Log("Dot: " + Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
+        Debug.Log("Dir: " + (parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
+        Debug.Log("Pos: " + transform.localPosition.x + ", " + transform.localPosition.z);
+        Debug.Log("Vel: " + rigidBody.velocity.x + ", " + rigidBody.velocity.z);
+        Debug.Log("Steer: " + (wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f));
+        */
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -193,15 +203,33 @@ public class ParkingSlot
             DoTyres(element.rightWheel);
         }
 
-        if(enteredBoundsCount == 0 && enteredTarget)
+
+        float currentDistance = Vector3.Distance(transform.localPosition, parkingSlots[currentSlotNumber].target.transform.parent.localPosition);
+        if (enteredBoundsCount == 0 && enteredTarget)
         {
-            AddReward(2*existencePenalty*baseReward);
+            Debug.Log("Target!");
+            AddReward(targetRewardMultiplier * existencePenalty + distanceRewardMultiplier * existencePenalty);
         }
         else
         {
-            AddReward(-existencePenalty);
+            if (firstStep)
+            {
+                firstStep = false;
+            }
+            else
+            {
+                if(currentDistance < lastDistance)
+                {
+                    AddReward(distanceRewardMultiplier * existencePenalty);
+                }
+                else
+                {
+                    AddReward(-distanceRewardMultiplier * existencePenalty);
+                }
+            }
         }
-        // Debug.Log(GetCumulativeReward());
+        lastDistance = currentDistance;
+        //Debug.Log(GetCumulativeReward());
 
     }
 
@@ -216,20 +244,20 @@ public class ParkingSlot
     
     public void OnCollisionEnter(Collision collision)
     {
-        float penalty = CalculateCollisionPenalty();
-        AddReward(penalty);
+        if (collision.gameObject.tag == tagObstacle)
+        {
+            Debug.Log("Hit!");
+            float penalty = CalculateCollisionPenalty();
+            AddReward(penalty);
+        }
     }
 
-    public void OnCollisionStay(Collision collision)
-    {
-        float penalty = CalculateCollisionPenalty();
-        AddReward(penalty);
-    }
     public void OnTargetEnter(Collider other)
     {
         enteredTarget = true;
         if(!enteredTargetFirstTime)
         {
+            Debug.Log("Target first time!");
             enteredTargetFirstTime = true;
             AddReward(enteredTargetFirstTimeReward);
         }
@@ -240,6 +268,7 @@ public class ParkingSlot
         enteredBoundsCount++;
         if(!enteredBoundsFirstTime)
         {
+            Debug.Log("Bounds first time!");
             enteredBoundsFirstTime = true;
             AddReward(enteredBoundsFirstTimeReward);
         }
@@ -259,6 +288,7 @@ public class ParkingSlot
     {
         float result = currentCollisionPenalty;
         currentCollisionPenalty *= collisionPenaltyMultiplier;
+        //Debug.Log(-collisionPenalty * result);
         return -collisionPenalty*result;
     }
 
