@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+/*[System.Serializable]
 public class WheelElements
 {
 
@@ -12,7 +12,7 @@ public class WheelElements
     public bool addWheelTorque;
     public bool shouldSteer;
 
-}
+}*/
 
 public class CarControl : MonoBehaviour
 {
@@ -92,8 +92,7 @@ public class CarControl : MonoBehaviour
 
         collider.GetWorldPose(out position, out rotation);
 
-        tyre.transform.position = position;
-        tyre.transform.rotation = rotation;
+        tyre.transform.SetPositionAndRotation(position, rotation);
 
     }
 }
