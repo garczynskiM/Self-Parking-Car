@@ -35,7 +35,7 @@ public class ParkingSlot
     private float currentCollisionPenalty;
     [Tooltip("Liczba przez któr¹ przemna¿amy karê za uderzenie za ka¿de kolejne uderzenie. Iloraz ci¹gu geometrycznego o sumie 0.5.")]
     public float collisionPenaltyMultiplier = 1 / 2f; // 1/3, 4/5
-    private float collisionPenalty = 0.2f;
+    private float collisionPenalty = 0.02f;
 
     private float existencePenalty;
 
@@ -63,8 +63,8 @@ public class ParkingSlot
     public string targetName = "Target";
     public string boundsName = "slotBounds";
 
-    public float maxRespawnZ = 11f;
-    public float minRespawnZ = -11f;
+    public float maxRespawnZ = 10f;
+    public float minRespawnZ = -10f;
 
     private int enteredBoundsCount = 0;
     private bool enteredTarget = false;
@@ -146,20 +146,21 @@ public class ParkingSlot
         
         sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
 
-        sensor.AddObservation(transform.localPosition.x);
-        sensor.AddObservation(transform.localPosition.z);
-        sensor.AddObservation(transform.localEulerAngles.y);
-        sensor.AddObservation(rigidBody.velocity.x);
-        sensor.AddObservation(rigidBody.velocity.z);
-        sensor.AddObservation(wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f);
-
-        /*
-        Debug.Log("Dot: " + Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
+        sensor.AddObservation(transform.localPosition.normalized);
+        sensor.AddObservation(transform.forward);
+        sensor.AddObservation(transform.right);
+        sensor.AddObservation(rigidBody.velocity.normalized);
+        //sensor.AddObservation(wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f);
+        sensor.AddObservation(Vector3.Dot(transform.forward, wheelSteer.right));
+        
+        /*Debug.Log("Dot: " + Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
         Debug.Log("Dir: " + (parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
-        Debug.Log("Pos: " + transform.localPosition.x + ", " + transform.localPosition.z);
-        Debug.Log("Vel: " + rigidBody.velocity.x + ", " + rigidBody.velocity.z);
-        Debug.Log("Steer: " + (wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f));
-        */
+        Debug.Log("Pos: " + transform.localPosition.normalized);
+        Debug.Log("Forward: " + transform.forward);
+        Debug.Log("Right: " + transform.right);
+        Debug.Log("Vel: " + rigidBody.velocity.normalized);
+        //Debug.Log("Steer: " + (wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f));
+        Debug.Log("Steer: " + Vector3.Dot(transform.forward, wheelSteer.right));*/
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -207,7 +208,7 @@ public class ParkingSlot
         float currentDistance = Vector3.Distance(transform.localPosition, parkingSlots[currentSlotNumber].target.transform.parent.localPosition);
         if (enteredBoundsCount == 0 && enteredTarget)
         {
-            Debug.Log("Target!");
+            Debug.Log("Target stay!");
             AddReward(targetRewardMultiplier * existencePenalty + distanceRewardMultiplier * existencePenalty);
         }
         else
@@ -246,7 +247,7 @@ public class ParkingSlot
     {
         if (collision.gameObject.tag == tagObstacle)
         {
-            Debug.Log("Hit!");
+            Debug.Log("Collision!");
             float penalty = CalculateCollisionPenalty();
             AddReward(penalty);
         }
