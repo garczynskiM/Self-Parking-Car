@@ -35,13 +35,22 @@ public class ParkingSlot
     private float currentCollisionPenalty;
     [Tooltip("Liczba przez któr¹ przemna¿amy karê za uderzenie za ka¿de kolejne uderzenie. Iloraz ci¹gu geometrycznego o sumie 0.5.")]
     public float collisionPenaltyMultiplier = 1 / 2f; // 1/3, 4/5
-    private float collisionPenalty = 0.02f;
+    public float collisionPenalty = 0.2f;
 
     private float existencePenalty;
 
-    public float distanceRewardMultiplier = 0.3f;
+    public float distanceRewardMultiplier = 0.2f;
+    public float parkingRewardMultiplier = 0.4f;
+    public float enteredBoundsFirstTimeReward = 0.05f;
+    public float enteredTargetFirstTimeReward = 0.05f;
     private float targetRewardMultiplier;
+    private float currentDistanceReward = 0f;
+    private float currentTargetReward = 0f;
+    private float distanceRewardPerStep;
+    private float targetRewardPerStep;
+    private float currentNegativeDistanceReward;
 
+    public int framesToPark = 100;
     public List<WheelElements> wheelData;
     public Transform wheelSteer;
     public GameObject parking;
@@ -70,10 +79,8 @@ public class ParkingSlot
     private bool enteredTarget = false;
     private bool enteredBoundsFirstTime = false;
     private bool enteredTargetFirstTime = false;
-    private float enteredBoundsFirstTimeReward = 0.1f;
-    private float enteredTargetFirstTimeReward = 0.1f;
 
-
+    private int parkingCount = 0;
     private bool firstStep = true;
     private float lastDistance;
 
@@ -84,7 +91,9 @@ public class ParkingSlot
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
         existencePenalty = 1f / (MaxStep);
-        targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier;
+        distanceRewardPerStep = existencePenalty * distanceRewardMultiplier;
+        targetRewardPerStep = existencePenalty * targetRewardMultiplier;
+        targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
 
         parkingSlots = new List<ParkingSlot>();
         int count = 0;
@@ -119,6 +128,10 @@ public class ParkingSlot
         enteredBoundsFirstTime = false;
         enteredTargetFirstTime = false;
         firstStep = true;
+        parkingCount = 0;
+        currentDistanceReward = 0f;
+        currentTargetReward = 0f;
+        currentNegativeDistanceReward = 0f;
 
         currentCollisionPenalty = startingCollisionPenalty;
 
@@ -142,7 +155,7 @@ public class ParkingSlot
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
+        sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.forward));
         
         sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
 
@@ -209,23 +222,38 @@ public class ParkingSlot
         if (enteredBoundsCount == 0 && enteredTarget)
         {
             Debug.Log("Target stay!");
-            AddReward(targetRewardMultiplier * existencePenalty + distanceRewardMultiplier * existencePenalty);
+            currentDistanceReward += distanceRewardPerStep;
+            currentTargetReward += targetRewardPerStep;
+            AddReward(targetRewardPerStep + distanceRewardPerStep);
+            parkingCount++;
+            if(parkingCount >= framesToPark)
+            {
+                AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
+                //Debug.Log("Parked! " + GetCumulativeReward());
+                Debug.Log("Parked!");
+                EndEpisode();
+            }
         }
         else
         {
+            parkingCount = 0;
             if (firstStep)
             {
                 firstStep = false;
             }
             else
             {
-                if(currentDistance < lastDistance)
+                if (currentDistance < lastDistance)
                 {
-                    AddReward(distanceRewardMultiplier * existencePenalty);
+                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.forward));
+                    currentDistanceReward += distanceRewardPerStep * dot;
+                    AddReward(distanceRewardPerStep * dot);
                 }
                 else
                 {
-                    AddReward(-distanceRewardMultiplier * existencePenalty);
+                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
+                    currentNegativeDistanceReward -= distanceRewardPerStep*dot;
+                    AddReward(-distanceRewardPerStep*dot);
                 }
             }
         }
@@ -247,9 +275,14 @@ public class ParkingSlot
     {
         if (collision.gameObject.tag == tagObstacle)
         {
+
+            /*Debug.Log("Collision!");
+            float penalty = CalculateCollisionPenalty();
+            AddReward(penalty);*/
             Debug.Log("Collision!");
             float penalty = CalculateCollisionPenalty();
-            AddReward(penalty);
+            AddReward(penalty - distanceRewardMultiplier + currentNegativeDistanceReward);
+            EndEpisode();
         }
     }
 

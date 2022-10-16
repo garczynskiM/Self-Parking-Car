@@ -1400,7 +1400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3299428545759708289, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 17
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 3299428545759708300, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
       propertyPath: m_RootOrder
@@ -1465,6 +1465,14 @@ PrefabInstance:
     - target: {fileID: 3299428545759708302, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
       propertyPath: minRespawnZ
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3299428545759708302, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
+      propertyPath: framesToPark
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3299428545759708302, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
+      propertyPath: parkingRewardMultiplier
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 3299428545759708302, guid: 27d3fb32415a8a84f85e2eb5e00c322f, type: 3}
       propertyPath: parkingSlots.Array.data[0]
