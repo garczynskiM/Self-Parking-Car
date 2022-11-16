@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/UI/Menu.unity
+    guid: f85af0a616270fc48b997955f7d38900
+  - enabled: 1
+    path: Assets/Scenes/UI/ChooseMap.unity
+    guid: 0b9dd5f997a0e1f438338f0dcf5063cd
   m_configObjects:
     com.unity.ml-agents.settings: {fileID: 11400000, guid: 34e5665bcc8509f44bd2ae042fe2cc63, type: 2}

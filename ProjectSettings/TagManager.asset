@@ -8,6 +8,8 @@ TagManager:
   - Target
   - Target Bounds
   - Agent
+  - Image
+  - Text
   layers:
   - Default
   - TransparentFX
