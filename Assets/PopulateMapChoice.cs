@@ -18,7 +18,8 @@ public class PopulateMapChoice : MonoBehaviour
         {
             var item_go = Instantiate(m_ItemPrefab);
             // do something with the instantiated item -- for instance
-            var sth = item_go.GetComponentsInChildren<GameObject>();
+            var sth = item_go.GetComponentsInChildren<Transform>();
+            var cos = sth[0];
             var texts = item_go.GetComponentsInChildren<Text>();
             texts[0].text = m_Titles[i];
             texts[1].text = m_Desc[i];

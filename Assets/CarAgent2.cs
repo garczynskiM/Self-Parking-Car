@@ -86,7 +86,7 @@ public class ParkingSlot
 
     private readonly string tagObstacle = "Obstacle";
 
-    void Start()
+    public override void Initialize()
     {
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
