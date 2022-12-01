@@ -23,5 +23,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UI/SimulationOverlay.unity
     guid: 6002550efb652c843b89021a490c5005
+  - enabled: 1
+    path: Assets/Scenes/UI/AppSettings.unity
+    guid: dbca2f9dbedd5fe439bef17f54ce4ed5
   m_configObjects:
     com.unity.ml-agents.settings: {fileID: 11400000, guid: 34e5665bcc8509f44bd2ae042fe2cc63, type: 2}
