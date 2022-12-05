@@ -737,7 +737,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 405239692567304752, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_Text
-      value: SampleScene
+      value: Angled
       objectReference: {fileID: 0}
     - target: {fileID: 405239692567304753, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -757,7 +757,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 405239692717973902, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_Text
-      value: Turn on the road
+      value: 'Angled parking
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 405239692717973903, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_SizeDelta.y

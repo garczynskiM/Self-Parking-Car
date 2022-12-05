@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TargetDetection : MonoBehaviour
 {
-    CarAgent2 carAgentListener;
+    AbstractCarAgent carAgentListener;
     private readonly string tagAgent = "Agent";
 
-    public void Initialize(CarAgent2 carAgent)
+    public void Initialize(AbstractCarAgent carAgent)
     {
         carAgentListener = carAgent;
     }

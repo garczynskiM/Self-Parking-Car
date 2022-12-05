@@ -1,63 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 
-[System.Serializable]
-public class WheelElements
+public class SimulationCarAgent : AbstractCarAgent
 {
+    //Nowe pola
+    private Toggle m_autoRestartToggle;
+    private Toggle m_otherCarsToggle;
+    //Koniec nowych pól
 
-    public WheelCollider leftWheel;
-    public WheelCollider rightWheel;
-
-    public bool addWheelTorque;
-    public bool shouldSteer;
-}
-
-public class ParkingSlot
-{
-    public GameObject target;
-    public GameObject bounds;
-    public GameObject staticCar;
-    private readonly Vector3 staticCarStartingPosition;
-    
-    public ParkingSlot(GameObject _target, GameObject _bounds, GameObject _staticCar)
-    {
-        target = _target;
-        bounds = _bounds;
-        staticCar = _staticCar;
-        staticCarStartingPosition = staticCar.transform.localPosition;
-    }
-
-    public void Restart()
-    {
-        target.SetActive(false);
-        bounds.SetActive(false);
-        staticCar.transform.localPosition = staticCarStartingPosition;
-        staticCar.SetActive(false);
-    }
-
-    public void Activate()
-    {
-        target.SetActive(true);
-        bounds.SetActive(true);
-        staticCar.transform.localPosition = staticCarStartingPosition;
-        staticCar.SetActive(false);
-    }
-    
-    public void Occupy()
-    {
-        target.SetActive(false);
-        bounds.SetActive(false);
-        staticCar.transform.localPosition = staticCarStartingPosition;
-        staticCar.SetActive(true);
-    }
-}
-
-public class CarAgent2 : AbstractCarAgent
-{
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
     public float startingCollisionPenalty = 1 / 4f; // 1/3, 1/10
     private float currentCollisionPenalty;
@@ -119,6 +74,11 @@ public class CarAgent2 : AbstractCarAgent
 
     public override void Initialize()
     {
+        //Nowe pola
+        m_autoRestartToggle = StaticVar.m_autoRestartTransform.GetComponentInChildren<Toggle>();
+        m_otherCarsToggle = StaticVar.m_otherCarsTransform.GetComponentInChildren<Toggle>();
+        //Koniec nowych pól
+
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
         existencePenalty = 1f / (MaxStep);
@@ -132,7 +92,7 @@ public class CarAgent2 : AbstractCarAgent
         foreach (GameObject parking in parkings)
         {
             List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
-            foreach(Transform parkingSlot in GetParkingSlotsFromParking(parking))
+            foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
                 parkingSlotsInParking.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
             parkingSlots.Add(parkingSlotsInParking);
         }
@@ -144,7 +104,7 @@ public class CarAgent2 : AbstractCarAgent
         tempParkingSlots.AddRange(parkingSlots[currentParkingNumber]);
         tempParkingSlots.RemoveAt(currentSlotNumber);
         int occupySize = Random.Range(0, tempParkingSlots.Count);
-        while(occupySize > 0)
+        while (occupySize > 0)
         {
             int tempOccupied = Random.Range(0, tempParkingSlots.Count);
             tempParkingSlots[tempOccupied].Occupy();
@@ -155,6 +115,9 @@ public class CarAgent2 : AbstractCarAgent
 
     public override void OnEpisodeBegin()
     {
+        //
+        if (!m_autoRestartToggle.isOn) return;
+        //
         foreach (ParkingSlot parkingSlot in parkingSlots[currentParkingNumber])
             parkingSlot.Restart();
         parkings[currentParkingNumber].SetActive(false);
@@ -162,8 +125,10 @@ public class CarAgent2 : AbstractCarAgent
         parkings[currentParkingNumber].SetActive(true);
         currentSlotNumber = Random.Range(0, parkingSlots[currentParkingNumber].Count);
         parkingSlots[currentParkingNumber][currentSlotNumber].Activate();
-        if (!isEmpty)
+        //
+        if (!isEmpty && m_otherCarsToggle.isOn)
             RandomOccupy();
+        //
         TargetDetection targetDetection = parkingSlots[currentParkingNumber][currentSlotNumber].target.GetComponent<TargetDetection>();
         targetDetection.Initialize(this);
         BoundDetection boundDetection = parkingSlots[currentParkingNumber][currentSlotNumber].bounds.GetComponent<BoundDetection>();
@@ -207,7 +172,7 @@ public class CarAgent2 : AbstractCarAgent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
-        
+
         sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
         sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).magnitude);
 
@@ -218,7 +183,7 @@ public class CarAgent2 : AbstractCarAgent
         sensor.AddObservation(rigidBody.velocity.magnitude);
         //sensor.AddObservation(wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f);
         sensor.AddObservation(Vector3.Dot(transform.forward, wheelSteer.right));
-        
+
         /*Debug.Log("Dot: " + Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
         Debug.Log("Dir: " + (parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
         Debug.Log("Pos: " + transform.localPosition.normalized);
@@ -279,7 +244,7 @@ public class CarAgent2 : AbstractCarAgent
             currentTargetReward += targetRewardPerStep;
             AddReward(targetRewardPerStep + distanceRewardPerStep);
             parkingCount++;
-            if(parkingCount >= framesToPark)
+            if (parkingCount >= framesToPark)
             {
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
                 //Debug.Log("Parked! " + GetCumulativeReward());
@@ -326,7 +291,7 @@ public class CarAgent2 : AbstractCarAgent
         var discreteActionsOut = actionsOut.DiscreteActions;
         discreteActionsOut[0] = Input.GetButton("Jump") ? 2 : 1;
     }
-    
+
     public override void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == tagObstacle)
@@ -345,7 +310,7 @@ public class CarAgent2 : AbstractCarAgent
     public override void OnTargetEnter(Collider other)
     {
         enteredTarget = true;
-        if(!enteredTargetFirstTime)
+        if (!enteredTargetFirstTime)
         {
             Debug.Log("Target first time!");
             enteredTargetFirstTime = true;
@@ -356,7 +321,7 @@ public class CarAgent2 : AbstractCarAgent
     public override void OnBoundsEnter(Collider other)
     {
         enteredBoundsCount++;
-        if(!enteredBoundsFirstTime)
+        if (!enteredBoundsFirstTime)
         {
             Debug.Log("Bounds first time!");
             enteredBoundsFirstTime = true;
@@ -379,7 +344,7 @@ public class CarAgent2 : AbstractCarAgent
         float result = currentCollisionPenalty;
         currentCollisionPenalty *= collisionPenaltyMultiplier;
         //Debug.Log(-collisionPenalty * result);
-        return -collisionPenalty*result;
+        return -collisionPenalty * result;
     }
 
     protected override void DoTyres(WheelCollider collider)
@@ -405,7 +370,7 @@ public class CarAgent2 : AbstractCarAgent
         Transform parkingArea = parking.transform.Find(parkingAreaName);
         Transform parkingSlot = parkingArea.Find(baseParkingChildName);
         int count = 0;
-        while(parkingSlot != null)
+        while (parkingSlot != null)
         {
             result.Add(parkingSlot);
             count++;
