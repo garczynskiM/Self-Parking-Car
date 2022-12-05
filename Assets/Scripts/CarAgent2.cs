@@ -20,11 +20,39 @@ public class ParkingSlot
 {
     public GameObject target;
     public GameObject bounds;
-
-    public ParkingSlot(GameObject _target, GameObject _bounds)
+    public GameObject staticCar;
+    private readonly Vector3 staticCarStartingPosition;
+    
+    public ParkingSlot(GameObject _target, GameObject _bounds, GameObject _staticCar)
     {
         target = _target;
         bounds = _bounds;
+        staticCar = _staticCar;
+        staticCarStartingPosition = staticCar.transform.localPosition;
+    }
+
+    public void Restart()
+    {
+        target.SetActive(false);
+        bounds.SetActive(false);
+        staticCar.transform.localPosition = staticCarStartingPosition;
+        staticCar.SetActive(false);
+    }
+
+    public void Activate()
+    {
+        target.SetActive(true);
+        bounds.SetActive(true);
+        staticCar.transform.localPosition = staticCarStartingPosition;
+        staticCar.SetActive(false);
+    }
+    
+    public void Occupy()
+    {
+        target.SetActive(false);
+        bounds.SetActive(false);
+        staticCar.transform.localPosition = staticCarStartingPosition;
+        staticCar.SetActive(true);
     }
 }
 
@@ -53,9 +81,9 @@ public class ParkingSlot
     public int framesToPark = 100;
     public List<WheelElements> wheelData;
     public Transform wheelSteer;
-    public GameObject parking;
-    private List<ParkingSlot> parkingSlots;
-
+    private List<List<ParkingSlot>> parkingSlots;
+    public List<GameObject> parkings;
+    private int currentParkingNumber = 0;
     private int currentSlotNumber = 0;
 
     //public BoxCollider targetCollider;
@@ -68,9 +96,11 @@ public class ParkingSlot
 
     public BoxCollider carCollider;
 
+    public string parkingAreaName = "parkingArea";
     public string baseParkingChildName = "parkingSlot";
     public string targetName = "Target";
     public string boundsName = "slotBounds";
+    public string staticCarName = "static-car";
 
     public float maxRespawnZ = 10f;
     public float minRespawnZ = -10f;
@@ -85,6 +115,7 @@ public class ParkingSlot
     private float lastDistance;
 
     private readonly string tagObstacle = "Obstacle";
+    public bool isEmpty = true;
 
     public override void Initialize()
     {
@@ -95,27 +126,47 @@ public class ParkingSlot
         targetRewardPerStep = existencePenalty * targetRewardMultiplier;
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
 
-        parkingSlots = new List<ParkingSlot>();
-        int count = 0;
-        Transform parkingSlot = parking.transform.Find(baseParkingChildName);
-        while(parkingSlot != null)
+        if (parkings.Count == 0)
+            throw new MissingReferenceException();
+        parkingSlots = new List<List<ParkingSlot>>();
+        foreach (GameObject parking in parkings)
         {
-            parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject));
-            count++;
-            parkingSlot = parking.transform.Find(baseParkingChildName + " (" + count + ")");
+            List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
+            foreach(Transform parkingSlot in GetParkingSlotsFromParking(parking))
+                parkingSlotsInParking.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
+            parkingSlots.Add(parkingSlotsInParking);
+        }
+    }
+
+    private void RandomOccupy()
+    {
+        List<ParkingSlot> tempParkingSlots = new List<ParkingSlot>();
+        tempParkingSlots.AddRange(parkingSlots[currentParkingNumber]);
+        tempParkingSlots.RemoveAt(currentSlotNumber);
+        int occupySize = Random.Range(0, tempParkingSlots.Count);
+        while(occupySize > 0)
+        {
+            int tempOccupied = Random.Range(0, tempParkingSlots.Count);
+            tempParkingSlots[tempOccupied].Occupy();
+            tempParkingSlots.RemoveAt(tempOccupied);
+            occupySize--;
         }
     }
 
     public override void OnEpisodeBegin()
     {
-        parkingSlots[currentSlotNumber].target.SetActive(false);
-        parkingSlots[currentSlotNumber].bounds.SetActive(false);
-        currentSlotNumber = Random.Range(0, parkingSlots.Count);
-        parkingSlots[currentSlotNumber].target.SetActive(true);
-        parkingSlots[currentSlotNumber].bounds.SetActive(true);
-        TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
+        foreach (ParkingSlot parkingSlot in parkingSlots[currentParkingNumber])
+            parkingSlot.Restart();
+        parkings[currentParkingNumber].SetActive(false);
+        currentParkingNumber = Random.Range(0, parkingSlots.Count);
+        parkings[currentParkingNumber].SetActive(true);
+        currentSlotNumber = Random.Range(0, parkingSlots[currentParkingNumber].Count);
+        parkingSlots[currentParkingNumber][currentSlotNumber].Activate();
+        if (!isEmpty)
+            RandomOccupy();
+        TargetDetection targetDetection = parkingSlots[currentParkingNumber][currentSlotNumber].target.GetComponent<TargetDetection>();
         targetDetection.Initialize(this);
-        BoundDetection boundDetection = parkingSlots[currentSlotNumber].bounds.GetComponent<BoundDetection>();
+        BoundDetection boundDetection = parkingSlots[currentParkingNumber][currentSlotNumber].bounds.GetComponent<BoundDetection>();
         boundDetection.Initialize(this);
 
         rigidBody.angularVelocity = Vector3.zero;
@@ -155,14 +206,16 @@ public class ParkingSlot
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.forward));
+        sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
         
-        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
+        sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
+        sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).magnitude);
 
-        sensor.AddObservation(transform.localPosition.normalized);
+        //sensor.AddObservation(transform.localPosition.normalized);
         sensor.AddObservation(transform.forward);
         sensor.AddObservation(transform.right);
         sensor.AddObservation(rigidBody.velocity.normalized);
+        sensor.AddObservation(rigidBody.velocity.magnitude);
         //sensor.AddObservation(wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f);
         sensor.AddObservation(Vector3.Dot(transform.forward, wheelSteer.right));
         
@@ -218,7 +271,7 @@ public class ParkingSlot
         }
 
 
-        float currentDistance = Vector3.Distance(transform.localPosition, parkingSlots[currentSlotNumber].target.transform.parent.localPosition);
+        float currentDistance = Vector3.Distance(transform.localPosition, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition);
         if (enteredBoundsCount == 0 && enteredTarget)
         {
             Debug.Log("Target stay!");
@@ -245,15 +298,18 @@ public class ParkingSlot
             {
                 if (currentDistance < lastDistance)
                 {
-                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.forward));
-                    currentDistanceReward += distanceRewardPerStep * dot;
-                    AddReward(distanceRewardPerStep * dot);
+                    //float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
+                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
+                    currentDistanceReward += 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
+                    AddReward(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep);
                 }
                 else
                 {
-                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
-                    currentNegativeDistanceReward -= distanceRewardPerStep*dot;
-                    AddReward(-distanceRewardPerStep*dot);
+                    //float dot = Mathf.Abs(Vector3.Dot(transform.right, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.right));
+                    //currentNegativeDistanceReward -= 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
+                    //AddReward(-(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep));
+                    currentNegativeDistanceReward -= distanceRewardPerStep;
+                    AddReward(-distanceRewardPerStep);
                 }
             }
         }
@@ -341,5 +397,20 @@ public class ParkingSlot
         collider.GetWorldPose(out position, out rotation);
 
         tyre.transform.SetPositionAndRotation(position, rotation);
+    }
+
+    private List<Transform> GetParkingSlotsFromParking(GameObject parking)
+    {
+        List<Transform> result = new List<Transform>();
+        Transform parkingArea = parking.transform.Find(parkingAreaName);
+        Transform parkingSlot = parkingArea.Find(baseParkingChildName);
+        int count = 0;
+        while(parkingSlot != null)
+        {
+            result.Add(parkingSlot);
+            count++;
+            parkingSlot = parkingArea.Find(baseParkingChildName + " (" + count + ")");
+        }
+        return result;
     }
 }
