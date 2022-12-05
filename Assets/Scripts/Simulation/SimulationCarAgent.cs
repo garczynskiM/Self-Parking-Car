@@ -12,6 +12,7 @@ public class SimulationCarAgent : AbstractCarAgent
     private Toggle m_autoRestartToggle;
     private Toggle m_otherCarsToggle;
     //Koniec nowych pól
+    //Is Empty w 
 
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
     public float startingCollisionPenalty = 1 / 4f; // 1/3, 1/10
@@ -36,8 +37,9 @@ public class SimulationCarAgent : AbstractCarAgent
     public int framesToPark = 100;
     public List<WheelElements> wheelData;
     public Transform wheelSteer;
-    private List<List<ParkingSlot>> parkingSlots;
-    public List<GameObject> parkings;
+    //private List<List<ParkingSlot>> parkingSlots;
+    private List<ParkingSlot> parkingSlots;
+    public GameObject parking;
     private int currentParkingNumber = 0;
     private int currentSlotNumber = 0;
 
@@ -86,22 +88,19 @@ public class SimulationCarAgent : AbstractCarAgent
         targetRewardPerStep = existencePenalty * targetRewardMultiplier;
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
 
-        if (parkings.Count == 0)
+        if (parking == null)
             throw new MissingReferenceException();
-        parkingSlots = new List<List<ParkingSlot>>();
-        foreach (GameObject parking in parkings)
-        {
-            List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
-            foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
-                parkingSlotsInParking.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
-            parkingSlots.Add(parkingSlotsInParking);
-        }
+        parkingSlots = new List<ParkingSlot>();
+        //EDIT
+        List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
+        foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
+            parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
     }
 
     protected override void RandomOccupy()
     {
         List<ParkingSlot> tempParkingSlots = new List<ParkingSlot>();
-        tempParkingSlots.AddRange(parkingSlots[currentParkingNumber]);
+        tempParkingSlots.AddRange(parkingSlots);
         tempParkingSlots.RemoveAt(currentSlotNumber);
         int occupySize = Random.Range(0, tempParkingSlots.Count);
         while (occupySize > 0)
@@ -118,20 +117,20 @@ public class SimulationCarAgent : AbstractCarAgent
         //
         if (!m_autoRestartToggle.isOn) return;
         //
-        foreach (ParkingSlot parkingSlot in parkingSlots[currentParkingNumber])
+        foreach (ParkingSlot parkingSlot in parkingSlots)
             parkingSlot.Restart();
-        parkings[currentParkingNumber].SetActive(false);
+        /*parking[currentParkingNumber].SetActive(false);
         currentParkingNumber = Random.Range(0, parkingSlots.Count);
-        parkings[currentParkingNumber].SetActive(true);
-        currentSlotNumber = Random.Range(0, parkingSlots[currentParkingNumber].Count);
-        parkingSlots[currentParkingNumber][currentSlotNumber].Activate();
+        parking[currentParkingNumber].SetActive(true);*/
+        currentSlotNumber = Random.Range(0, parkingSlots.Count);
+        parkingSlots[currentSlotNumber].Activate();
         //
         if (!isEmpty && m_otherCarsToggle.isOn)
             RandomOccupy();
         //
-        TargetDetection targetDetection = parkingSlots[currentParkingNumber][currentSlotNumber].target.GetComponent<TargetDetection>();
+        TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
         targetDetection.Initialize(this);
-        BoundDetection boundDetection = parkingSlots[currentParkingNumber][currentSlotNumber].bounds.GetComponent<BoundDetection>();
+        BoundDetection boundDetection = parkingSlots[currentSlotNumber].bounds.GetComponent<BoundDetection>();
         boundDetection.Initialize(this);
 
         rigidBody.angularVelocity = Vector3.zero;
@@ -171,10 +170,10 @@ public class SimulationCarAgent : AbstractCarAgent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
+        sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.forward));
 
-        sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
-        sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).magnitude);
+        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
+        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).magnitude);
 
         //sensor.AddObservation(transform.localPosition.normalized);
         sensor.AddObservation(transform.forward);
@@ -236,7 +235,7 @@ public class SimulationCarAgent : AbstractCarAgent
         }
 
 
-        float currentDistance = Vector3.Distance(transform.localPosition, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition);
+        float currentDistance = Vector3.Distance(transform.localPosition, parkingSlots[currentSlotNumber].target.transform.parent.localPosition);
         if (enteredBoundsCount == 0 && enteredTarget)
         {
             Debug.Log("Target stay!");
@@ -264,7 +263,7 @@ public class SimulationCarAgent : AbstractCarAgent
                 if (currentDistance < lastDistance)
                 {
                     //float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
-                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
+                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
                     currentDistanceReward += 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
                     AddReward(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep);
                 }
