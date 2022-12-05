@@ -107,8 +107,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5870382787950476223}
     - target: {fileID: 83853935469101004, guid: 9f459ef35f749514fbc7cfc1bf5e2946, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 1672bdb018b4bd24cab21fe72b093152, type: 3}
+    - target: {fileID: 83853935469101004, guid: 9f459ef35f749514fbc7cfc1bf5e2946, type: 3}
       propertyPath: m_BehaviorType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 83853935469101004, guid: 9f459ef35f749514fbc7cfc1bf5e2946, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize

@@ -298,15 +298,18 @@ public class ParkingSlot
             {
                 if (currentDistance < lastDistance)
                 {
-                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
+                    //float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
+                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
                     currentDistanceReward += 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
                     AddReward(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep);
                 }
                 else
                 {
-                    float dot = Mathf.Abs(Vector3.Dot(transform.right, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.right));
-                    currentNegativeDistanceReward -= 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
-                    AddReward(-(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep));
+                    //float dot = Mathf.Abs(Vector3.Dot(transform.right, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.right));
+                    //currentNegativeDistanceReward -= 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
+                    //AddReward(-(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep));
+                    currentNegativeDistanceReward -= distanceRewardPerStep;
+                    AddReward(-distanceRewardPerStep);
                 }
             }
         }
