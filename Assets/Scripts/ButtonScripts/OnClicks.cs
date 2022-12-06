@@ -10,9 +10,9 @@ public class OnClicks : MonoBehaviour
     public void startSimulationMode()
     {
         string title = ChooseMap();
-        StaticVar.sceneName = title;
+        MapLoadStaticVars.sceneName = title;
         //StaticVar.sceneName = "smallEmptyParking";
-        StaticVar.loadOnlyOnce = false;
+        MapLoadStaticVars.loadOnlyOnce = false;
         SceneManager.LoadScene("SimulationOverlay", LoadSceneMode.Single);
     }
     private string ChooseMap()

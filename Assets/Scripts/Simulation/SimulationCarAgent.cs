@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
+using UnityEngine.SceneManagement;
 
 public class SimulationCarAgent : AbstractCarAgent
 {
@@ -76,8 +77,8 @@ public class SimulationCarAgent : AbstractCarAgent
     public override void Initialize()
     {
         //Nowe pola
-        m_autoRestartToggle = StaticVar.m_autoRestartTransform.GetComponentInChildren<Toggle>();
-        m_otherCarsToggle = StaticVar.m_otherCarsTransform.GetComponentInChildren<Toggle>();
+        m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
+        m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
 
         rigidBody = GetComponent<Rigidbody>();
@@ -91,7 +92,7 @@ public class SimulationCarAgent : AbstractCarAgent
             throw new MissingReferenceException();
         parkingSlots = new List<ParkingSlot>();
         //EDIT
-        List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
+        //List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
         foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
             parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
     }
@@ -101,7 +102,7 @@ public class SimulationCarAgent : AbstractCarAgent
         List<ParkingSlot> tempParkingSlots = new List<ParkingSlot>();
         tempParkingSlots.AddRange(parkingSlots);
         tempParkingSlots.RemoveAt(currentSlotNumber);
-        int occupySize = Random.Range(0, tempParkingSlots.Count);
+        int occupySize = Random.Range(tempParkingSlots.Count/2, tempParkingSlots.Count);
         while (occupySize > 0)
         {
             int tempOccupied = Random.Range(0, tempParkingSlots.Count);
@@ -110,11 +111,25 @@ public class SimulationCarAgent : AbstractCarAgent
             occupySize--;
         }
     }
-
+    IEnumerator waitForSummary()
+    {
+        yield return new WaitForSeconds(.5f);
+    }
     public override void OnEpisodeBegin()
     {
         //
-        if (!m_autoRestartToggle.isOn) return;
+        SimulationSummaryStaticVars.simulationEnd = System.DateTime.Now;
+        SimulationSummaryStaticVars.summaryClosed = false;
+        SimulationSummaryStaticVars.parkingSuccessful = false;
+        /*if (!m_autoRestartToggle.isOn)
+        {
+            SceneManager.LoadScene("SimulationSummary", LoadSceneMode.Additive);
+            
+            while(!SimulationSummaryStaticVars.summaryClosed)
+            {
+                StartCoroutine(waitForSummary());
+            }
+        }*/
         //
         foreach (ParkingSlot parkingSlot in parkingSlots)
             parkingSlot.Restart();
@@ -165,6 +180,9 @@ public class SimulationCarAgent : AbstractCarAgent
             DoTyres(element.leftWheel);
             DoTyres(element.rightWheel);
         }
+        //
+        SimulationSummaryStaticVars.simulationStart = System.DateTime.Now;
+        //
     }
 
     public override void CollectObservations(VectorSensor sensor)

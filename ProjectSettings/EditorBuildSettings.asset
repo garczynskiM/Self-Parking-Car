@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Maps/Angled.unity
     guid: d5ac3b8cd9712dd4f848d51421220fb3
+  - enabled: 1
+    path: Assets/Scenes/UI/SimulationSummary.unity
+    guid: 91bee2ce52b7ec64297b2c582dc13657
   m_configObjects:
     com.unity.ml-agents.settings: {fileID: 11400000, guid: 34e5665bcc8509f44bd2ae042fe2cc63, type: 2}
