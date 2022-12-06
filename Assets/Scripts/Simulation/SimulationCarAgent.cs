@@ -12,7 +12,7 @@ public class SimulationCarAgent : AbstractCarAgent
     private Toggle m_autoRestartToggle;
     private Toggle m_otherCarsToggle;
     //Koniec nowych pól
-    //Is Empty w 
+    //Is Empty - sprawdziæ 
 
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
     public float startingCollisionPenalty = 1 / 4f; // 1/3, 1/10
@@ -40,7 +40,6 @@ public class SimulationCarAgent : AbstractCarAgent
     //private List<List<ParkingSlot>> parkingSlots;
     private List<ParkingSlot> parkingSlots;
     public GameObject parking;
-    private int currentParkingNumber = 0;
     private int currentSlotNumber = 0;
 
     //public BoxCollider targetCollider;

@@ -463,8 +463,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 295bb093c953ef04c887a70cf624188e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_autoRestartTransform: {fileID: 0}
-  m_otherCarsTransform: {fileID: 0}
+  m_autoRestartTransform: {fileID: 1351611474}
+  m_otherCarsTransform: {fileID: 1272602225}
 --- !u!1 &517791253
 GameObject:
   m_ObjectHideFlags: 0
