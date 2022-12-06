@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimulationSummaryStaticVars
+public class SimulationSummaryStaticVars : MonoBehaviour
 {
     public static bool summaryClosed;
     public static DateTime simulationStart;

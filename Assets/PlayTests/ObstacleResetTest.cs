@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class ObstacleResetTest
 {
     // A Test behaves as an ordinary method
@@ -21,6 +21,12 @@ public class ObstacleResetTest
     {
         SceneManager.LoadScene("ChooseMap");
         yield return null;
+
+        var button = SceneManager.GetActiveScene().GetRootGameObjects()[0].transform.GetChild(5).GetChild(0).GetComponent<Button>();
+        button.onClick.Invoke();
+        yield return null;
+
+
         // Use the Assert class to test conditions.
         // Use yield to skip a frame.
     }

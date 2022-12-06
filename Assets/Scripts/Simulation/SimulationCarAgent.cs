@@ -13,7 +13,6 @@ public class SimulationCarAgent : AbstractCarAgent
     private Toggle m_autoRestartToggle;
     private Toggle m_otherCarsToggle;
     //Koniec nowych pól
-    //Is Empty - sprawdziæ 
 
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
     public float startingCollisionPenalty = 1 / 4f; // 1/3, 1/10
@@ -72,7 +71,6 @@ public class SimulationCarAgent : AbstractCarAgent
     private float lastDistance;
 
     private readonly string tagObstacle = "Obstacle";
-    public bool isEmpty = true;
 
     public override void Initialize()
     {
@@ -139,7 +137,7 @@ public class SimulationCarAgent : AbstractCarAgent
         currentSlotNumber = Random.Range(0, parkingSlots.Count);
         parkingSlots[currentSlotNumber].Activate();
         //
-        if (!isEmpty && m_otherCarsToggle.isOn)
+        if (m_otherCarsToggle.isOn)
             RandomOccupy();
         //
         TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
