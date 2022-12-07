@@ -12,6 +12,9 @@ public class SimulationCarAgent : AbstractCarAgent
     //Nowe pola
     private Toggle m_autoRestartToggle;
     private Toggle m_otherCarsToggle;
+
+    private int numberOfSimulations;
+    public int NumberOfSimulations { get => numberOfSimulations; }
     //Koniec nowych pól
 
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
@@ -74,6 +77,7 @@ public class SimulationCarAgent : AbstractCarAgent
 
     public override void Initialize()
     {
+        numberOfSimulations = 0;
         //Nowe pola
         m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
         m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
@@ -119,6 +123,7 @@ public class SimulationCarAgent : AbstractCarAgent
         SimulationSummaryStaticVars.simulationEnd = System.DateTime.Now;
         SimulationSummaryStaticVars.summaryClosed = false;
         SimulationSummaryStaticVars.parkingSuccessful = false;
+        numberOfSimulations++;
         /*if (!m_autoRestartToggle.isOn)
         {
             SceneManager.LoadScene("SimulationSummary", LoadSceneMode.Additive);
