@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapLoadStaticVars
+public class MapLoadStaticVars : MonoBehaviour
 {
     public static string sceneName;
     public static string modelName;

@@ -12,8 +12,10 @@ public class SimulationCarAgent : AbstractCarAgent
     //Nowe pola
     private Toggle m_autoRestartToggle;
     private Toggle m_otherCarsToggle;
+
+    private int numberOfSimulations;
+    public int NumberOfSimulations { get => numberOfSimulations; }
     //Koniec nowych pól
-    //Is Empty - sprawdziæ 
 
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
     public float startingCollisionPenalty = 1 / 4f; // 1/3, 1/10
@@ -72,10 +74,10 @@ public class SimulationCarAgent : AbstractCarAgent
     private float lastDistance;
 
     private readonly string tagObstacle = "Obstacle";
-    public bool isEmpty = true;
 
     public override void Initialize()
     {
+        numberOfSimulations = 0;
         //Nowe pola
         m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
         m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
@@ -121,6 +123,7 @@ public class SimulationCarAgent : AbstractCarAgent
         SimulationSummaryStaticVars.simulationEnd = System.DateTime.Now;
         SimulationSummaryStaticVars.summaryClosed = false;
         SimulationSummaryStaticVars.parkingSuccessful = false;
+        numberOfSimulations++;
         /*if (!m_autoRestartToggle.isOn)
         {
             SceneManager.LoadScene("SimulationSummary", LoadSceneMode.Additive);
@@ -139,7 +142,7 @@ public class SimulationCarAgent : AbstractCarAgent
         currentSlotNumber = Random.Range(0, parkingSlots.Count);
         parkingSlots[currentSlotNumber].Activate();
         //
-        if (!isEmpty && m_otherCarsToggle.isOn)
+        if (m_otherCarsToggle.isOn)
             RandomOccupy();
         //
         TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
