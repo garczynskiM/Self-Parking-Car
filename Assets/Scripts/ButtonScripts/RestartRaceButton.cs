@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class RestartSimulationButton : MonoBehaviour
+
+public class RestartRaceButton : MonoBehaviour
 {
-    public void restartSimulation()
+    public void restartRace()
     {
         var car = GameObject.Find("car-root");
         var script = car.GetComponent<SimulationCarAgent>();

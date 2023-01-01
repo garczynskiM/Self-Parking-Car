@@ -24,14 +24,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3026117016254105418}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5790617403772986592}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &6458020719218581198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1026,7 +1026,6 @@ GameObject:
   - component: {fileID: 5790617403772986592}
   - component: {fileID: 5790617403772986593}
   - component: {fileID: 5790617403772986590}
-  - component: {fileID: 5790617403772986623}
   - component: {fileID: 5790617403772986621}
   - component: {fileID: 5790617403772986620}
   - component: {fileID: 5790617403772986619}
@@ -1118,31 +1117,6 @@ MonoBehaviour:
   staticCarName: static-car
   maxRespawnZ: 10
   minRespawnZ: -10
-  isEmpty: 0
---- !u!114 &5790617403772986623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5790617403772986595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b02f854cd7856544fad8b0450e49a3d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wheelData:
-  - leftWheel: {fileID: 5790617403603818724}
-    rightWheel: {fileID: 5790617403857219637}
-    addWheelTorque: 1
-    shouldSteer: 1
-  - leftWheel: {fileID: 5790617403142719981}
-    rightWheel: {fileID: 5790617404476740353}
-    addWheelTorque: 0
-    shouldSteer: 0
-  maxTorque: 600
-  maxSteerAngle: 30
-  massCenter: {fileID: 5790617402677714055}
 --- !u!114 &5790617403772986621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1158,8 +1132,8 @@ MonoBehaviour:
   m_SensorName: CarSensors
   m_DetectableTags:
   - Obstacle
-  m_RaysPerDirection: 4
-  m_MaxRayDegrees: 180
+  m_RaysPerDirection: 2
+  m_MaxRayDegrees: 90
   m_SphereCastRadius: 0.5
   m_RayLength: 10
   m_RayLayerMask:
@@ -1168,8 +1142,8 @@ MonoBehaviour:
   m_ObservationStacks: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
-  m_StartVerticalOffset: 0
-  m_EndVerticalOffset: 0
+  m_StartVerticalOffset: 0.5
+  m_EndVerticalOffset: 0.5
 --- !u!114 &5790617403772986620
 MonoBehaviour:
   m_ObjectHideFlags: 0

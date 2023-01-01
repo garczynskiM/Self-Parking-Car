@@ -9,6 +9,7 @@ public class CloseSimulationWindowButton : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         SimulationSummaryStaticVars.summaryClosed = true;
-        SceneManager.UnloadSceneAsync("SimulationSummary");
+        MapLoadStaticVars.loadOnlyOnce = false;
+        SceneManager.LoadScene("SimulationOverlay", LoadSceneMode.Single);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class LoadSimulationSummary : MonoBehaviour
@@ -9,14 +10,14 @@ public class LoadSimulationSummary : MonoBehaviour
     [SerializeField] private Transform m_parkingSuccessTransform;
     void Start()
     {
-        Text simulationTimeText = m_simulationTimeTransform.GetComponent<Text>();
+        var simulationTimeText = m_simulationTimeTransform.GetComponent<TMP_Text>();
         TimeSpan ts = SimulationSummaryStaticVars.simulationEnd - SimulationSummaryStaticVars.simulationStart;
         int minutes = ts.Minutes;
         int seconds = ts.Seconds;
         int miliseconds = ts.Milliseconds;
-        simulationTimeText.text = string.Format("{0}:{1}:{2}", minutes.ToString(), seconds.ToString(), miliseconds.ToString());
+        simulationTimeText.text = string.Format("{0}:{1}:{2}", minutes.ToString(), seconds.ToString(), miliseconds.ToString("##"));
 
-        Text parkingSuccessText = m_parkingSuccessTransform.GetComponent<Text>();
+        var parkingSuccessText = m_parkingSuccessTransform.GetComponent<TMP_Text>();
         if (SimulationSummaryStaticVars.parkingSuccessful) parkingSuccessText.text = "Tak";
         else parkingSuccessText.text = "Nie";
     }
