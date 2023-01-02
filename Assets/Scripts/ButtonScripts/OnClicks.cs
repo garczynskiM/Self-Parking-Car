@@ -31,4 +31,12 @@ public class OnClicks : MonoBehaviour
         }
         return null;
     }
+    public void startRaceMode()
+    {
+        string title = ChooseMap();
+        MapLoadStaticVars.sceneName = "Race" + title;
+        //StaticVar.sceneName = "smallEmptyParking";
+        MapLoadStaticVars.loadOnlyOnce = false;
+        SceneManager.LoadScene("RaceOverlay", LoadSceneMode.Single);
+    }
 }

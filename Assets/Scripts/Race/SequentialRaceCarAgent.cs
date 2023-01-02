@@ -6,6 +6,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.SceneManagement;
+using Unity.MLAgents.Policies;
 
 public enum RaceState
 {
@@ -37,7 +38,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     public float parkingRewardMultiplier = 0.4f;
     public float enteredBoundsFirstTimeReward = 0.05f;
     public float enteredTargetFirstTimeReward = 0.05f;
-    public RaceState presetRaceState = RaceState.None;
+    //public RaceState presetRaceState = RaceState.None;
     private float targetRewardMultiplier;
     private float currentDistanceReward = 0f;
     private float currentTargetReward = 0f;
@@ -98,6 +99,9 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         distanceRewardPerStep = existencePenalty * distanceRewardMultiplier;
         targetRewardPerStep = existencePenalty * targetRewardMultiplier;
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
+
+        BehaviorParameters sth = (BehaviorParameters)GetComponent("BehaviorParameters");
+        sth.BehaviorType = BehaviorType.HeuristicOnly;
         if (parking == null)
             throw new MissingReferenceException();
         parkingSlots = new List<ParkingSlot>();
@@ -137,6 +141,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     public override void OnEpisodeBegin()
     {
         //
+        if (SimulationSettingsStaticVars.manualRestart) state = RaceState.None;
         advanceState();
         SimulationSummaryStaticVars.simulationEnd = System.DateTime.Now;
         SimulationSummaryStaticVars.summaryClosed = false;
@@ -162,7 +167,10 @@ public class SequentialRaceCarAgent : AbstractCarAgent
             }
             else if (state == RaceState.Car)
             {
-                for(int i = 0; i < listOfOccupiedSpaces.Count; i++)
+                parkingSlots[currentSlotNumber].Activate();
+                BehaviorParameters sth = (BehaviorParameters)GetComponent("BehaviorParameters");
+                sth.BehaviorType = BehaviorType.InferenceOnly;
+                for (int i = 0; i < listOfOccupiedSpaces.Count; i++)
                 {
                     listOfOccupiedSpaces[i].Occupy();
                 }
@@ -290,7 +298,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
             if (parkingCount >= framesToPark)
             {
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
-                //Debug.Log("Parked! " + GetCumulativeReward());
+                Debug.Log("Parked! " + GetCumulativeReward());
                 Debug.Log("Parked!");
                 EndEpisode();
             }
@@ -363,6 +371,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
 
     public override void OnBoundsEnter(Collider other)
     {
+        Debug.Log("Bounds!");
         enteredBoundsCount++;
         if (!enteredBoundsFirstTime)
         {

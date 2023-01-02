@@ -89,7 +89,6 @@ public class SimulationCarAgent : AbstractCarAgent
         distanceRewardPerStep = existencePenalty * distanceRewardMultiplier;
         targetRewardPerStep = existencePenalty * targetRewardMultiplier;
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
-
         if (parking == null)
             throw new MissingReferenceException();
         parkingSlots = new List<ParkingSlot>();

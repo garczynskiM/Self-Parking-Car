@@ -32,5 +32,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UI/SimulationSummary.unity
     guid: 91bee2ce52b7ec64297b2c582dc13657
+  - enabled: 1
+    path: Assets/Scenes/RaceMaps/RaceParallel.unity
+    guid: ece9759689c045345b0088f4b194ca96
+  - enabled: 1
+    path: Assets/Scenes/UI/RaceOverlay.unity
+    guid: b9dcb601d4f163c42931b47ca31bd55d
+  - enabled: 1
+    path: Assets/Scenes/UI/RaceSummary.unity
+    guid: 8e7c6b7bdacb5f24ea76dcb16f147e00
   m_configObjects:
     com.unity.ml-agents.settings: {fileID: 11400000, guid: 34e5665bcc8509f44bd2ae042fe2cc63, type: 2}
