@@ -109,7 +109,6 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         //List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
         foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
             parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
-        listOfOccupiedSpaces = new List<ParkingSlot>();
     }
 
     protected override void RandomOccupy()
@@ -157,6 +156,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
                 parkingSlot.Restart();
             if (state == RaceState.Player) //
             {
+                listOfOccupiedSpaces = new List<ParkingSlot>();
                 currentSlotNumber = Random.Range(0, parkingSlots.Count);
                 parkingSlots[currentSlotNumber].Activate();
                 //
