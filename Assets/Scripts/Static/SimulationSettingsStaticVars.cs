@@ -7,4 +7,6 @@ public class SimulationSettingsStaticVars : MonoBehaviour
     public static bool autoRestart = true;
     public static bool otherCars = true;
     public static bool manualRestart = false;
+    public static GameObject overheadCamera;
+    public static GameObject behindCarCamera;
 }
