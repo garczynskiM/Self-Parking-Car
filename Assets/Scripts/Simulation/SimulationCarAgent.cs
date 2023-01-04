@@ -103,7 +103,7 @@ public class SimulationCarAgent : AbstractCarAgent
         List<ParkingSlot> tempParkingSlots = new List<ParkingSlot>();
         tempParkingSlots.AddRange(parkingSlots);
         tempParkingSlots.RemoveAt(currentSlotNumber);
-        int occupySize = Random.Range(tempParkingSlots.Count/2, tempParkingSlots.Count);
+        int occupySize = Random.Range(tempParkingSlots.Count / 2, tempParkingSlots.Count);
         while (occupySize > 0)
         {
             int tempOccupied = Random.Range(0, tempParkingSlots.Count);
@@ -267,6 +267,7 @@ public class SimulationCarAgent : AbstractCarAgent
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
                 //Debug.Log("Parked! " + GetCumulativeReward());
                 Debug.Log("Parked!");
+                SimulationSummaryStaticVars.parkingSuccessful = true;
                 EndEpisode();
             }
         }

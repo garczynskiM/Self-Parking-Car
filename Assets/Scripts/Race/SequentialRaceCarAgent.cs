@@ -85,6 +85,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     private float lastDistance;
 
     private readonly string tagObstacle = "Obstacle";
+    private bool currentParkingSuccess = false;
 
     public override void Initialize()
     {
@@ -100,8 +101,8 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         targetRewardPerStep = existencePenalty * targetRewardMultiplier;
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
 
-        BehaviorParameters sth = (BehaviorParameters)GetComponent("BehaviorParameters");
-        sth.BehaviorType = BehaviorType.HeuristicOnly;
+        BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
+        behaviour.BehaviorType = BehaviorType.HeuristicOnly;
         if (parking == null)
             throw new MissingReferenceException();
         parkingSlots = new List<ParkingSlot>();
@@ -129,29 +130,46 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     private void setSettings()
     {
         //SimulationSettingsStaticVars.autoRestart = m_autoRestartToggle.isOn;
-        SimulationSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
+        RaceSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
     }
     private void advanceState()
     {
-        if (state == RaceState.None) state = RaceState.Player;
-        else if (state == RaceState.Player) state = RaceState.Car;
-        else if (state == RaceState.Car) state = RaceState.Finished;
+        if (state == RaceState.None)
+        {
+            state = RaceState.Player;
+            BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
+            behaviour.BehaviorType = BehaviorType.HeuristicOnly;
+        }
+        else if (state == RaceState.Player)
+        {
+            state = RaceState.Car;
+            RaceSummaryStaticVars.playerEnd = System.DateTime.Now;
+            RaceSummaryStaticVars.playerParkingSuccessful = currentParkingSuccess;
+            BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
+            behaviour.BehaviorType = BehaviorType.InferenceOnly;
+        }
+        else if (state == RaceState.Car)
+        {
+            state = RaceState.Finished;
+            RaceSummaryStaticVars.carEnd = System.DateTime.Now;
+            RaceSummaryStaticVars.carParkingSuccessful = currentParkingSuccess;
+        }
     }
     public override void OnEpisodeBegin()
     {
         //
-        if (SimulationSettingsStaticVars.manualRestart) state = RaceState.None;
+        if (RaceSettingsStaticVars.manualRestart) state = RaceState.None;
         advanceState();
-        SimulationSummaryStaticVars.simulationEnd = System.DateTime.Now;
-        SimulationSummaryStaticVars.summaryClosed = false;
-        SimulationSummaryStaticVars.parkingSuccessful = false;
-        if (!SimulationSettingsStaticVars.manualRestart && state == RaceState.Finished)
+        currentParkingSuccess = false;
+        RaceSummaryStaticVars.summaryClosed = false;
+        if (!RaceSettingsStaticVars.manualRestart && state == RaceState.Finished)
         {
             setSettings();
             SceneManager.LoadScene("RaceSummary");
         }
         else
         {
+            RaceSettingsStaticVars.manualRestart = false;
             foreach (ParkingSlot parkingSlot in parkingSlots)
                 parkingSlot.Restart();
             if (state == RaceState.Player) //
@@ -164,16 +182,16 @@ public class SequentialRaceCarAgent : AbstractCarAgent
                     RandomOccupy();
                 currentTransformZ = Random.Range(minRespawnZ, maxRespawnZ);
                 //
+                RaceSummaryStaticVars.playerStart = System.DateTime.Now;
             }
             else if (state == RaceState.Car)
             {
                 parkingSlots[currentSlotNumber].Activate();
-                BehaviorParameters sth = (BehaviorParameters)GetComponent("BehaviorParameters");
-                sth.BehaviorType = BehaviorType.InferenceOnly;
                 for (int i = 0; i < listOfOccupiedSpaces.Count; i++)
                 {
                     listOfOccupiedSpaces[i].Occupy();
                 }
+                RaceSummaryStaticVars.carStart = System.DateTime.Now;
             }
             SimulationSettingsStaticVars.manualRestart = false;
             TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
@@ -214,9 +232,6 @@ public class SequentialRaceCarAgent : AbstractCarAgent
                 DoTyres(element.leftWheel);
                 DoTyres(element.rightWheel);
             }
-            //
-            SimulationSummaryStaticVars.simulationStart = System.DateTime.Now;
-            //
         }
     }
 
@@ -300,6 +315,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
                 Debug.Log("Parked! " + GetCumulativeReward());
                 Debug.Log("Parked!");
+                currentParkingSuccess = true;
                 EndEpisode();
             }
         }
