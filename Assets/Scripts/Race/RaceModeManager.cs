@@ -5,22 +5,23 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum RaceCameraMode
-{
-    Overhead,
-    BehindCar,
-}
-public class RaceCameraManager : MonoBehaviour
+public class RaceModeManager : MonoBehaviour
 {
     public void DropdownChangeValue(TMP_Dropdown change)
     {
-        //if (!camerasInit) InitCameras();
-        RaceCameraMode cameraMode = (RaceCameraMode)change.value;
-        RaceSettingsStaticVars.raceCameraMode = cameraMode;
-        switch (RaceSettingsStaticVars.raceOrder)
+        RaceOrder raceOrder = (RaceOrder)change.value;
+        RaceSettingsStaticVars.raceOrder = raceOrder;
+        switch (raceOrder)
         {
             case RaceOrder.FirstPlayerThenModel:
-                switch (cameraMode)
+                RaceSettingsStaticVars.playerOverheadCamera.SetActive(false);
+                RaceSettingsStaticVars.playerBehindCarCamera.SetActive(false);
+                RaceSettingsStaticVars.modelOverheadCamera.SetActive(false);
+                RaceSettingsStaticVars.modelBehindCarCamera.SetActive(false);
+                RaceSettingsStaticVars.playerParking.SetActive(false);
+                RaceSettingsStaticVars.modelParking.SetActive(false);
+                RaceSettingsStaticVars.sequentialParking.SetActive(true);
+                switch (RaceSettingsStaticVars.raceCameraMode)
                 {
                     case RaceCameraMode.Overhead:
                         RaceSettingsStaticVars.overheadCamera.SetActive(true);
@@ -35,7 +36,14 @@ public class RaceCameraManager : MonoBehaviour
                 }
                 break;
             case RaceOrder.PlayerAndModel:
-                switch (cameraMode)
+                RaceSettingsStaticVars.parkingGenerated = false;
+                RaceSettingsStaticVars.generateParkingSlots();
+                RaceSettingsStaticVars.overheadCamera.SetActive(false);
+                RaceSettingsStaticVars.behindCarCamera.SetActive(false);
+                RaceSettingsStaticVars.sequentialParking.SetActive(false);
+                RaceSettingsStaticVars.playerParking.SetActive(true);
+                RaceSettingsStaticVars.modelParking.SetActive(true);
+                switch (RaceSettingsStaticVars.raceCameraMode)
                 {
                     case RaceCameraMode.Overhead:
                         RaceSettingsStaticVars.playerOverheadCamera.SetActive(true);
@@ -56,6 +64,6 @@ public class RaceCameraManager : MonoBehaviour
             default:
                 break;
         }
-        
+
     }
 }

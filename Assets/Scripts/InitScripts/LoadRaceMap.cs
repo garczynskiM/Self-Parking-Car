@@ -12,6 +12,9 @@ public class LoadRaceMap : MonoBehaviour
     {
         if (!MapLoadStaticVars.loadOnlyOnce)
         {
+            RaceSettingsStaticVars.playerManualRestart = false;
+            RaceSettingsStaticVars.carManualRestart = false;
+            RaceSettingsStaticVars.manualRestart = false;
             //MapLoadStaticVars.m_autoRestartTransform = m_autoRestartTransform;
             //m_autoRestartTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsStaticVars.autoRestart;
             MapLoadStaticVars.m_otherCarsTransform = m_otherCarsTransform;
