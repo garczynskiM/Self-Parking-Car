@@ -1001,6 +1001,7 @@ GameObject:
   - component: {fileID: 511676559}
   - component: {fileID: 511676560}
   - component: {fileID: 511676561}
+  - component: {fileID: 511676562}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1047,6 +1048,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 112454ce50401004da5a55bad01d2cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &511676562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511676558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a789547e1f62a2d4d89fa0956ef8492d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &517791253
@@ -2189,7 +2202,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 511676562}
+        m_TargetAssemblyTypeName: SimulationToggleManager, Scripts
+        m_MethodName: otherCarsToggleChanged
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1272602226}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &1351611473
 GameObject:
@@ -2276,7 +2301,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 511676562}
+        m_TargetAssemblyTypeName: SimulationToggleManager, Scripts
+        m_MethodName: autoRestartToggleChanged
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1351611475}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &1395928728
 GameObject:

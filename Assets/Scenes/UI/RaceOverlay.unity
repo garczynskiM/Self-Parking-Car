@@ -1750,6 +1750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1018716784}
   - component: {fileID: 1018716785}
+  - component: {fileID: 1018716786}
   m_Layer: 5
   m_Name: OtherCars
   m_TagString: Untagged
@@ -1825,8 +1826,32 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1018716786}
+        m_TargetAssemblyTypeName: RaceToggleManager, Scripts
+        m_MethodName: otherCarsToggleChanged
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1018716785}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
+--- !u!114 &1018716786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018716783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d8cfd629f883734d9913801f5349fc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1071103094
 GameObject:
   m_ObjectHideFlags: 0

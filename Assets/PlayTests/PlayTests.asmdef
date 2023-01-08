@@ -4,7 +4,11 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Scripts"
+        "Scripts",
+        "Unity.TextMeshPro",
+        "Unity.TextMeshPro.Tests",
+        "Unity.ML-Agents",
+        ""
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 public class RestartSimulationTest : MonoBehaviour
 {
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
@@ -53,6 +54,80 @@ public class RestartSimulationTest : MonoBehaviour
         // Assert
         activeCars = countActiveParkedCars(); // Count the number of static cars after restart
         Assert.AreEqual(0, activeCars); // There should be no more static cars
+    }
+    [UnityTest]
+    public IEnumerator CheckCameraTest()
+    {
+        MapLoadStaticVars.sceneName = "Parallel";
+        MapLoadStaticVars.loadOnlyOnce = false;
+
+        yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
+        yield return null; // Let the parking load
+        yield return null; // Let the simulation start
+        var dropdown = GameObject.Find("Options").GetComponent<TMP_Dropdown>();
+        var button = GameObject.Find("RestartAndApply").GetComponent<Button>();
+        var overheadCamera = GameObject.Find("OverheadCamera");
+        var behindCarCamera = GameObject.Find("BehindCarCamera");
+        Assert.AreEqual(0, dropdown.value); // Default option is "Lot ptaka", index 0
+        Assert.IsNotNull(overheadCamera); // It should be active
+        Assert.IsNull(behindCarCamera); // It shouldn't be active, so it shouldn't be found, so it should be null
+
+        dropdown.value = 1; // Change to "Zza samochodu", index 1
+        yield return null; // Let the camera change take place
+        overheadCamera = GameObject.Find("OverheadCamera");
+        behindCarCamera = GameObject.Find("BehindCarCamera");
+        Assert.AreEqual(1, dropdown.value); // Option changed
+        Assert.IsNull(overheadCamera); // It shouldn't be active, so it shouldn't be found, so it should be null
+        Assert.IsNotNull(behindCarCamera); // It should be active
+
+        button.onClick.Invoke(); // Restart the simulation
+        yield return null; // Let the simulation restart
+        overheadCamera = GameObject.Find("OverheadCamera"); // Check if the changes remained after simulation restart
+        behindCarCamera = GameObject.Find("BehindCarCamera");
+        Assert.AreEqual(1, dropdown.value); // Option changed
+        Assert.IsNull(overheadCamera); // It shouldn't be active, so it shouldn't be found, so it should be null
+        Assert.IsNotNull(behindCarCamera); // It should be active
+    }
+    [UnityTest]
+    public IEnumerator CheckAutoRestartTest()
+    {
+        // Arrange
+        MapLoadStaticVars.sceneName = "Parallel";
+        MapLoadStaticVars.loadOnlyOnce = false;
+
+        // Act
+        yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
+        yield return null; // Let the parking load
+        yield return null; // Let the simulation start
+        var toggle = GameObject.Find("Restart").GetComponent<Toggle>();
+        var script = GameObject.Find("car-root").GetComponent<SimulationCarAgent>();
+        var parking = GameObject.Find("parallelParkingArea"); // we check whether it still exists - if it does, that means the summary was not loaded
+        Assert.AreEqual(true, toggle.isOn); // This toggle should be 'on' by default
+        Assert.AreEqual(1, script.NumberOfSimulations); // This is first simulation
+        Assert.IsNotNull(parking); // Parking exists
+
+        script.EndEpisode(); // We "end" the simulation, not by manual restart
+        yield return null; // Let the simulation restart
+
+        parking = GameObject.Find("parallelParkingArea");
+        Assert.AreEqual(true, toggle.isOn); // Is still on
+        Assert.AreEqual(2, script.NumberOfSimulations); // This is second simulation
+        Assert.IsNotNull(parking); // Parking exists
+        toggle.isOn = false; // We turn off autoRestart
+        script.EndEpisode(); // We "end" the simulation, not by manual restart
+        yield return null; // Let the simulation restart
+
+        parking = GameObject.Find("parallelParkingArea");
+        Assert.IsNull(parking); // Parking should disappear
+        var closeSummaryButton = GameObject.Find("Button").GetComponent<Button>();
+        Assert.IsNotNull(closeSummaryButton); // Summary should appear
+        closeSummaryButton.onClick.Invoke();
+        yield return null; // Let the parking load
+        yield return null; // Let the simulation start
+
+        parking = GameObject.Find("parallelParkingArea"); // we check whether it still exists - if it does, that means the summary was not loaded
+        Assert.AreEqual(false, toggle.isOn); // This toggle should be 'on' by default
+        Assert.IsNotNull(parking); // Parking exists
     }
     private int countActiveParkedCars()
     {

@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-public class CloseSimulationWindowButton : MonoBehaviour, IPointerClickHandler
+public class CloseSimulationWindowButton : MonoBehaviour
 {
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnClick()
     {
         SimulationSummaryStaticVars.summaryClosed = true;
         MapLoadStaticVars.loadOnlyOnce = false;

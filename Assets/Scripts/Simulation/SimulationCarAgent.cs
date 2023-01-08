@@ -10,8 +10,8 @@ using UnityEngine.SceneManagement;
 public class SimulationCarAgent : AbstractCarAgent
 {
     //Nowe pola
-    private Toggle m_autoRestartToggle;
-    private Toggle m_otherCarsToggle;
+    //private Toggle m_autoRestartToggle;
+    //private Toggle m_otherCarsToggle;
 
     private int numberOfSimulations;
     public int NumberOfSimulations { get => numberOfSimulations; }
@@ -79,8 +79,8 @@ public class SimulationCarAgent : AbstractCarAgent
     {
         numberOfSimulations = 0;
         //Nowe pola
-        m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
-        m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
+        //m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
+        //m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
 
         rigidBody = GetComponent<Rigidbody>();
@@ -112,11 +112,11 @@ public class SimulationCarAgent : AbstractCarAgent
             occupySize--;
         }
     }
-    private void setSettings()
+    /*private void setSettings()
     {
         SimulationSettingsStaticVars.autoRestart = m_autoRestartToggle.isOn;
         SimulationSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
-    }
+    }*/
     public override void OnEpisodeBegin()
     {
         //
@@ -124,9 +124,9 @@ public class SimulationCarAgent : AbstractCarAgent
         SimulationSummaryStaticVars.summaryClosed = false;
         SimulationSummaryStaticVars.parkingSuccessful = false;
         numberOfSimulations++;
-        if (!m_autoRestartToggle.isOn && numberOfSimulations > 1 && !SimulationSettingsStaticVars.manualRestart)
+        if (!SimulationSettingsStaticVars.autoRestart && numberOfSimulations > 1 && !SimulationSettingsStaticVars.manualRestart)
         {
-            setSettings();
+            //setSettings();
             SceneManager.LoadScene("SimulationSummary");
         }
         else
@@ -140,7 +140,7 @@ public class SimulationCarAgent : AbstractCarAgent
             currentSlotNumber = Random.Range(0, parkingSlots.Count);
             parkingSlots[currentSlotNumber].Activate();
             //
-            if (m_otherCarsToggle.isOn)
+            if (SimulationSettingsStaticVars.otherCars)
                 RandomOccupy();
             //
             TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
