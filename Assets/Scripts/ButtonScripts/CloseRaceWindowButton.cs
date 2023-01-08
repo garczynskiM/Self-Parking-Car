@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-public class CloseSimulationWindowButton : MonoBehaviour, IPointerClickHandler
+
+public class CloseRaceWindowButton : MonoBehaviour, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {
-        SimulationSummaryStaticVars.summaryClosed = true;
+        RaceSummaryStaticVars.summaryClosed = true;
         MapLoadStaticVars.loadOnlyOnce = false;
-        SceneManager.LoadScene("SimulationOverlay", LoadSceneMode.Single);
+        SceneManager.LoadScene("RaceOverlay", LoadSceneMode.Single);
     }
 }

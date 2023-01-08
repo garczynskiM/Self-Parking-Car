@@ -7,14 +7,16 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.SceneManagement;
 
-public class SimulationCarAgent : AbstractCarAgent
+public class RaceCarAgent : AbstractCarAgent
 {
     //Nowe pola
-    private Toggle m_autoRestartToggle;
+    //private Toggle m_autoRestartToggle;
     private Toggle m_otherCarsToggle;
 
     private int numberOfSimulations;
     public int NumberOfSimulations { get => numberOfSimulations; }
+    private RaceState state;
+    public RaceState State { get => state; }
     //Koniec nowych pól
 
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
@@ -30,6 +32,7 @@ public class SimulationCarAgent : AbstractCarAgent
     public float parkingRewardMultiplier = 0.4f;
     public float enteredBoundsFirstTimeReward = 0.05f;
     public float enteredTargetFirstTimeReward = 0.05f;
+    public RaceState presetRaceState = RaceState.None;
     private float targetRewardMultiplier;
     private float currentDistanceReward = 0f;
     private float currentTargetReward = 0f;
@@ -63,6 +66,7 @@ public class SimulationCarAgent : AbstractCarAgent
 
     public float maxRespawnZ = 10f;
     public float minRespawnZ = -10f;
+    private float currentTransformZ;
 
     private int enteredBoundsCount = 0;
     private bool enteredTarget = false;
@@ -79,7 +83,7 @@ public class SimulationCarAgent : AbstractCarAgent
     {
         numberOfSimulations = 0;
         //Nowe pola
-        m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
+        //m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
         m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
 
@@ -114,7 +118,7 @@ public class SimulationCarAgent : AbstractCarAgent
     }
     private void setSettings()
     {
-        SimulationSettingsStaticVars.autoRestart = m_autoRestartToggle.isOn;
+        //SimulationSettingsStaticVars.autoRestart = m_autoRestartToggle.isOn;
         SimulationSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
     }
     public override void OnEpisodeBegin()
@@ -124,25 +128,33 @@ public class SimulationCarAgent : AbstractCarAgent
         SimulationSummaryStaticVars.summaryClosed = false;
         SimulationSummaryStaticVars.parkingSuccessful = false;
         numberOfSimulations++;
-        if (!m_autoRestartToggle.isOn && numberOfSimulations > 1 && !SimulationSettingsStaticVars.manualRestart)
+        if (numberOfSimulations > 1 && !SimulationSettingsStaticVars.manualRestart && state == RaceState.Finished)
         {
             setSettings();
-            SceneManager.LoadScene("SimulationSummary");
+            SceneManager.LoadScene("RaceSummary");
         }
         else
         {
             foreach (ParkingSlot parkingSlot in parkingSlots)
                 parkingSlot.Restart();
+            if (state == RaceState.Player) //
+            {
+                currentSlotNumber = Random.Range(0, parkingSlots.Count);
+                parkingSlots[currentSlotNumber].Activate();
+                //
+                if (m_otherCarsToggle.isOn)
+                    RandomOccupy();
+                currentTransformZ = Random.Range(minRespawnZ, maxRespawnZ);
+                //
+            }
+            else if(state == RaceState.Car)
+            {
+
+            }
             /*parking[currentParkingNumber].SetActive(false);
             currentParkingNumber = Random.Range(0, parkingSlots.Count);
             parking[currentParkingNumber].SetActive(true);*/
             SimulationSettingsStaticVars.manualRestart = false;
-            currentSlotNumber = Random.Range(0, parkingSlots.Count);
-            parkingSlots[currentSlotNumber].Activate();
-            //
-            if (m_otherCarsToggle.isOn)
-                RandomOccupy();
-            //
             TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
             targetDetection.Initialize(this);
             BoundDetection boundDetection = parkingSlots[currentSlotNumber].bounds.GetComponent<BoundDetection>();
@@ -150,7 +162,7 @@ public class SimulationCarAgent : AbstractCarAgent
 
             rigidBody.angularVelocity = Vector3.zero;
             rigidBody.velocity = Vector3.zero;
-            transform.localPosition = new Vector3(0, 0.5f, Random.Range(minRespawnZ, maxRespawnZ));
+            transform.localPosition = new Vector3(0, 0.5f, currentTransformZ);
             transform.localEulerAngles = new Vector3(0, 0, 0);
 
             enteredBoundsCount = 0;
@@ -267,7 +279,6 @@ public class SimulationCarAgent : AbstractCarAgent
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
                 //Debug.Log("Parked! " + GetCumulativeReward());
                 Debug.Log("Parked!");
-                SimulationSummaryStaticVars.parkingSuccessful = true;
                 EndEpisode();
             }
         }
