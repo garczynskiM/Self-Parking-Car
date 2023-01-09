@@ -8,8 +8,8 @@ public class LoadSimulationCameras : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SimulationSettingsStaticVars.overheadCamera = GameObject.Find("OverheadCamera");
-        SimulationSettingsStaticVars.behindCarCamera = GameObject.Find("BehindCarCamera");
-        SimulationSettingsStaticVars.behindCarCamera.SetActive(false);
+        SimulationSettingsSingleton.Instance.overheadCamera = GameObject.Find("OverheadCamera");
+        SimulationSettingsSingleton.Instance.behindCarCamera = GameObject.Find("BehindCarCamera");
+        SimulationSettingsSingleton.Instance.behindCarCamera.SetActive(false);
     }
 }

@@ -11,14 +11,14 @@ public class LoadSimulationSummary : MonoBehaviour
     void Start()
     {
         var simulationTimeText = m_simulationTimeTransform.GetComponent<TMP_Text>();
-        TimeSpan ts = SimulationSummaryStaticVars.simulationEnd - SimulationSummaryStaticVars.simulationStart;
+        TimeSpan ts = SimulationSummarySingleton.Instance.simulationEnd - SimulationSummarySingleton.Instance.simulationStart;
         int minutes = ts.Minutes;
         int seconds = ts.Seconds;
         int miliseconds = ts.Milliseconds;
         simulationTimeText.text = string.Format("{0}:{1}:{2}", minutes.ToString(), seconds.ToString(), miliseconds.ToString("##"));
 
         var parkingSuccessText = m_parkingSuccessTransform.GetComponent<TMP_Text>();
-        if (SimulationSummaryStaticVars.parkingSuccessful) parkingSuccessText.text = "Tak";
+        if (SimulationSummarySingleton.Instance.parkingSuccessful) parkingSuccessText.text = "Tak";
         else parkingSuccessText.text = "Nie";
     }
 }

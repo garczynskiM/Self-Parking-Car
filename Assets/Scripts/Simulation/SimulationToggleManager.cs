@@ -7,10 +7,10 @@ public class SimulationToggleManager : MonoBehaviour
 {
     public void autoRestartToggleChanged(Toggle change)
     {
-        SimulationSettingsStaticVars.autoRestart = change.isOn;
+        SimulationSettingsSingleton.Instance.autoRestart = change.isOn;
     }
     public void otherCarsToggleChanged(Toggle change)
     {
-        SimulationSettingsStaticVars.otherCars = change.isOn;
+        SimulationSettingsSingleton.Instance.otherCars = change.isOn;
     }
 }

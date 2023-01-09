@@ -17,14 +17,18 @@ public class OnClicks : MonoBehaviour
 {
     [SerializeField] private Transform m_MapContentContainer;
     [SerializeField] private Transform m_ModelContentContainer;
+    private void Start()
+    {
+        //SimulationSettingsSingleton.Instance = new SimulationSettingsSingleton();
+    }
     public void startSimulationMode()
     {
         string title = ChooseMap();
         ModelInfo modelInfo = ChooseModel();
-        MapLoadStaticVars.sceneName = title;
-        MapLoadStaticVars.modelInfo = modelInfo;
+        MapLoadVarsSingleton.Instance.sceneName = title;
+        MapLoadVarsSingleton.Instance.modelInfo = modelInfo;
         //StaticVar.sceneName = "smallEmptyParking";
-        MapLoadStaticVars.loadOnlyOnce = false;
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
         SceneManager.LoadScene("SimulationOverlay", LoadSceneMode.Single);
     }
     private string ChooseMap()
@@ -64,10 +68,10 @@ public class OnClicks : MonoBehaviour
     {
         string title = ChooseMap();
         ModelInfo modelInfo = ChooseModel();
-        MapLoadStaticVars.sceneName = "Race" + title;
-        MapLoadStaticVars.modelInfo = modelInfo;
+        MapLoadVarsSingleton.Instance.sceneName = "Race" + title;
+        MapLoadVarsSingleton.Instance.modelInfo = modelInfo;
         //StaticVar.sceneName = "smallEmptyParking";
-        MapLoadStaticVars.loadOnlyOnce = false;
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
         SceneManager.LoadScene("RaceOverlay", LoadSceneMode.Single);
     }
 }

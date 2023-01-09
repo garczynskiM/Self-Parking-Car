@@ -8,21 +8,21 @@ public class RestartRaceButton : MonoBehaviour
     private Toggle m_otherCarsToggle;
     public void restartRace()
     {
-        m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
-        RaceSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
-        if (RaceSettingsStaticVars.raceOrder == RaceOrder.FirstPlayerThenModel)
+        m_otherCarsToggle = MapLoadVarsSingleton.Instance.m_otherCarsTransform.GetComponentInChildren<Toggle>();
+        RaceSettingsSingleton.Instance.otherCars = m_otherCarsToggle.isOn;
+        if (RaceSettingsSingleton.Instance.raceOrder == RaceOrder.FirstPlayerThenModel)
         {
-            RaceSettingsStaticVars.manualRestart = true;
+            RaceSettingsSingleton.Instance.manualRestart = true;
             var car = GameObject.Find("car-root");
             var script = car.GetComponent<SequentialRaceCarAgent>();
             script.EndEpisode();
         }
-        else if (RaceSettingsStaticVars.raceOrder == RaceOrder.PlayerAndModel)
+        else if (RaceSettingsSingleton.Instance.raceOrder == RaceOrder.PlayerAndModel)
         {
-            RaceSettingsStaticVars.carManualRestart = true;
-            RaceSettingsStaticVars.playerManualRestart = true;
-            RaceSettingsStaticVars.parkingGenerated = false;
-            RaceSettingsStaticVars.generateParkingSlots();
+            RaceSettingsSingleton.Instance.carManualRestart = true;
+            RaceSettingsSingleton.Instance.playerManualRestart = true;
+            RaceSettingsSingleton.Instance.parkingGenerated = false;
+            RaceSettingsSingleton.Instance.generateParkingSlots();
 
             var playerCar = GameObject.Find("playerCar");
             if(playerCar != null)

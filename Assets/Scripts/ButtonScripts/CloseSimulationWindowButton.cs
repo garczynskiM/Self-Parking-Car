@@ -8,8 +8,8 @@ public class CloseSimulationWindowButton : MonoBehaviour
 {
     public void OnClick()
     {
-        SimulationSummaryStaticVars.summaryClosed = true;
-        MapLoadStaticVars.loadOnlyOnce = false;
+        SimulationSummarySingleton.Instance.summaryClosed = true;
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
         SceneManager.LoadScene("SimulationOverlay", LoadSceneMode.Single);
     }
 }

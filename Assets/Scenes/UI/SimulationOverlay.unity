@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1022,7 +1022,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1112654716}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &511676560
 MonoBehaviour:
@@ -1446,7 +1446,7 @@ RectTransform:
   - {fileID: 1463318125}
   - {fileID: 102651793}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1944,10 +1944,9 @@ Transform:
   - {fileID: 27114402}
   - {fileID: 1771490547}
   - {fileID: 1824738130}
-  - {fileID: 1493539089}
   - {fileID: 511676559}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1112654717
 MonoBehaviour:
@@ -2593,9 +2592,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1493539089}
-  - component: {fileID: 1493539090}
+  - component: {fileID: 1493539091}
+  - component: {fileID: 1493539092}
   m_Layer: 0
-  m_Name: StaticVars
+  m_Name: Singletons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2609,14 +2609,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1493539088}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -391.00537, y: -412.06622, z: 1513.8765}
+  m_LocalPosition: {x: 537.4441, y: 241.36908, z: 353.92603}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1112654716}
-  m_RootOrder: 3
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1493539090
+--- !u!114 &1493539091
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2625,9 +2625,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493539088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce0c67ee4af9e19468be3cfc2782f41d, type: 3}
+  m_Script: {fileID: 11500000, guid: 05e482d5d890a2843946b7d9cddbbc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRestart: 1
+  otherCars: 1
+  manualRestart: 0
+  overheadCamera: {fileID: 0}
+  behindCarCamera: {fileID: 0}
+--- !u!114 &1493539092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493539088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37acd04a6c2c98d43a9cf7d44e812cf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  summaryClosed: 0
+  parkingSuccessful: 0
 --- !u!1 &1619938810
 GameObject:
   m_ObjectHideFlags: 0

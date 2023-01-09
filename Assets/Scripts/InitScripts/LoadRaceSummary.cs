@@ -14,25 +14,25 @@ public class LoadRaceSummary : MonoBehaviour
     void Start()
     {
         var playerTimeText = m_playerTimeTransform.GetComponent<TMP_Text>();
-        TimeSpan ts = RaceSummaryStaticVars.playerEnd - RaceSummaryStaticVars.playerStart;
+        TimeSpan ts = RaceSummarySingleton.Instance.playerEnd - RaceSummarySingleton.Instance.playerStart;
         int minutes = ts.Minutes;
         int seconds = ts.Seconds;
         int miliseconds = ts.Milliseconds;
         playerTimeText.text = string.Format("{0}:{1}:{2}", minutes.ToString(), seconds.ToString(), miliseconds.ToString("##"));
 
         var playerParkingSuccessText = m_playerParkingSuccessTransform.GetComponent<TMP_Text>();
-        if (RaceSummaryStaticVars.playerParkingSuccessful) playerParkingSuccessText.text = "Tak";
+        if (RaceSummarySingleton.Instance.playerParkingSuccessful) playerParkingSuccessText.text = "Tak";
         else playerParkingSuccessText.text = "Nie";
 
         var carTimeText = m_carTimeTransform.GetComponent<TMP_Text>();
-        ts = RaceSummaryStaticVars.carEnd - RaceSummaryStaticVars.carStart;
+        ts = RaceSummarySingleton.Instance.carEnd - RaceSummarySingleton.Instance.carStart;
         minutes = ts.Minutes;
         seconds = ts.Seconds;
         miliseconds = ts.Milliseconds;
         carTimeText.text = string.Format("{0}:{1}:{2}", minutes.ToString(), seconds.ToString(), miliseconds.ToString("##"));
 
         var carParkingSuccessText = m_carParkingSuccessTransform.GetComponent<TMP_Text>();
-        if (RaceSummaryStaticVars.carParkingSuccessful) carParkingSuccessText.text = "Tak";
+        if (RaceSummarySingleton.Instance.carParkingSuccessful) carParkingSuccessText.text = "Tak";
         else carParkingSuccessText.text = "Nie";
     }
 }

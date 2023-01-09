@@ -10,52 +10,52 @@ public class RaceModeManager : MonoBehaviour
     public void DropdownChangeValue(TMP_Dropdown change)
     {
         RaceOrder raceOrder = (RaceOrder)change.value;
-        RaceSettingsStaticVars.raceOrder = raceOrder;
+        RaceSettingsSingleton.Instance.raceOrder = raceOrder;
         switch (raceOrder)
         {
             case RaceOrder.FirstPlayerThenModel:
-                RaceSettingsStaticVars.playerOverheadCamera.SetActive(false);
-                RaceSettingsStaticVars.playerBehindCarCamera.SetActive(false);
-                RaceSettingsStaticVars.modelOverheadCamera.SetActive(false);
-                RaceSettingsStaticVars.modelBehindCarCamera.SetActive(false);
-                RaceSettingsStaticVars.playerParking.SetActive(false);
-                RaceSettingsStaticVars.modelParking.SetActive(false);
-                RaceSettingsStaticVars.sequentialParking.SetActive(true);
-                switch (RaceSettingsStaticVars.raceCameraMode)
+                RaceSettingsSingleton.Instance.playerOverheadCamera.SetActive(false);
+                RaceSettingsSingleton.Instance.playerBehindCarCamera.SetActive(false);
+                RaceSettingsSingleton.Instance.modelOverheadCamera.SetActive(false);
+                RaceSettingsSingleton.Instance.modelBehindCarCamera.SetActive(false);
+                RaceSettingsSingleton.Instance.playerParking.SetActive(false);
+                RaceSettingsSingleton.Instance.modelParking.SetActive(false);
+                RaceSettingsSingleton.Instance.sequentialParking.SetActive(true);
+                switch (RaceSettingsSingleton.Instance.raceCameraMode)
                 {
                     case RaceCameraMode.Overhead:
-                        RaceSettingsStaticVars.overheadCamera.SetActive(true);
-                        RaceSettingsStaticVars.behindCarCamera.SetActive(false);
+                        RaceSettingsSingleton.Instance.overheadCamera.SetActive(true);
+                        RaceSettingsSingleton.Instance.behindCarCamera.SetActive(false);
                         break;
                     case RaceCameraMode.BehindCar:
-                        RaceSettingsStaticVars.overheadCamera.SetActive(false);
-                        RaceSettingsStaticVars.behindCarCamera.SetActive(true);
+                        RaceSettingsSingleton.Instance.overheadCamera.SetActive(false);
+                        RaceSettingsSingleton.Instance.behindCarCamera.SetActive(true);
                         break;
                     default:
                         break;
                 }
                 break;
             case RaceOrder.PlayerAndModel:
-                RaceSettingsStaticVars.parkingGenerated = false;
-                RaceSettingsStaticVars.generateParkingSlots();
-                RaceSettingsStaticVars.overheadCamera.SetActive(false);
-                RaceSettingsStaticVars.behindCarCamera.SetActive(false);
-                RaceSettingsStaticVars.sequentialParking.SetActive(false);
-                RaceSettingsStaticVars.playerParking.SetActive(true);
-                RaceSettingsStaticVars.modelParking.SetActive(true);
-                switch (RaceSettingsStaticVars.raceCameraMode)
+                RaceSettingsSingleton.Instance.parkingGenerated = false;
+                RaceSettingsSingleton.Instance.generateParkingSlots();
+                RaceSettingsSingleton.Instance.overheadCamera.SetActive(false);
+                RaceSettingsSingleton.Instance.behindCarCamera.SetActive(false);
+                RaceSettingsSingleton.Instance.sequentialParking.SetActive(false);
+                RaceSettingsSingleton.Instance.playerParking.SetActive(true);
+                RaceSettingsSingleton.Instance.modelParking.SetActive(true);
+                switch (RaceSettingsSingleton.Instance.raceCameraMode)
                 {
                     case RaceCameraMode.Overhead:
-                        RaceSettingsStaticVars.playerOverheadCamera.SetActive(true);
-                        RaceSettingsStaticVars.playerBehindCarCamera.SetActive(false);
-                        RaceSettingsStaticVars.modelOverheadCamera.SetActive(true);
-                        RaceSettingsStaticVars.modelBehindCarCamera.SetActive(false);
+                        RaceSettingsSingleton.Instance.playerOverheadCamera.SetActive(true);
+                        RaceSettingsSingleton.Instance.playerBehindCarCamera.SetActive(false);
+                        RaceSettingsSingleton.Instance.modelOverheadCamera.SetActive(true);
+                        RaceSettingsSingleton.Instance.modelBehindCarCamera.SetActive(false);
                         break;
                     case RaceCameraMode.BehindCar:
-                        RaceSettingsStaticVars.playerOverheadCamera.SetActive(false);
-                        RaceSettingsStaticVars.playerBehindCarCamera.SetActive(true);
-                        RaceSettingsStaticVars.modelOverheadCamera.SetActive(false);
-                        RaceSettingsStaticVars.modelBehindCarCamera.SetActive(true);
+                        RaceSettingsSingleton.Instance.playerOverheadCamera.SetActive(false);
+                        RaceSettingsSingleton.Instance.playerBehindCarCamera.SetActive(true);
+                        RaceSettingsSingleton.Instance.modelOverheadCamera.SetActive(false);
+                        RaceSettingsSingleton.Instance.modelBehindCarCamera.SetActive(true);
                         break;
                     default:
                         break;

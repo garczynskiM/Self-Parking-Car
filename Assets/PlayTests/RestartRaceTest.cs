@@ -12,9 +12,11 @@ public class RestartRaceTest : MonoBehaviour
     public IEnumerator CheckRaceSequentialRestartTest()
     {
         // Arrange
-        MapLoadStaticVars.sceneName = "RaceParallel";
-        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
-        MapLoadStaticVars.loadOnlyOnce = false;
+        yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
+        yield return null; // Let the scene load
+        MapLoadVarsSingleton.Instance.sceneName = "RaceParallel";
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         // Act
         yield return SceneManager.LoadSceneAsync("RaceOverlay"); // Load the overlay
@@ -33,9 +35,11 @@ public class RestartRaceTest : MonoBehaviour
     public IEnumerator CheckObstacleSpawnTest()
     {
         // Arrange
-        MapLoadStaticVars.sceneName = "RaceParallel";
-        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
-        MapLoadStaticVars.loadOnlyOnce = false;
+        yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
+        yield return null; // Let the scene load
+        MapLoadVarsSingleton.Instance.sceneName = "RaceParallel";
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         // Act
         yield return SceneManager.LoadSceneAsync("RaceOverlay"); // Load the overlay
@@ -57,9 +61,11 @@ public class RestartRaceTest : MonoBehaviour
     [UnityTest]
     public IEnumerator CheckCameraTest()
     {
-        MapLoadStaticVars.sceneName = "RaceParallel";
-        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
-        MapLoadStaticVars.loadOnlyOnce = false;
+        yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
+        yield return null; // Let the scene load
+        MapLoadVarsSingleton.Instance.sceneName = "RaceParallel";
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
         string sequentialParkingName = "sequentialParking";
 
         yield return SceneManager.LoadSceneAsync("RaceOverlay"); // Load the overlay

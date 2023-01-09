@@ -14,9 +14,11 @@ public class RestartSimulationTest : MonoBehaviour
     public IEnumerator CheckSimulationRestartTest()
     {
         // Arrange
-        MapLoadStaticVars.sceneName = "Parallel";
-        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
-        MapLoadStaticVars.loadOnlyOnce = false;
+        yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
+        yield return null; // Let the scene load
+        MapLoadVarsSingleton.Instance.sceneName = "Parallel";
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         // Act
         yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
@@ -35,9 +37,11 @@ public class RestartSimulationTest : MonoBehaviour
     public IEnumerator CheckObstacleSpawnTest()
     {
         // Arrange
-        MapLoadStaticVars.sceneName = "Parallel";
-        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
-        MapLoadStaticVars.loadOnlyOnce = false;
+        yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
+        yield return null; // Let the scene load
+        MapLoadVarsSingleton.Instance.sceneName = "Parallel";
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         // Act
         yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
@@ -59,9 +63,11 @@ public class RestartSimulationTest : MonoBehaviour
     [UnityTest]
     public IEnumerator CheckCameraTest()
     {
-        MapLoadStaticVars.sceneName = "Parallel";
-        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
-        MapLoadStaticVars.loadOnlyOnce = false;
+        yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
+        yield return null; // Let the scene load
+        MapLoadVarsSingleton.Instance.sceneName = "Parallel";
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
         yield return null; // Let the parking load
@@ -94,9 +100,11 @@ public class RestartSimulationTest : MonoBehaviour
     public IEnumerator CheckAutoRestartTest()
     {
         // Arrange
-        MapLoadStaticVars.sceneName = "Parallel";
-        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
-        MapLoadStaticVars.loadOnlyOnce = false;
+        yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
+        yield return null; // Let the scene load
+        MapLoadVarsSingleton.Instance.sceneName = "Parallel";
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         // Act
         yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
