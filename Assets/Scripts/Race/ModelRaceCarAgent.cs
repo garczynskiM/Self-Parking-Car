@@ -7,12 +7,14 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.SceneManagement;
 using Unity.MLAgents.Policies;
+using Unity.Barracuda;
+using UnityEditor;
 
 public class ModelRaceCarAgent : AbstractCarAgent
 {
     //Nowe pola
     //private Toggle m_autoRestartToggle;
-    private Toggle m_otherCarsToggle;
+    //private Toggle m_otherCarsToggle;
     [SerializeField] public Transform m_scriptHolder;
     //Koniec nowych pól
 
@@ -84,7 +86,7 @@ public class ModelRaceCarAgent : AbstractCarAgent
     {
         //Nowe pola
         //m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
-        m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
+        //m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
@@ -94,6 +96,8 @@ public class ModelRaceCarAgent : AbstractCarAgent
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
 
         BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
+        NNModel modelToLoad = (NNModel)AssetDatabase.LoadAssetAtPath("Assets/NN Models/" + MapLoadStaticVars.modelInfo.name + ".onnx", typeof(NNModel));
+        behaviour.Model = modelToLoad;
         behaviour.BehaviorType = BehaviorType.InferenceOnly;
         if (parking == null)
             throw new MissingReferenceException();
@@ -158,7 +162,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
     public override void OnEpisodeBegin()
     {
         //
-        RaceSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
         numberOfSimulations++;
         RaceSummaryStaticVars.carEnd = System.DateTime.Now;
         RaceSummaryStaticVars.carParkingSuccessful = currentParkingSuccess;

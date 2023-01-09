@@ -6,6 +6,9 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.SceneManagement;
+using Unity.MLAgents.Policies;
+using UnityEditor;
+using Unity.Barracuda;
 
 public class SimulationCarAgent : AbstractCarAgent
 {
@@ -96,6 +99,10 @@ public class SimulationCarAgent : AbstractCarAgent
         //List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
         foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
             parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
+        BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
+        NNModel modelToLoad = (NNModel)AssetDatabase.LoadAssetAtPath("Assets/NN Models/" + MapLoadStaticVars.modelInfo.name + ".onnx", typeof(NNModel));
+        behaviour.Model = modelToLoad;
+        behaviour.BehaviorType = BehaviorType.InferenceOnly;
     }
 
     protected override void RandomOccupy()

@@ -15,6 +15,7 @@ public class RestartSimulationTest : MonoBehaviour
     {
         // Arrange
         MapLoadStaticVars.sceneName = "Parallel";
+        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
         MapLoadStaticVars.loadOnlyOnce = false;
 
         // Act
@@ -35,6 +36,7 @@ public class RestartSimulationTest : MonoBehaviour
     {
         // Arrange
         MapLoadStaticVars.sceneName = "Parallel";
+        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
         MapLoadStaticVars.loadOnlyOnce = false;
 
         // Act
@@ -59,6 +61,7 @@ public class RestartSimulationTest : MonoBehaviour
     public IEnumerator CheckCameraTest()
     {
         MapLoadStaticVars.sceneName = "Parallel";
+        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
         MapLoadStaticVars.loadOnlyOnce = false;
 
         yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
@@ -93,6 +96,7 @@ public class RestartSimulationTest : MonoBehaviour
     {
         // Arrange
         MapLoadStaticVars.sceneName = "Parallel";
+        MapLoadStaticVars.modelInfo = new ModelInfo("CarBehavior 2");
         MapLoadStaticVars.loadOnlyOnce = false;
 
         // Act

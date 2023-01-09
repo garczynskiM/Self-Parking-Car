@@ -8,8 +8,7 @@ public class CheckboxManager : MonoBehaviour
     [SerializeField] private Transform m_ContentContainer;
     private Toggle[] m_Toggles;
     private int childCount;
-    // Start is called before the first frame update
-    void Start()
+    public void startToggleManager()
     {
         childCount = m_ContentContainer.childCount;
         m_Toggles = new Toggle[childCount];

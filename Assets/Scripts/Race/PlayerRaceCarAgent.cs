@@ -7,11 +7,14 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.SceneManagement;
 using Unity.MLAgents.Policies;
+using Unity.Barracuda;
+using UnityEditor;
+
 public class PlayerRaceCarAgent : AbstractCarAgent
 {
     //Nowe pola
     //private Toggle m_autoRestartToggle;
-    private Toggle m_otherCarsToggle;
+    //private Toggle m_otherCarsToggle;
     [SerializeField] public Transform m_scriptHolder;
     //Koniec nowych pól
 
@@ -83,7 +86,7 @@ public class PlayerRaceCarAgent : AbstractCarAgent
     {
         //Nowe pola
         //m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
-        m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
+        //m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
@@ -94,6 +97,7 @@ public class PlayerRaceCarAgent : AbstractCarAgent
 
         BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
         behaviour.BehaviorType = BehaviorType.HeuristicOnly;
+        
         if (parking == null)
             throw new MissingReferenceException();
         parkingSlots = new List<ParkingSlot>();

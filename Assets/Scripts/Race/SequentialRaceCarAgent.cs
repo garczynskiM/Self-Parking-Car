@@ -7,6 +7,8 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using UnityEngine.SceneManagement;
 using Unity.MLAgents.Policies;
+using Unity.Barracuda;
+using UnityEditor;
 
 public enum RaceState
 {
@@ -19,10 +21,12 @@ public class SequentialRaceCarAgent : AbstractCarAgent
 {
     //Nowe pola
     //private Toggle m_autoRestartToggle;
-    private Toggle m_otherCarsToggle;
+    //private Toggle m_otherCarsToggle;
 
     private RaceState state;
     public RaceState State { get => state; }
+    private int numberOfSimulations;
+    public int NumberOfSimulations { get => numberOfSimulations; }
     //Koniec nowych pól
 
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
@@ -91,7 +95,6 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     {
         //Nowe pola
         //m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
-        m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
         state = RaceState.None;
         rigidBody = GetComponent<Rigidbody>();
@@ -102,6 +105,8 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
 
         BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
+        NNModel modelToLoad = (NNModel)AssetDatabase.LoadAssetAtPath("Assets/NN Models/" + MapLoadStaticVars.modelInfo.name + ".onnx", typeof(NNModel));
+        behaviour.Model = modelToLoad;
         behaviour.BehaviorType = BehaviorType.HeuristicOnly;
         if (parking == null)
             throw new MissingReferenceException();
@@ -127,11 +132,11 @@ public class SequentialRaceCarAgent : AbstractCarAgent
             occupySize--;
         }
     }
-    private void setSettings()
+    /*private void setSettings()
     {
         //SimulationSettingsStaticVars.autoRestart = m_autoRestartToggle.isOn;
         RaceSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
-    }
+    }*/
     private void advanceState()
     {
         if (state == RaceState.None)
@@ -164,7 +169,6 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         RaceSummaryStaticVars.summaryClosed = false;
         if (!RaceSettingsStaticVars.manualRestart && state == RaceState.Finished)
         {
-            setSettings();
             SceneManager.LoadScene("RaceSummary");
         }
         else
@@ -178,7 +182,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
                 currentSlotNumber = Random.Range(0, parkingSlots.Count);
                 parkingSlots[currentSlotNumber].Activate();
                 //
-                if (m_otherCarsToggle.isOn)
+                if (RaceSettingsStaticVars.otherCars)
                     RandomOccupy();
                 currentTransformZ = Random.Range(minRespawnZ, maxRespawnZ);
                 //
