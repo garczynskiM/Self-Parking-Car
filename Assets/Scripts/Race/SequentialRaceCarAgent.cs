@@ -96,6 +96,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         //Nowe pola
         //m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
+        numberOfSimulations = 0;
         state = RaceState.None;
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
@@ -142,6 +143,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         if (state == RaceState.None)
         {
             state = RaceState.Player;
+            numberOfSimulations++;
             BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
             behaviour.BehaviorType = BehaviorType.HeuristicOnly;
         }

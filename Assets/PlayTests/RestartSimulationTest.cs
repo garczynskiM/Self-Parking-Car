@@ -45,7 +45,6 @@ public class RestartSimulationTest : MonoBehaviour
         yield return null; // Let the simulation start
         var toggle = GameObject.Find("OtherCars").GetComponent<Toggle>();
         var button = GameObject.Find("RestartAndApply").GetComponent<Button>();
-        var script = GameObject.Find("car-root").GetComponent<SimulationCarAgent>();
         Assert.AreEqual(true, toggle.isOn); // This toggle should be 'on' by default
         int activeCars = countActiveParkedCars(); // Count the number of static cars
         Assert.That(activeCars, Is.GreaterThan(0)); // There should be at least one static car
