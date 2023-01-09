@@ -8,7 +8,6 @@ using Unity.MLAgents.Actuators;
 using UnityEngine.SceneManagement;
 using Unity.MLAgents.Policies;
 using Unity.Barracuda;
-using UnityEditor;
 
 public enum RaceState
 {
@@ -106,7 +105,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
 
         BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
-        NNModel modelToLoad = (NNModel)AssetDatabase.LoadAssetAtPath("Assets/NN Models/" + MapLoadVarsSingleton.Instance.modelInfo.name + ".onnx", typeof(NNModel));
+        NNModel modelToLoad = Resources.Load<NNModel>(string.Format("NN Models/{0}", MapLoadVarsSingleton.Instance.modelInfo.name));
         behaviour.Model = modelToLoad;
         behaviour.BehaviorType = BehaviorType.HeuristicOnly;
         if (parking == null)

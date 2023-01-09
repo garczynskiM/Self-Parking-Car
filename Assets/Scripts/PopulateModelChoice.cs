@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,27 +10,23 @@ public class PopulateModelChoice : MonoBehaviour
     [SerializeField] private Transform m_ContentContainer;
     [SerializeField] private GameObject m_ItemPrefab;
     [SerializeField] private Transform m_modelCheckboxManager;
-    private string directoryPath = "Assets/NN Models";
+    private string directoryPath = "NN Models";
 
     void Start()
     {
-        var NNModelDirectoryInfo = new DirectoryInfo(directoryPath);
-        List<string> fileNames = getTextFiles(NNModelDirectoryInfo);
-        for (int i = 0; i < fileNames.Count; i++)
+        var sth = Resources.LoadAll<TextAsset>(directoryPath);
+        for (int i = 0; i < sth.Length; i++)
         {
-            string[] lines = File.ReadAllLines(string.Format("{0}/{1}", directoryPath, fileNames[i]));
-
+            string text = sth[i].text;
+            string[] separatedText = separateByNewLine(text);
 
             var item_go = Instantiate(m_ItemPrefab);
-            // do something with the instantiated item -- for instance
             var title = item_go.transform.Find("Title");
-            title.gameObject.GetComponent<Text>().text = lines[0];
+            title.gameObject.GetComponent<Text>().text = separatedText[0];
 
             var desc = item_go.transform.Find("Description");
-            desc.gameObject.GetComponent<Text>().text = lines[1];
-            //parent the item to the content container
+            desc.gameObject.GetComponent<Text>().text = separatedText[1];
             item_go.transform.SetParent(m_ContentContainer);
-            //reset the item's scale -- this can get munged with UI prefabs
             item_go.transform.localScale = Vector2.one;
 
             var toggle = item_go.transform.Find("Toggle");
@@ -40,15 +37,9 @@ public class PopulateModelChoice : MonoBehaviour
         CheckboxManager script = m_modelCheckboxManager.GetComponent<CheckboxManager>();
         script.startToggleManager();
     }
-    private List<string> getTextFiles(DirectoryInfo d)
+    private string[] separateByNewLine(string s)
     {
-        List<string> result = new List<string>();
-        // Add file sizes.
-        FileInfo[] fis = d.GetFiles();
-        foreach (FileInfo fi in fis)
-        {
-            if (fi.Extension.Contains("txt")) result.Add(fi.Name);
-        }
+        var result = s.Split(new string[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
         return result;
     }
 }
