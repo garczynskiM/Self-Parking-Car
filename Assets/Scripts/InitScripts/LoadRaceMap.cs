@@ -10,17 +10,17 @@ public class LoadRaceMap : MonoBehaviour
     [SerializeField] private Transform m_otherCarsTransform;
     void Start()
     {
-        if (!MapLoadStaticVars.loadOnlyOnce)
+        if (!MapLoadVarsSingleton.Instance.loadOnlyOnce)
         {
-            RaceSettingsStaticVars.playerManualRestart = false;
-            RaceSettingsStaticVars.carManualRestart = false;
-            RaceSettingsStaticVars.manualRestart = false;
-            //MapLoadStaticVars.m_autoRestartTransform = m_autoRestartTransform;
-            //m_autoRestartTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsStaticVars.autoRestart;
-            MapLoadStaticVars.m_otherCarsTransform = m_otherCarsTransform;
-            m_otherCarsTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsStaticVars.otherCars;
-            SceneManager.LoadScene(MapLoadStaticVars.sceneName, LoadSceneMode.Additive);
-            MapLoadStaticVars.loadOnlyOnce = true;
+            RaceSettingsSingleton.Instance.playerManualRestart = false;
+            RaceSettingsSingleton.Instance.carManualRestart = false;
+            RaceSettingsSingleton.Instance.manualRestart = false;
+            //MapLoadVarsSingleton.m_autoRestartTransform = m_autoRestartTransform;
+            //m_autoRestartTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsSingleton.autoRestart;
+            MapLoadVarsSingleton.Instance.m_otherCarsTransform = m_otherCarsTransform;
+            m_otherCarsTransform.GetComponentInChildren<Toggle>().isOn = RaceSettingsSingleton.Instance.otherCars;
+            SceneManager.LoadScene(MapLoadVarsSingleton.Instance.sceneName, LoadSceneMode.Additive);
+            MapLoadVarsSingleton.Instance.loadOnlyOnce = true;
         }
     }
     private void OnLevelWasLoaded(int level)

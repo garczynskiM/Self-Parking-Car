@@ -94,8 +94,9 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     public override void Initialize()
     {
         //Nowe pola
-        //m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
+        //m_autoRestartToggle = MapLoadVarsSingleton.m_autoRestartTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
+        numberOfSimulations = 0;
         state = RaceState.None;
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
@@ -105,7 +106,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
 
         BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
-        NNModel modelToLoad = (NNModel)AssetDatabase.LoadAssetAtPath("Assets/NN Models/" + MapLoadStaticVars.modelInfo.name + ".onnx", typeof(NNModel));
+        NNModel modelToLoad = (NNModel)AssetDatabase.LoadAssetAtPath("Assets/NN Models/" + MapLoadVarsSingleton.Instance.modelInfo.name + ".onnx", typeof(NNModel));
         behaviour.Model = modelToLoad;
         behaviour.BehaviorType = BehaviorType.HeuristicOnly;
         if (parking == null)
@@ -134,46 +135,47 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     }
     /*private void setSettings()
     {
-        //SimulationSettingsStaticVars.autoRestart = m_autoRestartToggle.isOn;
-        RaceSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
+        //SimulationSettingsSingleton.autoRestart = m_autoRestartToggle.isOn;
+        RaceSettingsSingleton.otherCars = m_otherCarsToggle.isOn;
     }*/
     private void advanceState()
     {
         if (state == RaceState.None)
         {
             state = RaceState.Player;
+            numberOfSimulations++;
             BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
             behaviour.BehaviorType = BehaviorType.HeuristicOnly;
         }
         else if (state == RaceState.Player)
         {
             state = RaceState.Car;
-            RaceSummaryStaticVars.playerEnd = System.DateTime.Now;
-            RaceSummaryStaticVars.playerParkingSuccessful = currentParkingSuccess;
+            RaceSummarySingleton.Instance.playerEnd = System.DateTime.Now;
+            RaceSummarySingleton.Instance.playerParkingSuccessful = currentParkingSuccess;
             BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
             behaviour.BehaviorType = BehaviorType.InferenceOnly;
         }
         else if (state == RaceState.Car)
         {
             state = RaceState.Finished;
-            RaceSummaryStaticVars.carEnd = System.DateTime.Now;
-            RaceSummaryStaticVars.carParkingSuccessful = currentParkingSuccess;
+            RaceSummarySingleton.Instance.carEnd = System.DateTime.Now;
+            RaceSummarySingleton.Instance.carParkingSuccessful = currentParkingSuccess;
         }
     }
     public override void OnEpisodeBegin()
     {
         //
-        if (RaceSettingsStaticVars.manualRestart) state = RaceState.None;
+        if (RaceSettingsSingleton.Instance.manualRestart) state = RaceState.None;
         advanceState();
         currentParkingSuccess = false;
-        RaceSummaryStaticVars.summaryClosed = false;
-        if (!RaceSettingsStaticVars.manualRestart && state == RaceState.Finished)
+        RaceSummarySingleton.Instance.summaryClosed = false;
+        if (!RaceSettingsSingleton.Instance.manualRestart && state == RaceState.Finished)
         {
             SceneManager.LoadScene("RaceSummary");
         }
         else
         {
-            RaceSettingsStaticVars.manualRestart = false;
+            RaceSettingsSingleton.Instance.manualRestart = false;
             foreach (ParkingSlot parkingSlot in parkingSlots)
                 parkingSlot.Restart();
             if (state == RaceState.Player) //
@@ -182,11 +184,11 @@ public class SequentialRaceCarAgent : AbstractCarAgent
                 currentSlotNumber = Random.Range(0, parkingSlots.Count);
                 parkingSlots[currentSlotNumber].Activate();
                 //
-                if (RaceSettingsStaticVars.otherCars)
+                if (RaceSettingsSingleton.Instance.otherCars)
                     RandomOccupy();
                 currentTransformZ = Random.Range(minRespawnZ, maxRespawnZ);
                 //
-                RaceSummaryStaticVars.playerStart = System.DateTime.Now;
+                RaceSummarySingleton.Instance.playerStart = System.DateTime.Now;
             }
             else if (state == RaceState.Car)
             {
@@ -195,7 +197,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
                 {
                     listOfOccupiedSpaces[i].Occupy();
                 }
-                RaceSummaryStaticVars.carStart = System.DateTime.Now;
+                RaceSummarySingleton.Instance.carStart = System.DateTime.Now;
             }
             TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
             targetDetection.Initialize(this);

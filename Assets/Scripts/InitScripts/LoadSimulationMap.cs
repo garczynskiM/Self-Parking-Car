@@ -11,14 +11,14 @@ public class LoadSimulationMap : MonoBehaviour
     [SerializeField] private Transform m_otherCarsTransform;
     void Start()
     {
-        if(!MapLoadStaticVars.loadOnlyOnce)
+        if(!MapLoadVarsSingleton.Instance.loadOnlyOnce)
         {
-            MapLoadStaticVars.m_autoRestartTransform = m_autoRestartTransform;
-            m_autoRestartTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsStaticVars.autoRestart;
-            MapLoadStaticVars.m_otherCarsTransform = m_otherCarsTransform;
-            m_otherCarsTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsStaticVars.otherCars;
-            SceneManager.LoadScene(MapLoadStaticVars.sceneName, LoadSceneMode.Additive);
-            MapLoadStaticVars.loadOnlyOnce = true;
+            MapLoadVarsSingleton.Instance.m_autoRestartTransform = m_autoRestartTransform;
+            m_autoRestartTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsSingleton.Instance.autoRestart;
+            MapLoadVarsSingleton.Instance.m_otherCarsTransform = m_otherCarsTransform;
+            m_otherCarsTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsSingleton.Instance.otherCars;
+            SceneManager.LoadScene(MapLoadVarsSingleton.Instance.sceneName, LoadSceneMode.Additive);
+            MapLoadVarsSingleton.Instance.loadOnlyOnce = true;
         }
     }
     private void OnLevelWasLoaded(int level)

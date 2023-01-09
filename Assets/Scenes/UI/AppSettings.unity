@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 145961613}
   - component: {fileID: 145961612}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -507,6 +507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FullscreenToggle: {fileID: 1953253324}
+  m_resolutionDropdown: {fileID: 192764589}
 --- !u!114 &158575745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,6 +533,7 @@ GameObject:
   - component: {fileID: 192764592}
   - component: {fileID: 192764591}
   - component: {fileID: 192764590}
+  - component: {fileID: 192764593}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -612,15 +614,25 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Option A
+    - m_Text: 1920 x 1080
       m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
+    - m_Text: 1280 x 720
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 192764593}
+        m_TargetAssemblyTypeName: AppSettingsDropdown, Scripts
+        m_MethodName: DropdownChangeValue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 192764590}
+          m_ObjectArgumentAssemblyTypeName: TMPro.TMP_Dropdown, Unity.TextMeshPro
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &192764591
 MonoBehaviour:
@@ -660,6 +672,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192764588}
   m_CullTransparentMesh: 1
+--- !u!114 &192764593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192764588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5567440ee0cb174283871764c3377be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &282923772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,7 +1716,7 @@ GameObject:
   - component: {fileID: 1582130802}
   - component: {fileID: 1582130801}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2113,7 +2137,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option A
+  m_text: 1920 x 1080
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

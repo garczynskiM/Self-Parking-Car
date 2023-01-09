@@ -82,8 +82,8 @@ public class SimulationCarAgent : AbstractCarAgent
     {
         numberOfSimulations = 0;
         //Nowe pola
-        //m_autoRestartToggle = MapLoadStaticVars.m_autoRestartTransform.GetComponentInChildren<Toggle>();
-        //m_otherCarsToggle = MapLoadStaticVars.m_otherCarsTransform.GetComponentInChildren<Toggle>();
+        //m_autoRestartToggle = MapLoadVarsSingleton.m_autoRestartTransform.GetComponentInChildren<Toggle>();
+        //m_otherCarsToggle = MapLoadVarsSingleton.m_otherCarsTransform.GetComponentInChildren<Toggle>();
         //Koniec nowych pól
 
         rigidBody = GetComponent<Rigidbody>();
@@ -100,7 +100,7 @@ public class SimulationCarAgent : AbstractCarAgent
         foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
             parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
         BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
-        NNModel modelToLoad = (NNModel)AssetDatabase.LoadAssetAtPath("Assets/NN Models/" + MapLoadStaticVars.modelInfo.name + ".onnx", typeof(NNModel));
+        NNModel modelToLoad = (NNModel)AssetDatabase.LoadAssetAtPath("Assets/NN Models/" + MapLoadVarsSingleton.Instance.modelInfo.name + ".onnx", typeof(NNModel));
         behaviour.Model = modelToLoad;
         behaviour.BehaviorType = BehaviorType.InferenceOnly;
     }
@@ -121,17 +121,17 @@ public class SimulationCarAgent : AbstractCarAgent
     }
     /*private void setSettings()
     {
-        SimulationSettingsStaticVars.autoRestart = m_autoRestartToggle.isOn;
-        SimulationSettingsStaticVars.otherCars = m_otherCarsToggle.isOn;
+        SimulationSettingsSingleton.autoRestart = m_autoRestartToggle.isOn;
+        SimulationSettingsSingleton.otherCars = m_otherCarsToggle.isOn;
     }*/
     public override void OnEpisodeBegin()
     {
         //
-        SimulationSummaryStaticVars.simulationEnd = System.DateTime.Now;
-        SimulationSummaryStaticVars.summaryClosed = false;
-        SimulationSummaryStaticVars.parkingSuccessful = false;
+        SimulationSummarySingleton.Instance.simulationEnd = System.DateTime.Now;
+        SimulationSummarySingleton.Instance.summaryClosed = false;
+        SimulationSummarySingleton.Instance.parkingSuccessful = false;
         numberOfSimulations++;
-        if (!SimulationSettingsStaticVars.autoRestart && numberOfSimulations > 1 && !SimulationSettingsStaticVars.manualRestart)
+        if (!SimulationSettingsSingleton.Instance.autoRestart && numberOfSimulations > 1 && !SimulationSettingsSingleton.Instance.manualRestart)
         {
             //setSettings();
             SceneManager.LoadScene("SimulationSummary");
@@ -143,11 +143,11 @@ public class SimulationCarAgent : AbstractCarAgent
             /*parking[currentParkingNumber].SetActive(false);
             currentParkingNumber = Random.Range(0, parkingSlots.Count);
             parking[currentParkingNumber].SetActive(true);*/
-            SimulationSettingsStaticVars.manualRestart = false;
+            SimulationSettingsSingleton.Instance.manualRestart = false;
             currentSlotNumber = Random.Range(0, parkingSlots.Count);
             parkingSlots[currentSlotNumber].Activate();
             //
-            if (SimulationSettingsStaticVars.otherCars)
+            if (SimulationSettingsSingleton.Instance.otherCars)
                 RandomOccupy();
             //
             TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
@@ -189,7 +189,7 @@ public class SimulationCarAgent : AbstractCarAgent
                 DoTyres(element.rightWheel);
             }
             //
-            SimulationSummaryStaticVars.simulationStart = System.DateTime.Now;
+            SimulationSummarySingleton.Instance.simulationStart = System.DateTime.Now;
             //
         }
     }
@@ -274,7 +274,7 @@ public class SimulationCarAgent : AbstractCarAgent
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
                 //Debug.Log("Parked! " + GetCumulativeReward());
                 Debug.Log("Parked!");
-                SimulationSummaryStaticVars.parkingSuccessful = true;
+                SimulationSummarySingleton.Instance.parkingSuccessful = true;
                 EndEpisode();
             }
         }

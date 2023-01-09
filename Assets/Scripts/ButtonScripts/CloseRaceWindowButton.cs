@@ -9,8 +9,8 @@ public class CloseRaceWindowButton : MonoBehaviour, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {
-        RaceSummaryStaticVars.summaryClosed = true;
-        MapLoadStaticVars.loadOnlyOnce = false;
+        RaceSummarySingleton.Instance.summaryClosed = true;
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
         SceneManager.LoadScene("RaceOverlay", LoadSceneMode.Single);
     }
 }

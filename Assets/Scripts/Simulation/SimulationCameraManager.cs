@@ -32,12 +32,12 @@ public class SimulationCameraManager : MonoBehaviour
         switch(cameraMode)
         {
             case SimulationCameraMode.Overhead:
-                SimulationSettingsStaticVars.overheadCamera.SetActive(true);
-                SimulationSettingsStaticVars.behindCarCamera.SetActive(false);
+                SimulationSettingsSingleton.Instance.overheadCamera.SetActive(true);
+                SimulationSettingsSingleton.Instance.behindCarCamera.SetActive(false);
                 break;
             case SimulationCameraMode.BehindCar:
-                SimulationSettingsStaticVars.overheadCamera.SetActive(false);
-                SimulationSettingsStaticVars.behindCarCamera.SetActive(true);
+                SimulationSettingsSingleton.Instance.overheadCamera.SetActive(false);
+                SimulationSettingsSingleton.Instance.behindCarCamera.SetActive(true);
                 break;
             default:
                 break;

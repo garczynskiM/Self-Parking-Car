@@ -17,7 +17,7 @@ public class RaceParallelManager : MonoBehaviour
     private void Start()
     {
         racesComplete = 0;
-        RaceSettingsStaticVars.parkingGenerated = false;
+        RaceSettingsSingleton.Instance.parkingGenerated = false;
     }
     public void manuallyRestarted()
     {

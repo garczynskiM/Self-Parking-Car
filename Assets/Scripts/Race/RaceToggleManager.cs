@@ -7,6 +7,6 @@ public class RaceToggleManager : MonoBehaviour
 {
     public void otherCarsToggleChanged(Toggle change)
     {
-        RaceSettingsStaticVars.otherCars = change.isOn;
+        RaceSettingsSingleton.Instance.otherCars = change.isOn;
     }
 }

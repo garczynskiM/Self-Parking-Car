@@ -7,7 +7,7 @@ public class RestartSimulationButton : MonoBehaviour
     {
         var car = GameObject.Find("car-root");
         var script = car.GetComponent<SimulationCarAgent>();
-        SimulationSettingsStaticVars.manualRestart = true;
+        SimulationSettingsSingleton.Instance.manualRestart = true;
         script.EndEpisode();
     }
 }
