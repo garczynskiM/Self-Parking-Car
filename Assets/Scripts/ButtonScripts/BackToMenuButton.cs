@@ -11,7 +11,7 @@ public class BackToMenuButton : MonoBehaviour
         AppSettingsStaticVars.restoreScreenSettings();
         SceneManager.LoadScene("Menu");
     }
-    public void backFromMapChoice()
+    public void backNotFromSettings()
     {
         SceneManager.LoadScene("Menu");
     }

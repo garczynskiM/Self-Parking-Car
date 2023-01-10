@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,6 @@ public static class AppSettingsStaticVars
     }
     public static void restoreScreenSettings()
     {
-        Screen.SetResolution(width, height, fullscreen);
+        Screen.SetResolution(Math.Max(width, 800), Math.Max(height, 600), fullscreen);
     }
 }

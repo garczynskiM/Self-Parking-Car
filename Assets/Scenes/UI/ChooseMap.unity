@@ -2098,7 +2098,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1351804502}
         m_TargetAssemblyTypeName: BackToMenuButton, Scripts
-        m_MethodName: backFromMapChoice
+        m_MethodName: backNotFromSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
