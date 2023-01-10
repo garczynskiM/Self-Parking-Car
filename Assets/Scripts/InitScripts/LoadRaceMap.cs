@@ -23,8 +23,4 @@ public class LoadRaceMap : MonoBehaviour
             MapLoadVarsSingleton.Instance.loadOnlyOnce = true;
         }
     }
-    private void OnLevelWasLoaded(int level)
-    {
-        Debug.Log("Loaded UI for race");
-    }
 }

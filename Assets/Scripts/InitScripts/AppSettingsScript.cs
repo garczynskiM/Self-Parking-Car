@@ -11,10 +11,11 @@ public class AppSettingsScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AppSettingsStaticVars.saveScreenSettings();
         var toggle = m_FullscreenToggle.GetComponentInChildren<Toggle>();
         toggle.isOn = Screen.fullScreen;
         var dropdown = m_resolutionDropdown.GetComponent<TMP_Dropdown>();
-        switch(Screen.currentResolution.width, Screen.currentResolution.height)
+        switch(Screen.width, Screen.height)
         {
             case (1920, 1080):
                 dropdown.value = 0;
@@ -25,5 +26,6 @@ public class AppSettingsScript : MonoBehaviour
             default:
                 break;
         }
+        dropdown.interactable = !Screen.fullScreen;
     }
 }

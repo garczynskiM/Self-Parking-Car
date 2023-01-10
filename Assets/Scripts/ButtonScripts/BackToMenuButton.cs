@@ -8,7 +8,7 @@ public class BackToMenuButton : MonoBehaviour, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Clicked");
+        AppSettingsStaticVars.restoreScreenSettings();
         SceneManager.LoadScene("Menu");
     }
 }

@@ -12,11 +12,10 @@ public class AppSettingsDropdown : MonoBehaviour
         switch(change.value)
         {
             case 0:
-                var sth = Screen.currentResolution;
-                Screen.SetResolution(1920, 1080, true);
+                Screen.SetResolution(1920, 1080, Screen.fullScreen);
                 break;
             case 1:
-                Screen.SetResolution(1280, 720, true);
+                Screen.SetResolution(1280, 720, Screen.fullScreen);
                 break;
             default:
                 break;

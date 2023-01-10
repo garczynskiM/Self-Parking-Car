@@ -8,8 +8,7 @@ public class AppSettingsButton : MonoBehaviour
     [SerializeField] private Transform m_FullscreenToggle;
     public void saveSettings()
     {
-        var toggle = m_FullscreenToggle.GetComponentInChildren<Toggle>();
-        Screen.fullScreen = toggle.isOn;
+        AppSettingsStaticVars.saveScreenSettings();
         SceneManager.LoadScene("Menu");
     }
     public void goToAppSettings()
