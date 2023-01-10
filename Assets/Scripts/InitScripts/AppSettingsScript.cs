@@ -26,6 +26,5 @@ public class AppSettingsScript : MonoBehaviour
             default:
                 break;
         }
-        dropdown.interactable = !Screen.fullScreen;
     }
 }
