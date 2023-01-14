@@ -110,46 +110,8 @@ public class ModelRaceCarAgent : AbstractCarAgent
     }
 
     protected override void RandomOccupy() { }
-    /*{
-        List<ParkingSlot> tempParkingSlots = new List<ParkingSlot>();
-        tempParkingSlots.AddRange(parkingSlots);
-        tempParkingSlots.RemoveAt(currentSlotNumber);
-        int occupySize = Random.Range(tempParkingSlots.Count / 2, tempParkingSlots.Count);
-        while (occupySize > 0)
-        {
-            int tempOccupied = Random.Range(0, tempParkingSlots.Count);
-            tempParkingSlots[tempOccupied].Occupy();
-            listOfOccupiedSpaces.Add(tempParkingSlots[tempOccupied]);
-            tempParkingSlots.RemoveAt(tempOccupied);
-            occupySize--;
-        }
-    }*/
     protected void fillParkingSlots()
     {
-        /*RaceSettingsSingleton.manualRestart = false;
-            foreach (ParkingSlot parkingSlot in parkingSlots)
-                parkingSlot.Restart();
-            if (state == RaceState.Player) //
-            {
-                listOfOccupiedSpaces = new List<ParkingSlot>();
-                currentSlotNumber = Random.Range(0, parkingSlots.Count);
-                parkingSlots[currentSlotNumber].Activate();
-                //
-                if (m_otherCarsToggle.isOn)
-                    RandomOccupy();
-                currentTransformZ = Random.Range(minRespawnZ, maxRespawnZ);
-                //
-                RaceSummarySingleton.playerStart = System.DateTime.Now;
-            }
-            else if (state == RaceState.Car)
-            {
-                parkingSlots[currentSlotNumber].Activate();
-                for (int i = 0; i < listOfOccupiedSpaces.Count; i++)
-                {
-                    listOfOccupiedSpaces[i].Occupy();
-                }
-                RaceSummarySingleton.carStart = System.DateTime.Now;
-            }*/
         foreach (ParkingSlot parkingSlot in parkingSlots)
             parkingSlot.Restart();
         parkingSlots[RaceSettingsSingleton.Instance.targetParkingSlot].Activate();
@@ -223,26 +185,14 @@ public class ModelRaceCarAgent : AbstractCarAgent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.forward));
-
-        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
-        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).magnitude);
-
-        //sensor.AddObservation(transform.localPosition.normalized);
+        sensor.AddObservation(parkingSlots[currentSlotNumber].target.transform.forward);
+        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.position - transform.position).normalized);
+        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.position - transform.position).magnitude);
         sensor.AddObservation(transform.forward);
         sensor.AddObservation(transform.right);
         sensor.AddObservation(rigidBody.velocity.normalized);
         sensor.AddObservation(rigidBody.velocity.magnitude);
-        //sensor.AddObservation(wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f);
         sensor.AddObservation(Vector3.Dot(transform.forward, wheelSteer.right));
-
-        /*Debug.Log("Dot: " + Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
-        Debug.Log("Dir: " + (parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
-        Debug.Log("Pos: " + transform.localPosition.normalized);
-        Debug.Log("Forward: " + transform.forward);
-        Debug.Log("Right: " + transform.right);
-        Debug.Log("Vel: " + rigidBody.velocity.normalized);
-        //Debug.Log("Steer: " + (wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f));
-        Debug.Log("Steer: " + Vector3.Dot(transform.forward, wheelSteer.right));*/
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)

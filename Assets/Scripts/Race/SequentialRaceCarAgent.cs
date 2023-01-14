@@ -242,26 +242,14 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.forward));
-
-        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
-        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).magnitude);
-
-        //sensor.AddObservation(transform.localPosition.normalized);
+        sensor.AddObservation(parkingSlots[currentSlotNumber].target.transform.forward);
+        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.position - transform.position).normalized);
+        sensor.AddObservation((parkingSlots[currentSlotNumber].target.transform.parent.position - transform.position).magnitude);
         sensor.AddObservation(transform.forward);
         sensor.AddObservation(transform.right);
         sensor.AddObservation(rigidBody.velocity.normalized);
         sensor.AddObservation(rigidBody.velocity.magnitude);
-        //sensor.AddObservation(wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f);
         sensor.AddObservation(Vector3.Dot(transform.forward, wheelSteer.right));
-
-        /*Debug.Log("Dot: " + Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
-        Debug.Log("Dir: " + (parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
-        Debug.Log("Pos: " + transform.localPosition.normalized);
-        Debug.Log("Forward: " + transform.forward);
-        Debug.Log("Right: " + transform.right);
-        Debug.Log("Vel: " + rigidBody.velocity.normalized);
-        //Debug.Log("Steer: " + (wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f));
-        Debug.Log("Steer: " + Vector3.Dot(transform.forward, wheelSteer.right));*/
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)

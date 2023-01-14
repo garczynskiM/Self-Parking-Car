@@ -1,2 +1,0 @@
-CarBehavior 2
-Opis ze skutecznością i parametrami

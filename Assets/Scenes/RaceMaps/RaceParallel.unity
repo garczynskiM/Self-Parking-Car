@@ -3756,7 +3756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5790617403772986620, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 16
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 5790617403772986621, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
       propertyPath: m_SensorName
@@ -3991,7 +3991,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5790617403772986620, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 16
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 5790617403772986621, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
       propertyPath: m_SensorName
@@ -4801,7 +4801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5790617403772986620, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 16
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 5790617403772986621, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
       propertyPath: m_SensorName

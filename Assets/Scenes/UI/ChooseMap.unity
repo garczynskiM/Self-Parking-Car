@@ -220,7 +220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 405239692567304752, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_Text
-      value: smallEmptyParking
+      value: Perpendicular
       objectReference: {fileID: 0}
     - target: {fileID: 405239692567304753, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -670,7 +670,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: 
-  modelName: 
   loadOnlyOnce: 0
   m_autoRestartTransform: {fileID: 0}
   m_otherCarsTransform: {fileID: 0}
