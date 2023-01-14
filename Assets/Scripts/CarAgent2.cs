@@ -59,7 +59,7 @@ public class ParkingSlot
 public class CarAgent2 : AbstractCarAgent
 {
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
-    public float startingCollisionPenalty = 1 / 4f; // 1/3, 1/10
+    public float startingCollisionPenalty = 0.05f; // 1/3, 1/10
     private float currentCollisionPenalty;
     [Tooltip("Liczba przez któr¹ przemna¿amy karê za uderzenie za ka¿de kolejne uderzenie. Iloraz ci¹gu geometrycznego o sumie 0.5.")]
     public float collisionPenaltyMultiplier = 1 / 2f; // 1/3, 4/5
@@ -67,7 +67,7 @@ public class CarAgent2 : AbstractCarAgent
 
     private float existencePenalty;
 
-    public float distanceRewardMultiplier = 0.2f;
+    public float distanceRewardMultiplier = 0.25f;
     public float parkingRewardMultiplier = 0.4f;
     public float enteredBoundsFirstTimeReward = 0.05f;
     public float enteredTargetFirstTimeReward = 0.05f;
@@ -113,9 +113,12 @@ public class CarAgent2 : AbstractCarAgent
     private int parkingCount = 0;
     private bool firstStep = true;
     private float lastDistance;
+    private float closestDistance;
 
     private readonly string tagObstacle = "Obstacle";
     public bool isEmpty = true;
+
+    private bool currentTargetRewardReset = true;
 
     public override void Initialize()
     {
@@ -123,8 +126,8 @@ public class CarAgent2 : AbstractCarAgent
         rigidBody.centerOfMass = massCenter.localPosition;
         existencePenalty = 1f / (MaxStep);
         distanceRewardPerStep = existencePenalty * distanceRewardMultiplier;
-        targetRewardPerStep = existencePenalty * targetRewardMultiplier;
         targetRewardMultiplier = 1f - enteredBoundsFirstTimeReward - enteredTargetFirstTimeReward - distanceRewardMultiplier - parkingRewardMultiplier;
+        targetRewardPerStep = targetRewardMultiplier / framesToPark;
 
         if (parkings.Count == 0)
             throw new MissingReferenceException();
@@ -143,7 +146,7 @@ public class CarAgent2 : AbstractCarAgent
         List<ParkingSlot> tempParkingSlots = new List<ParkingSlot>();
         tempParkingSlots.AddRange(parkingSlots[currentParkingNumber]);
         tempParkingSlots.RemoveAt(currentSlotNumber);
-        int occupySize = Random.Range(0, tempParkingSlots.Count);
+        int occupySize = Random.Range(tempParkingSlots.Count, tempParkingSlots.Count + 1);
         while(occupySize > 0)
         {
             int tempOccupied = Random.Range(0, tempParkingSlots.Count);
@@ -183,6 +186,9 @@ public class CarAgent2 : AbstractCarAgent
         currentDistanceReward = 0f;
         currentTargetReward = 0f;
         currentNegativeDistanceReward = 0f;
+        currentTargetRewardReset = true;
+
+        closestDistance = float.MaxValue;
 
         currentCollisionPenalty = startingCollisionPenalty;
 
@@ -207,9 +213,11 @@ public class CarAgent2 : AbstractCarAgent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
-        
-        sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
-        sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).magnitude);
+        sensor.AddObservation(parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward);
+        //Debug.Log(parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward);
+        //Debug.Log(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
+        sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.position - transform.position).normalized);
+        sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.position - transform.position).magnitude);
 
         //sensor.AddObservation(transform.localPosition.normalized);
         sensor.AddObservation(transform.forward);
@@ -275,6 +283,12 @@ public class CarAgent2 : AbstractCarAgent
         if (enteredBoundsCount == 0 && enteredTarget)
         {
             Debug.Log("Target stay!");
+            if (!currentTargetRewardReset)
+            {
+                currentTargetRewardReset = true;
+                AddReward(-currentTargetReward);
+                currentTargetReward = 0;
+            }
             currentDistanceReward += distanceRewardPerStep;
             currentTargetReward += targetRewardPerStep;
             AddReward(targetRewardPerStep + distanceRewardPerStep);
@@ -289,31 +303,52 @@ public class CarAgent2 : AbstractCarAgent
         }
         else
         {
+            currentTargetRewardReset = false;
             parkingCount = 0;
-            if (firstStep)
+
+            float dot = Vector3.Dot(rigidBody.velocity.normalized, (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.position - transform.position).normalized);
+            if(dot > 0)
             {
-                firstStep = false;
+                currentDistanceReward += dot * distanceRewardPerStep;
             }
             else
             {
-                if (currentDistance < lastDistance)
-                {
-                    //float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
-                    float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
-                    currentDistanceReward += 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
-                    AddReward(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep);
-                }
-                else
-                {
-                    //float dot = Mathf.Abs(Vector3.Dot(transform.right, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.right));
-                    //currentNegativeDistanceReward -= 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
-                    //AddReward(-(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep));
-                    currentNegativeDistanceReward -= distanceRewardPerStep;
-                    AddReward(-distanceRewardPerStep);
-                }
+                currentNegativeDistanceReward += dot * distanceRewardPerStep;
             }
+            //Debug.Log("Dot product: " + dot);
+            //Debug.Log("Distance: " + (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.position - transform.position).magnitude);
+            //Debug.Log("Target: " + parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.position);
+            //Debug.Log("Transform: " + transform.localPosition);
+            AddReward(dot * distanceRewardPerStep);
+
+            //if (firstStep)
+            //{
+            //    firstStep = false;
+            //}
+            //else
+            //{
+            //if (currentDistance < lastDistance)
+            //if (currentDistance < closestDistance)
+            //{
+            //closestDistance = currentDistance;
+            //float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
+            //float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
+            //currentDistanceReward += 0.9f * distanceRewardPerStep * dot + 0.1f * distanceRewardPerStep;
+            //AddReward(0.9f * distanceRewardPerStep * dot + 0.1f * distanceRewardPerStep);
+            //currentDistanceReward += distanceRewardPerStep * dot;
+            //AddReward(distanceRewardPerStep * dot);
+            //}
+            //else
+            //{
+            //float dot = Mathf.Abs(Vector3.Dot(transform.right, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.right));
+            //currentNegativeDistanceReward -= 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
+            //AddReward(-(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep));
+            //currentNegativeDistanceReward -= distanceRewardPerStep;
+            //AddReward(-distanceRewardPerStep);
+            //}
+            //}
         }
-        lastDistance = currentDistance;
+        //lastDistance = currentDistance;
         //Debug.Log(GetCumulativeReward());
 
     }
@@ -335,9 +370,10 @@ public class CarAgent2 : AbstractCarAgent
             /*Debug.Log("Collision!");
             float penalty = CalculateCollisionPenalty();
             AddReward(penalty);*/
+            //float penalty = CalculateCollisionPenalty();
+            //AddReward(penalty - distanceRewardMultiplier + currentNegativeDistanceReward);
+            AddReward(-startingCollisionPenalty);
             Debug.Log("Collision!");
-            float penalty = CalculateCollisionPenalty();
-            AddReward(penalty - distanceRewardMultiplier + currentNegativeDistanceReward);
             EndEpisode();
         }
     }
@@ -349,7 +385,7 @@ public class CarAgent2 : AbstractCarAgent
         {
             Debug.Log("Target first time!");
             enteredTargetFirstTime = true;
-            AddReward(enteredTargetFirstTimeReward);
+            AddReward((1 - StepCount / MaxStep) * enteredTargetFirstTimeReward);
         }
     }
 
@@ -360,7 +396,7 @@ public class CarAgent2 : AbstractCarAgent
         {
             Debug.Log("Bounds first time!");
             enteredBoundsFirstTime = true;
-            AddReward(enteredBoundsFirstTimeReward);
+            AddReward((1 - StepCount / MaxStep) * enteredBoundsFirstTimeReward);
         }
     }
 

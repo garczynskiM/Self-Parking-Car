@@ -294,7 +294,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2022092531}
   m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0, y: 20, z: -35}
+  m_LocalPosition: {x: 0, y: 25.1, z: -37.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -351,6 +351,18 @@ PrefabInstance:
     - target: {fileID: 1010045778781629852, guid: 8a2002a237553184796f83d55a2da07f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1657148676491946505, guid: 8a2002a237553184796f83d55a2da07f, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1657148676491946505, guid: 8a2002a237553184796f83d55a2da07f, type: 3}
+      propertyPath: m_BehaviorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1657148676491946505, guid: 8a2002a237553184796f83d55a2da07f, type: 3}
+      propertyPath: m_BrainParameters.VectorObservationSize
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 4761376881466920851, guid: 8a2002a237553184796f83d55a2da07f, type: 3}
       propertyPath: m_Name

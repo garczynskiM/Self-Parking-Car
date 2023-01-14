@@ -184,6 +184,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: parallelParkingArea
       objectReference: {fileID: 0}
+    - target: {fileID: 7367236664825939976, guid: d56d84edd8ed0fd4b841a74cd4baa34a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d56d84edd8ed0fd4b841a74cd4baa34a, type: 3}
 --- !u!1 &1283281519062522693 stripped
@@ -206,6 +210,10 @@ PrefabInstance:
     - target: {fileID: 6882410520685333382, guid: 0109c832c4139994c9056775711a108f, type: 3}
       propertyPath: m_Name
       value: perpendicularParking
+      objectReference: {fileID: 0}
+    - target: {fileID: 6882410520685333382, guid: 0109c832c4139994c9056775711a108f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6882410520685333401, guid: 0109c832c4139994c9056775711a108f, type: 3}
       propertyPath: m_RootOrder
@@ -317,6 +325,10 @@ PrefabInstance:
     - target: {fileID: 2775700628482851921, guid: 705312d099d026041a188670212ded60, type: 3}
       propertyPath: m_Name
       value: angledParking
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775700628482851921, guid: 705312d099d026041a188670212ded60, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 705312d099d026041a188670212ded60, type: 3}
