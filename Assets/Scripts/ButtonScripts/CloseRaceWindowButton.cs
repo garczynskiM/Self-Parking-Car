@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class CloseRaceWindowButton : MonoBehaviour, IPointerClickHandler
+public class CloseRaceWindowButton : MonoBehaviour
 {
-    public void OnPointerClick(PointerEventData eventData)
+    public void CloseRaceSummary()
     {
         RaceSummarySingleton.Instance.summaryClosed = true;
         MapLoadVarsSingleton.Instance.loadOnlyOnce = false;

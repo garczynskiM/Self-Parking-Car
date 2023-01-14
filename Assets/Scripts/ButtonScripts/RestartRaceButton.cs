@@ -5,11 +5,10 @@ using UnityEngine.UI;
 
 public class RestartRaceButton : MonoBehaviour
 {
-    private Toggle m_otherCarsToggle;
     public void restartRace()
     {
-        m_otherCarsToggle = MapLoadVarsSingleton.Instance.m_otherCarsTransform.GetComponentInChildren<Toggle>();
-        RaceSettingsSingleton.Instance.otherCars = m_otherCarsToggle.isOn;
+        //m_otherCarsToggle = MapLoadVarsSingleton.Instance.m_otherCarsTransform.GetComponentInChildren<Toggle>();
+        //RaceSettingsSingleton.Instance.otherCars = m_otherCarsToggle.isOn;
         if (RaceSettingsSingleton.Instance.raceOrder == RaceOrder.FirstPlayerThenModel)
         {
             RaceSettingsSingleton.Instance.manualRestart = true;

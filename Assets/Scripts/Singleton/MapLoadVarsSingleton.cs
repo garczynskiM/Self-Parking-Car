@@ -5,7 +5,6 @@ using UnityEngine;
 public class MapLoadVarsSingleton : MonoBehaviour
 {
     public string sceneName;
-    public string modelName;
     public bool loadOnlyOnce;
     public ModelInfo modelInfo;
     public Transform m_autoRestartTransform;

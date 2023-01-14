@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CheckboxManager : MonoBehaviour
+public class ToggleManager : MonoBehaviour
 {
     [SerializeField] private Transform m_ContentContainer;
     private Toggle[] m_Toggles;
@@ -23,7 +23,7 @@ public class CheckboxManager : MonoBehaviour
         }
     }
 
-    void ToggleValueChanged(Toggle change)
+    private void ToggleValueChanged(Toggle change)
     {
         if (change.isOn)
         {

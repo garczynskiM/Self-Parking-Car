@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MenuButton : MonoBehaviour, IPointerClickHandler
+public class MenuButton : MonoBehaviour
 {
-    public void OnPointerClick(PointerEventData eventData)
+    public void MenuToMapChoice()
     {
         SceneManager.LoadScene("ChooseMap");
     }
