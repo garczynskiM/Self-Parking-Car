@@ -13,7 +13,7 @@ public class ModelInfo
     }
     // rzeczy potrzebne do dostosowania obserwacji itd.
 }
-public class OnClicks : MonoBehaviour
+public class SaveMapChoice: MonoBehaviour
 {
     [SerializeField] private Transform m_MapContentContainer;
     [SerializeField] private Transform m_ModelContentContainer;
@@ -30,6 +30,16 @@ public class OnClicks : MonoBehaviour
         //StaticVar.sceneName = "smallEmptyParking";
         MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
         SceneManager.LoadScene("SimulationOverlay", LoadSceneMode.Single);
+    }
+    public void startRaceMode()
+    {
+        string title = ChooseMap();
+        ModelInfo modelInfo = ChooseModel();
+        MapLoadVarsSingleton.Instance.sceneName = "Race" + title;
+        MapLoadVarsSingleton.Instance.modelInfo = modelInfo;
+        //StaticVar.sceneName = "smallEmptyParking";
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
+        SceneManager.LoadScene("RaceOverlay", LoadSceneMode.Single);
     }
     private string ChooseMap()
     {
@@ -63,15 +73,5 @@ public class OnClicks : MonoBehaviour
             }
         }
         return null;
-    }
-    public void startRaceMode()
-    {
-        string title = ChooseMap();
-        ModelInfo modelInfo = ChooseModel();
-        MapLoadVarsSingleton.Instance.sceneName = "Race" + title;
-        MapLoadVarsSingleton.Instance.modelInfo = modelInfo;
-        //StaticVar.sceneName = "smallEmptyParking";
-        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
-        SceneManager.LoadScene("RaceOverlay", LoadSceneMode.Single);
     }
 }

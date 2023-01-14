@@ -1513,7 +1513,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: 
-  modelName: 
   loadOnlyOnce: 0
   m_autoRestartTransform: {fileID: 0}
   m_otherCarsTransform: {fileID: 0}
@@ -2136,7 +2135,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1188458970}
-  - component: {fileID: 1188458969}
   m_Layer: 0
   m_Name: Setup
   m_TagString: Untagged
@@ -2144,20 +2142,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1188458969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1188458968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 295bb093c953ef04c887a70cf624188e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_autoRestartTransform: {fileID: 41347587}
-  m_otherCarsTransform: {fileID: 1018716784}
 --- !u!4 &1188458970
 Transform:
   m_ObjectHideFlags: 0

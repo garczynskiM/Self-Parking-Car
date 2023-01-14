@@ -34,7 +34,7 @@ public class PopulateModelChoice : MonoBehaviour
             if (i == 0) toggleComponent.isOn = true;
             else toggleComponent.isOn = false;
         }
-        CheckboxManager script = m_modelCheckboxManager.GetComponent<CheckboxManager>();
+        ToggleManager script = m_modelCheckboxManager.GetComponent<ToggleManager>();
         script.startToggleManager();
     }
     private string[] separateByNewLine(string s)

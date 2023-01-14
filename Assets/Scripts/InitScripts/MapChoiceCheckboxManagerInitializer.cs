@@ -8,7 +8,7 @@ public class MapChoiceCheckboxManagerInitializer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CheckboxManager script = m_mapCheckboxManager.GetComponent<CheckboxManager>();
+        ToggleManager script = m_mapCheckboxManager.GetComponent<ToggleManager>();
         script.startToggleManager();
     }
 }
