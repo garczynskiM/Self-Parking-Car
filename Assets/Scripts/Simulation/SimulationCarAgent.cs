@@ -63,9 +63,6 @@ public class SimulationCarAgent : AbstractCarAgent
     public string boundsName = "slotBounds";
     public string staticCarName = "static-car";
 
-    public float maxRespawnZ = 10f;
-    public float minRespawnZ = -10f;
-
     private int enteredBoundsCount = 0;
     private bool enteredTarget = false;
     private bool enteredBoundsFirstTime = false;
@@ -156,7 +153,7 @@ public class SimulationCarAgent : AbstractCarAgent
 
             rigidBody.angularVelocity = Vector3.zero;
             rigidBody.velocity = Vector3.zero;
-            transform.localPosition = new Vector3(0, 0.5f, Random.Range(minRespawnZ, maxRespawnZ));
+            transform.localPosition = new Vector3(0, 0.5f, SimulationSettingsSingleton.Instance.calculateZCarSpawn());
             transform.localEulerAngles = new Vector3(0, 0, 0);
 
             enteredBoundsCount = 0;

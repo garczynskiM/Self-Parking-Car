@@ -1,2 +1,2 @@
-CarBehavior 4
+DobryModel
 Pierwszy dobrze działający model

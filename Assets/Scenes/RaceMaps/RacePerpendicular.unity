@@ -403,6 +403,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 370004343}
     m_Modifications:
+    - target: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5563181663725565923, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -789,6 +797,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 973091237}
     m_Modifications:
+    - target: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5563181663725565923, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
