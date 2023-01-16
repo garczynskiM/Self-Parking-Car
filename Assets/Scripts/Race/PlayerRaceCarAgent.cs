@@ -67,9 +67,6 @@ public class PlayerRaceCarAgent : AbstractCarAgent
     public string boundsName = "slotBounds";
     public string staticCarName = "static-car";
 
-    public float maxRespawnZ = 10f;
-    public float minRespawnZ = -10f;
-
     private int enteredBoundsCount = 0;
     private bool enteredTarget = false;
     private bool enteredBoundsFirstTime = false;

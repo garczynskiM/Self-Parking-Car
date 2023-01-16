@@ -22,8 +22,8 @@ public class RaceParallelManager : MonoBehaviour
     public void manuallyRestarted()
     {
         racesComplete = 0;
-        m_playerCar.gameObject.SetActive(true);
-        m_modelCar.gameObject.SetActive(true);
+        if(!m_playerCar.gameObject.activeSelf) m_playerCar.gameObject.SetActive(true);
+        if (!m_modelCar.gameObject.activeSelf) m_modelCar.gameObject.SetActive(true);
     }
     public void finishedParking(CarOwner whichCar)
     {

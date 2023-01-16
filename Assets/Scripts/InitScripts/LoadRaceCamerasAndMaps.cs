@@ -8,12 +8,17 @@ public class LoadRaceCamerasAndMaps : MonoBehaviour
     [SerializeField] private Transform m_sequentialParking;
     [SerializeField] private Transform m_overheadCamera;
     [SerializeField] private Transform m_behindCarCamera;
+    [SerializeField] private Transform m_sequentialCarMarker;
     [SerializeField] private Transform m_playerParking;
     [SerializeField] private Transform m_playerOverheadCamera;
     [SerializeField] private Transform m_playerBehindCarCamera;
+    [SerializeField] private Transform m_playerCarMarker;
     [SerializeField] private Transform m_modelParking;
     [SerializeField] private Transform m_modelOverheadCamera;
     [SerializeField] private Transform m_modelBehindCarCamera;
+    [SerializeField] private Transform m_modelCarMarker;
+    [SerializeField] public float minimumZ;
+    [SerializeField] public float maximumZ;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,10 +31,21 @@ public class LoadRaceCamerasAndMaps : MonoBehaviour
         RaceSettingsSingleton.Instance.modelParking = m_modelParking.gameObject;
         RaceSettingsSingleton.Instance.modelOverheadCamera = m_modelOverheadCamera.gameObject;
         RaceSettingsSingleton.Instance.modelBehindCarCamera = m_modelBehindCarCamera.gameObject;
+
+        RaceSettingsSingleton.Instance.sequentialStartMarker = m_sequentialCarMarker;
+        RaceSettingsSingleton.Instance.playerStartMarker = m_playerCarMarker;
+        RaceSettingsSingleton.Instance.modelStartMarker = m_modelCarMarker;
+        RaceSettingsSingleton.Instance.minimumZ = minimumZ;
+        RaceSettingsSingleton.Instance.maximumZ = maximumZ;
+        RaceSettingsSingleton.Instance.updateSetStartSlider();
+
         activateRelevantObjects();
     }
     private void activateRelevantObjects()
     {
+        RaceSettingsSingleton.Instance.playerStartMarker.gameObject.SetActive(false);
+        RaceSettingsSingleton.Instance.modelStartMarker.gameObject.SetActive(false);
+        RaceSettingsSingleton.Instance.sequentialStartMarker.gameObject.SetActive(false);
         switch (RaceSettingsSingleton.Instance.raceOrder)
         {
             case RaceOrder.FirstPlayerThenModel:
@@ -40,6 +56,7 @@ public class LoadRaceCamerasAndMaps : MonoBehaviour
                 RaceSettingsSingleton.Instance.playerParking.SetActive(false);
                 RaceSettingsSingleton.Instance.modelParking.SetActive(false);
                 RaceSettingsSingleton.Instance.sequentialParking.SetActive(true);
+                
                 switch (RaceSettingsSingleton.Instance.raceCameraMode)
                 {
                     case RaceCameraMode.Overhead:
@@ -60,6 +77,7 @@ public class LoadRaceCamerasAndMaps : MonoBehaviour
                 RaceSettingsSingleton.Instance.sequentialParking.SetActive(false);
                 RaceSettingsSingleton.Instance.playerParking.SetActive(true);
                 RaceSettingsSingleton.Instance.modelParking.SetActive(true);
+                
                 switch (RaceSettingsSingleton.Instance.raceCameraMode)
                 {
                     case RaceCameraMode.Overhead:

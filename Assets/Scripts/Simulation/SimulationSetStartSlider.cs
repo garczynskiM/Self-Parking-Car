@@ -18,9 +18,9 @@ public class SimulationSetStartSlider : MonoBehaviour, IPointerUpHandler, IPoint
 
     public void valueChanged(Slider slider)
     {
-        float currentZ = SimulationSettingsSingleton.Instance.startMarker.position.z;
-        SimulationSettingsSingleton.Instance.startMarker.position = 
-            SimulationSettingsSingleton.Instance.startMarker.position + new Vector3(0, 0, slider.value - currentZ);
-        SimulationSettingsSingleton.Instance.setStartZ = currentZ;
+        float currentZ = SimulationSettingsSingleton.Instance.startMarker.localPosition.z;
+        SimulationSettingsSingleton.Instance.startMarker.localPosition = 
+            SimulationSettingsSingleton.Instance.startMarker.localPosition + new Vector3(0, 0, slider.value - currentZ);
+        SimulationSettingsSingleton.Instance.setStartZ = slider.value;
     }
 }

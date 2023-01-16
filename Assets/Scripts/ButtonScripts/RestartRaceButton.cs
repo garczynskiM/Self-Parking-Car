@@ -24,13 +24,13 @@ public class RestartRaceButton : MonoBehaviour
             RaceSettingsSingleton.Instance.generateParkingSlots();
 
             var playerCar = GameObject.Find("playerCar");
-            if(playerCar != null)
+            var modelCar = GameObject.Find("modelCar");
+            //They won't be both null at the same time - that case is handled by displaying the summary
+            if (playerCar != null)
             {
                 var playerScript = playerCar.GetComponent<PlayerRaceCarAgent>();
                 playerScript.EndEpisode();
             }
-            //They won't be both null at the same time - that case is handled by displaying the summary
-            var modelCar = GameObject.Find("modelCar");
             if(modelCar != null)
             {
                 var modelScript = modelCar.GetComponent<ModelRaceCarAgent>();

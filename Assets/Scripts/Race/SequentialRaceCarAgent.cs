@@ -74,8 +74,6 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     public string boundsName = "slotBounds";
     public string staticCarName = "static-car";
 
-    public float maxRespawnZ = 10f;
-    public float minRespawnZ = -10f;
     private float currentTransformZ;
 
     private int enteredBoundsCount = 0;
@@ -185,7 +183,7 @@ public class SequentialRaceCarAgent : AbstractCarAgent
                 //
                 if (RaceSettingsSingleton.Instance.otherCars)
                     RandomOccupy();
-                currentTransformZ = Random.Range(minRespawnZ, maxRespawnZ);
+                currentTransformZ = RaceSettingsSingleton.Instance.calculateZCarSpawn();
                 //
                 RaceSummarySingleton.Instance.playerStart = System.DateTime.Now;
             }
