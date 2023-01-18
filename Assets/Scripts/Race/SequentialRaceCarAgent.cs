@@ -56,7 +56,15 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     private List<ParkingSlot> parkingSlots;
     public GameObject parking;
     private int currentSlotNumber = 0;
+    public int CurrentSlotNumber
+    {
+        get => currentSlotNumber;
+    }
     private List<ParkingSlot> listOfOccupiedSpaces;
+    public List<ParkingSlot> ListOfOccupiedSpaces
+    {
+        get => listOfOccupiedSpaces;
+    }
 
     //public BoxCollider targetCollider;
 
@@ -75,6 +83,10 @@ public class SequentialRaceCarAgent : AbstractCarAgent
     public string staticCarName = "static-car";
 
     private float currentTransformZ;
+    public float CurrentTransformZ
+    {
+        get => currentTransformZ;
+    }
 
     private int enteredBoundsCount = 0;
     private bool enteredTarget = false;

@@ -6,22 +6,25 @@ using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-public class RestartSimulationTest : MonoBehaviour
+public class SimulationTest : MonoBehaviour
 {
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
     // `yield return null;` to skip a frame.
+    string modelName = "DobryModel";
+    string sceneName = "Parallel";
+    string overlayName = "SimulationOverlay";
     [UnityTest]
     public IEnumerator CheckSimulationRestartTest()
     {
         // Arrange
         yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
         yield return null; // Let the scene load
-        MapLoadVarsSingleton.Instance.sceneName = "Parallel";
-        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.sceneName = sceneName;
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo(modelName);
         MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         // Act
-        yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
+        yield return SceneManager.LoadSceneAsync(overlayName); // Load the overlay
         yield return null; // Let the parking load
         yield return null; // Let the simulation start
         var button = GameObject.Find("RestartAndApply").GetComponent<Button>();
@@ -39,12 +42,12 @@ public class RestartSimulationTest : MonoBehaviour
         // Arrange
         yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
         yield return null; // Let the scene load
-        MapLoadVarsSingleton.Instance.sceneName = "Parallel";
-        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.sceneName = sceneName;
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo(modelName);
         MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         // Act
-        yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
+        yield return SceneManager.LoadSceneAsync(overlayName); // Load the overlay
         yield return null; // Let the parking load
         yield return null; // Let the simulation start
         var toggle = GameObject.Find("OtherCars").GetComponent<Toggle>();
@@ -65,11 +68,11 @@ public class RestartSimulationTest : MonoBehaviour
     {
         yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
         yield return null; // Let the scene load
-        MapLoadVarsSingleton.Instance.sceneName = "Parallel";
-        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.sceneName = sceneName;
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo(modelName);
         MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
-        yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
+        yield return SceneManager.LoadSceneAsync(overlayName); // Load the overlay
         yield return null; // Let the parking load
         yield return null; // Let the simulation start
         var dropdown = GameObject.Find("Options").GetComponent<TMP_Dropdown>();
@@ -102,17 +105,17 @@ public class RestartSimulationTest : MonoBehaviour
         // Arrange
         yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
         yield return null; // Let the scene load
-        MapLoadVarsSingleton.Instance.sceneName = "Parallel";
-        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo("CarBehavior 2");
+        MapLoadVarsSingleton.Instance.sceneName = sceneName;
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo(modelName);
         MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
 
         // Act
-        yield return SceneManager.LoadSceneAsync("SimulationOverlay"); // Load the overlay
+        yield return SceneManager.LoadSceneAsync(overlayName); // Load the overlay
         yield return null; // Let the parking load
         yield return null; // Let the simulation start
         var toggle = GameObject.Find("Restart").GetComponent<Toggle>();
         var script = GameObject.Find("car-root").GetComponent<SimulationCarAgent>();
-        var parking = GameObject.Find("parallelParkingArea"); // we check whether it still exists - if it does, that means the summary was not loaded
+        var parking = GameObject.Find("parallelParkingArea"); // We check whether it still exists - if it does, that means the summary was not loaded
         Assert.AreEqual(true, toggle.isOn); // This toggle should be 'on' by default
         Assert.AreEqual(1, script.NumberOfSimulations); // This is first simulation
         Assert.IsNotNull(parking); // Parking exists
@@ -136,9 +139,50 @@ public class RestartSimulationTest : MonoBehaviour
         yield return null; // Let the parking load
         yield return null; // Let the simulation start
 
-        parking = GameObject.Find("parallelParkingArea"); // we check whether it still exists - if it does, that means the summary was not loaded
-        Assert.AreEqual(false, toggle.isOn); // This toggle should be 'on' by default
+        var checkCloseSummary = GameObject.Find("Button");
+        parking = GameObject.Find("parallelParkingArea"); // Parking should appear again
+        Assert.IsNull(checkCloseSummary); // This toggle should be 'on' by default
         Assert.IsNotNull(parking); // Parking exists
+    }
+    [UnityTest]
+    public IEnumerator CheckSetStart()
+    {
+        // Arrange
+        yield return SceneManager.LoadSceneAsync("ChooseMap"); // Let the MapLoadVarsSingleton singleton instantiate
+        yield return null; // Let the scene load
+        MapLoadVarsSingleton.Instance.sceneName = sceneName;
+        MapLoadVarsSingleton.Instance.modelInfo = new ModelInfo(modelName);
+        MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
+        float epsilon = 0.01f;
+        float carStart = -8f;
+
+        // Act
+        yield return SceneManager.LoadSceneAsync(overlayName); // Load the overlay
+        yield return null; // Let the parking load
+        yield return null; // Let the simulation start
+        var gameObject = GameObject.Find("StartPosition");
+        var toggle = gameObject.GetComponentInChildren<Toggle>();
+        var slider = gameObject.GetComponentInChildren<Slider>();
+        var button = GameObject.Find("RestartAndApply").GetComponent<Button>();
+        var script = GameObject.Find("car-root").GetComponent<SimulationCarAgent>();
+        var car = GameObject.Find("car-root");
+        Assert.AreEqual(false, toggle.isOn); // This toggle should be 'off' by default
+        Assert.AreEqual(1, script.NumberOfSimulations); // This is first simulation
+        Assert.AreEqual(0, slider.value); // Default value of slider is 0
+        Assert.AreEqual(-20, slider.minValue); // This map has minimum value of -20
+        Assert.AreEqual(20, slider.maxValue); // This map has maximum value of 20
+
+        toggle.isOn = true; // Turn on setStart position
+        yield return null; // Let the slider turn on
+        slider.value = carStart; // Set the new start position
+
+        for(int i = 0; i < 3; i++) // Make sure that the option works. Check it 3 times to make sure that it was not an accident
+        {
+            button.onClick.Invoke(); // Restart the simulation
+            yield return null; // Let the simulation restart
+            Assert.IsTrue(car.transform.localPosition.z < carStart + epsilon); // Check whether the car is close enough to the requested start position
+            Assert.IsTrue(car.transform.localPosition.z > carStart - epsilon); // Check whether the car is close enough to the requested start position
+        }
     }
     private int countActiveParkedCars()
     {

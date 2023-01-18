@@ -46,6 +46,10 @@ public class ModelRaceCarAgent : AbstractCarAgent
     public Transform wheelSteer;
     //private List<List<ParkingSlot>> parkingSlots;
     private List<ParkingSlot> parkingSlots;
+    public List<ParkingSlot> ParkingSlots
+    {
+        get => parkingSlots;
+    }
     public GameObject parking;
     private int currentSlotNumber = 0;
     private List<ParkingSlot> listOfOccupiedSpaces;
