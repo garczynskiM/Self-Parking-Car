@@ -622,6 +622,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_playerCar: {fileID: 2110282873}
   m_modelCar: {fileID: 1880107588}
+  m_playerOverheadCamera: {fileID: 1367265287}
+  m_playerBehindCarCamera: {fileID: 2110282874}
+  m_modelOverheadCamera: {fileID: 1814630224}
+  m_modelBehindCarCamera: {fileID: 1880107589}
 --- !u!114 &1555994622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,15 +639,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_sequentialParking: {fileID: 1498618352}
-  m_overheadCamera: {fileID: 2082238978}
+  m_overheadCamera: {fileID: 2082238980}
   m_behindCarCamera: {fileID: 1930851106}
   m_sequentialCarMarker: {fileID: 398085980}
   m_playerParking: {fileID: 488275105}
-  m_playerOverheadCamera: {fileID: 1367265285}
+  m_playerOverheadCamera: {fileID: 1367265287}
   m_playerBehindCarCamera: {fileID: 2110282874}
   m_playerCarMarker: {fileID: 834855399}
   m_modelParking: {fileID: 1974016118}
-  m_modelOverheadCamera: {fileID: 1814630222}
+  m_modelOverheadCamera: {fileID: 1814630224}
   m_modelBehindCarCamera: {fileID: 1880107589}
   m_modelCarMarker: {fileID: 1746656542}
   minimumZ: -15
@@ -869,9 +873,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5790617403772986592, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
   m_PrefabInstance: {fileID: 1880107587}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1880107589 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6921012209504177248, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+--- !u!20 &1880107589 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
   m_PrefabInstance: {fileID: 1880107587}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &1880107590 stripped
@@ -1021,9 +1025,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5790617403772986590, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
---- !u!4 &1930851106 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6921012209504177248, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+--- !u!20 &1930851106 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
   m_PrefabInstance: {fileID: 1930851105}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &1930851107 stripped
@@ -1340,9 +1344,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5790617403772986592, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
   m_PrefabInstance: {fileID: 2110282872}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2110282874 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6921012209504177248, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+--- !u!20 &2110282874 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
   m_PrefabInstance: {fileID: 2110282872}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &2110282875 stripped

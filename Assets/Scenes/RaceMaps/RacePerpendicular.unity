@@ -372,6 +372,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6882410520685333401, guid: 0109c832c4139994c9056775711a108f, type: 3}
   m_PrefabInstance: {fileID: 370004341}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &403262633 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+  m_PrefabInstance: {fileID: 1819319092}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &514562742
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,11 +754,6 @@ Transform:
 --- !u!4 &1085751869 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5790617403772986592, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
-  m_PrefabInstance: {fileID: 838662988}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1085751870 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6921012209504177248, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
   m_PrefabInstance: {fileID: 838662988}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1124418283
@@ -1278,11 +1278,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5790617403772986592, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
   m_PrefabInstance: {fileID: 1225921321}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1652118126 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6921012209504177248, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
-  m_PrefabInstance: {fileID: 1225921321}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1807810931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1328,11 +1323,6 @@ MonoBehaviour:
   targetName: Target
   boundsName: slotBounds
   staticCarName: static-car
---- !u!4 &1817132306 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6921012209504177248, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
-  m_PrefabInstance: {fileID: 1819319092}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1819319092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1588,6 +1578,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c992f080a0bfe404faaf38a664b7b42f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &1937406667 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+  m_PrefabInstance: {fileID: 1225921321}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &1963943575 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2214837299559921346, guid: e276258367dd1b14f8b9d60c15f04b8f, type: 3}
+  m_PrefabInstance: {fileID: 838662988}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1986659956
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,16 +1703,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_sequentialParking: {fileID: 344881592}
-  m_overheadCamera: {fileID: 514562743}
-  m_behindCarCamera: {fileID: 1817132306}
+  m_overheadCamera: {fileID: 514562745}
+  m_behindCarCamera: {fileID: 403262633}
   m_sequentialCarMarker: {fileID: 1515302177}
   m_playerParking: {fileID: 973091237}
-  m_playerOverheadCamera: {fileID: 1986659957}
-  m_playerBehindCarCamera: {fileID: 1652118126}
+  m_playerOverheadCamera: {fileID: 1986659959}
+  m_playerBehindCarCamera: {fileID: 1937406667}
   m_playerCarMarker: {fileID: 115969821}
   m_modelParking: {fileID: 370004343}
-  m_modelOverheadCamera: {fileID: 1297922902}
-  m_modelBehindCarCamera: {fileID: 1085751870}
+  m_modelOverheadCamera: {fileID: 1297922904}
+  m_modelBehindCarCamera: {fileID: 1963943575}
   m_modelCarMarker: {fileID: 1556263917}
   minimumZ: -10
   maximumZ: 10
@@ -1730,6 +1730,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_playerCar: {fileID: 1652118125}
   m_modelCar: {fileID: 1085751869}
+  m_playerOverheadCamera: {fileID: 1986659959}
+  m_playerBehindCarCamera: {fileID: 1937406667}
+  m_modelOverheadCamera: {fileID: 1297922904}
+  m_modelBehindCarCamera: {fileID: 1963943575}
 --- !u!4 &2031031071
 Transform:
   m_ObjectHideFlags: 0

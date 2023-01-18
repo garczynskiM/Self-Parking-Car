@@ -47,7 +47,7 @@ public class SequentialRaceTest : MonoBehaviour
         // Act
         yield return SceneManager.LoadSceneAsync(overlayName); // Load the overlay
         yield return null; // Let the parking load
-        yield return null; // Let the simulation start
+        yield return null; // Let the simulation start <----
         var toggle = GameObject.Find("OtherCars").GetComponent<Toggle>();
         var button = GameObject.Find("RestartAndApply").GetComponent<Button>();
         Assert.AreEqual(true, toggle.isOn); // This toggle should be 'on' by default

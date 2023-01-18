@@ -19,16 +19,16 @@ public class RaceSettingsSingleton : MonoBehaviour
     public bool setStart = false;
 
     public GameObject sequentialParking;
-    public GameObject overheadCamera;
-    public GameObject behindCarCamera;
+    public Camera overheadCamera;
+    public Camera behindCarCamera;
     public Transform sequentialStartMarker;
     public GameObject playerParking;
-    public GameObject playerOverheadCamera;
-    public GameObject playerBehindCarCamera;
+    public Camera playerOverheadCamera;
+    public Camera playerBehindCarCamera;
     public Transform playerStartMarker;
     public GameObject modelParking;
-    public GameObject modelOverheadCamera;
-    public GameObject modelBehindCarCamera;
+    public Camera modelOverheadCamera;
+    public Camera modelBehindCarCamera;
     public Transform modelStartMarker;
 
     public bool parkingGenerated;
