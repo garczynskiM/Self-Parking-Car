@@ -69,6 +69,7 @@ public class ModelRaceCarAgent : AbstractCarAgent
     public string targetName = "Target";
     public string boundsName = "slotBounds";
     public string staticCarName = "static-car";
+    public string setTargetName = "SetTarget";
 
     private int enteredBoundsCount = 0;
     private bool enteredTarget = false;
@@ -105,7 +106,9 @@ public class ModelRaceCarAgent : AbstractCarAgent
         //EDIT
         //List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
         foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
-            parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
+            parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject,
+                parkingSlot.Find(staticCarName).gameObject, parkingSlot.Find(setTargetName).gameObject));
+        RaceSettingsSingleton.Instance.modelParkingSlots = new List<ParkingSlot>(parkingSlots);
         RaceSettingsSingleton.Instance.numberOfParkingSlots = parkingSlots.Count;
         numberOfSimulations = 0;
     }

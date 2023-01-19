@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class RaceToggleManager : MonoBehaviour
 {
-    [SerializeField] public Slider slider;
+    [SerializeField] public Slider startPositionSlider;
+    [SerializeField] public Slider endPositionSlider;
     public void otherCarsToggleChanged(Toggle change)
     {
         RaceSettingsSingleton.Instance.otherCars = change.isOn;
@@ -13,6 +14,11 @@ public class RaceToggleManager : MonoBehaviour
     public void setStartToggleChanged(Toggle change)
     {
         RaceSettingsSingleton.Instance.setStart = change.isOn;
-        slider.interactable = change.isOn;
+        startPositionSlider.interactable = change.isOn;
+    }
+    public void setEndToggleChanged(Toggle change)
+    {
+        RaceSettingsSingleton.Instance.setEnd = change.isOn;
+        endPositionSlider.interactable = change.isOn;
     }
 }

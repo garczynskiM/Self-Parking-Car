@@ -652,6 +652,7 @@ MonoBehaviour:
   m_modelCarMarker: {fileID: 1746656542}
   minimumZ: -15
   maximumZ: 15
+  numberOfParkingSlots: 12
 --- !u!1001 &1746656541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -963,6 +964,7 @@ MonoBehaviour:
   targetName: Target
   boundsName: slotBounds
   staticCarName: static-car
+  setTargetName: SetTarget
 --- !u!1001 &1930851105
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1114,6 +1116,7 @@ MonoBehaviour:
   targetName: Target
   boundsName: slotBounds
   staticCarName: static-car
+  setTargetName: SetTarget
 --- !u!1001 &1974016116
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1434,3 +1437,4 @@ MonoBehaviour:
   targetName: Target
   boundsName: slotBounds
   staticCarName: static-car
+  setTargetName: SetTarget

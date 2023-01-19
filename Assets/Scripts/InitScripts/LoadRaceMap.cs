@@ -9,12 +9,14 @@ public class LoadRaceMap : MonoBehaviour
     //[SerializeField] private Transform m_autoRestartTransform;
     [SerializeField] private Transform m_otherCarsTransform;
     [SerializeField] private Slider setStartSlider;
+    [SerializeField] private Slider setEndSlider;
     void Start()
     {
         if (!MapLoadVarsSingleton.Instance.loadOnlyOnce)
         {
             RaceSettingsSingleton.Instance.setDefault();
             RaceSettingsSingleton.Instance.setStartSlider = setStartSlider;
+            RaceSettingsSingleton.Instance.setEndSlider = setEndSlider;
             RaceSettingsSingleton.Instance.playerManualRestart = false;
             RaceSettingsSingleton.Instance.carManualRestart = false;
             RaceSettingsSingleton.Instance.manualRestart = false;

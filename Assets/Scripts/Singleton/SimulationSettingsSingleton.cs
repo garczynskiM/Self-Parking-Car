@@ -44,7 +44,7 @@ public class SimulationSettingsSingleton : MonoBehaviour
     public int calculateTargetSlot()
     {
         if (setEnd) return setEndParkingSlotNumber;
-        return Random.Range(0, parkingSlots.Count);
+        return Random.Range(0, numberOfParkingSlots);
     }
     public void updateSetStartSlider()
     {

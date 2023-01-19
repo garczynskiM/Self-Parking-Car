@@ -19,6 +19,7 @@ public class LoadRaceCamerasAndMaps : MonoBehaviour
     [SerializeField] private Transform m_modelCarMarker;
     [SerializeField] public float minimumZ;
     [SerializeField] public float maximumZ;
+    [SerializeField] public int numberOfParkingSlots;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +43,9 @@ public class LoadRaceCamerasAndMaps : MonoBehaviour
         RaceSettingsSingleton.Instance.minimumZ = minimumZ;
         RaceSettingsSingleton.Instance.maximumZ = maximumZ;
         RaceSettingsSingleton.Instance.updateSetStartSlider();
+
+        RaceSettingsSingleton.Instance.numberOfParkingSlots = numberOfParkingSlots;
+        RaceSettingsSingleton.Instance.updateSetEndSlider();
 
         activateRelevantObjects();
     }

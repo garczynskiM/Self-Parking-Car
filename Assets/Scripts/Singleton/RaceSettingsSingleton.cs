@@ -17,6 +17,7 @@ public class RaceSettingsSingleton : MonoBehaviour
     public RaceCameraMode raceCameraMode = RaceCameraMode.Overhead;
     public bool manualRestart = false;
     public bool setStart = false;
+    public bool setEnd = false;
 
     public GameObject sequentialParking;
     public Camera overheadCamera;
@@ -44,6 +45,13 @@ public class RaceSettingsSingleton : MonoBehaviour
     public bool playerManualRestart = false;
     public Slider setStartSlider;
 
+    public Slider setEndSlider;
+
+    public List<ParkingSlot> sequentialParkingSlots;
+    public List<ParkingSlot> playerParkingSlots;
+    public List<ParkingSlot> modelParkingSlots;
+    private bool setEndSliderPressed;
+    private int setEndParkingSlotNumber;
     public static RaceSettingsSingleton Instance;
     private void Awake()
     {
@@ -60,7 +68,7 @@ public class RaceSettingsSingleton : MonoBehaviour
     public void generateParkingSlots()
     {
         if (parkingGenerated) return;
-        targetParkingSlot = Random.Range(0, numberOfParkingSlots);
+        targetParkingSlot = calculateTargetSlot();
         occupiedParkingSlots = new List<int>();
         currentCarRespawnZ = calculateZCarSpawn();
         if (otherCars)
@@ -83,11 +91,75 @@ public class RaceSettingsSingleton : MonoBehaviour
         if (setStart) return setStartZ;
         else return Random.Range(minimumZ, maximumZ);
     }
+    public int calculateTargetSlot()
+    {
+        if (setEnd) return setEndParkingSlotNumber;
+        return Random.Range(0, numberOfParkingSlots);
+    }
     public void updateSetStartSlider()
     {
         setStartSlider.minValue = minimumZ;
         setStartSlider.maxValue = maximumZ;
         setStartSlider.value = 0;
+    }
+    public void updateSetEndSlider()
+    {
+        setEndSlider.minValue = 0;
+        setEndSlider.maxValue = numberOfParkingSlots - 1;
+        setEndSlider.value = 0;
+    }
+    public void startSetEnd(int currentValue)
+    {
+        setEndSliderPressed = true;
+        setEndParkingSlotNumber = currentValue;
+        switch (raceOrder)
+        {
+            case RaceOrder.FirstPlayerThenModel:
+                sequentialParkingSlots[currentValue].MarkSetEnd();
+                break;
+            case RaceOrder.PlayerAndModel:
+                playerParkingSlots[currentValue].MarkSetEnd();
+                modelParkingSlots[currentValue].MarkSetEnd();
+                break;
+            default:
+                break;
+        }
+    }
+    public void endSetEnd(int currentValue)
+    {
+        setEndSliderPressed = false;
+        setEndParkingSlotNumber = currentValue;
+        switch (raceOrder)
+        {
+            case RaceOrder.FirstPlayerThenModel:
+                sequentialParkingSlots[currentValue].UnmarkSetEnd();
+                break;
+            case RaceOrder.PlayerAndModel:
+                playerParkingSlots[currentValue].UnmarkSetEnd();
+                modelParkingSlots[currentValue].UnmarkSetEnd();
+                break;
+            default:
+                break;
+        }
+    }
+    public void updateSetEnd(int currentValue)
+    {
+        switch (raceOrder)
+        {
+            case RaceOrder.FirstPlayerThenModel:
+                sequentialParkingSlots[setEndParkingSlotNumber].UnmarkSetEnd();
+                sequentialParkingSlots[currentValue].MarkSetEnd();
+                break;
+            case RaceOrder.PlayerAndModel:
+                playerParkingSlots[setEndParkingSlotNumber].UnmarkSetEnd();
+                modelParkingSlots[setEndParkingSlotNumber].UnmarkSetEnd();
+                playerParkingSlots[currentValue].MarkSetEnd();
+                modelParkingSlots[currentValue].MarkSetEnd();
+                break;
+            default:
+                break;
+        }
+        setEndParkingSlotNumber = currentValue;
     }
     public void setDefault()
     {
