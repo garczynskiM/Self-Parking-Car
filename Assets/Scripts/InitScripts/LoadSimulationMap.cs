@@ -10,12 +10,14 @@ public class LoadSimulationMap : MonoBehaviour
     [SerializeField] private Transform m_autoRestartTransform;
     [SerializeField] private Transform m_otherCarsTransform;
     [SerializeField] private Slider setStartSlider;
+    [SerializeField] private Slider setEndSlider;
     void Start()
     {
         if(!MapLoadVarsSingleton.Instance.loadOnlyOnce)
         {
             SimulationSettingsSingleton.Instance.setDefault();
             SimulationSettingsSingleton.Instance.setStartSlider = setStartSlider;
+            SimulationSettingsSingleton.Instance.setEndSlider = setEndSlider;
             MapLoadVarsSingleton.Instance.m_autoRestartTransform = m_autoRestartTransform;
             m_autoRestartTransform.GetComponentInChildren<Toggle>().isOn = SimulationSettingsSingleton.Instance.autoRestart;
             MapLoadVarsSingleton.Instance.m_otherCarsTransform = m_otherCarsTransform;

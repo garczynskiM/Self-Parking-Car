@@ -62,6 +62,7 @@ public class SimulationCarAgent : AbstractCarAgent
     public string targetName = "Target";
     public string boundsName = "slotBounds";
     public string staticCarName = "static-car";
+    public string setTargetName = "SetTarget";
 
     private int enteredBoundsCount = 0;
     private bool enteredTarget = false;
@@ -94,7 +95,9 @@ public class SimulationCarAgent : AbstractCarAgent
         //EDIT
         //List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
         foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
-            parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject, parkingSlot.Find(staticCarName).gameObject));
+            parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject,
+                parkingSlot.Find(staticCarName).gameObject, parkingSlot.Find(setTargetName).gameObject));
+        SimulationSettingsSingleton.Instance.parkingSlots = new List<ParkingSlot>(parkingSlots);
         BehaviorParameters behaviour = (BehaviorParameters)GetComponent("BehaviorParameters");
         NNModel modelToLoad = Resources.Load<NNModel>(string.Format("NN Models/{0}", MapLoadVarsSingleton.Instance.modelInfo.name));
         behaviour.Model = modelToLoad;
@@ -125,7 +128,6 @@ public class SimulationCarAgent : AbstractCarAgent
         //
         SimulationSummarySingleton.Instance.simulationEnd = System.DateTime.Now;
         SimulationSummarySingleton.Instance.summaryClosed = false;
-        SimulationSummarySingleton.Instance.parkingSuccessful = false;
         numberOfSimulations++;
         if (!SimulationSettingsSingleton.Instance.autoRestart && numberOfSimulations > 1 && !SimulationSettingsSingleton.Instance.manualRestart)
         {
@@ -134,13 +136,14 @@ public class SimulationCarAgent : AbstractCarAgent
         }
         else
         {
+            SimulationSummarySingleton.Instance.parkingSuccessful = false;
             foreach (ParkingSlot parkingSlot in parkingSlots)
                 parkingSlot.Restart();
             /*parking[currentParkingNumber].SetActive(false);
             currentParkingNumber = Random.Range(0, parkingSlots.Count);
             parking[currentParkingNumber].SetActive(true);*/
             SimulationSettingsSingleton.Instance.manualRestart = false;
-            currentSlotNumber = Random.Range(0, parkingSlots.Count);
+            currentSlotNumber = SimulationSettingsSingleton.Instance.calculateTargetSlot(); //Random.Range(0, parkingSlots.Count);
             parkingSlots[currentSlotNumber].Activate();
             //
             if (SimulationSettingsSingleton.Instance.otherCars)

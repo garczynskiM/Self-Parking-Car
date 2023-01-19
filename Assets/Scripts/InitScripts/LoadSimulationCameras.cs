@@ -9,6 +9,7 @@ public class LoadSimulationCameras : MonoBehaviour
     [SerializeField] public Transform carMarker;
     [SerializeField] public float minimumZ;
     [SerializeField] public float maximumZ;
+    [SerializeField] public int numberOfParkingSlots;
     void Start()
     {
         SimulationSettingsSingleton.Instance.overheadCamera = GameObject.Find("OverheadCamera");
@@ -18,6 +19,8 @@ public class LoadSimulationCameras : MonoBehaviour
         SimulationSettingsSingleton.Instance.minimumZ = minimumZ;
         SimulationSettingsSingleton.Instance.maximumZ = maximumZ;
         SimulationSettingsSingleton.Instance.updateSetStartSlider();
+        SimulationSettingsSingleton.Instance.numberOfParkingSlots = numberOfParkingSlots;
+        SimulationSettingsSingleton.Instance.updateSetEndSlider();
         carMarker.gameObject.SetActive(false);
     }
 }

@@ -155,6 +155,7 @@ MonoBehaviour:
   carMarker: {fileID: 749969561}
   minimumZ: -20
   maximumZ: 20
+  numberOfParkingSlots: 12
 --- !u!4 &23944747
 Transform:
   m_ObjectHideFlags: 0

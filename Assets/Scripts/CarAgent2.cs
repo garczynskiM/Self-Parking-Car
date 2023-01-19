@@ -21,6 +21,7 @@ public class ParkingSlot
     public GameObject target;
     public GameObject bounds;
     public GameObject staticCar;
+    public GameObject setTarget;
     private readonly Vector3 staticCarStartingPosition;
     
     public ParkingSlot(GameObject _target, GameObject _bounds, GameObject _staticCar)
@@ -29,6 +30,14 @@ public class ParkingSlot
         bounds = _bounds;
         staticCar = _staticCar;
         staticCarStartingPosition = staticCar.transform.localPosition;
+    }
+    public ParkingSlot(GameObject _target, GameObject _bounds, GameObject _staticCar, GameObject _setTarget)
+    {
+        target = _target;
+        bounds = _bounds;
+        staticCar = _staticCar;
+        staticCarStartingPosition = staticCar.transform.localPosition;
+        setTarget = _setTarget;
     }
 
     public void Restart()
@@ -53,6 +62,14 @@ public class ParkingSlot
         bounds.SetActive(false);
         staticCar.transform.localPosition = staticCarStartingPosition;
         staticCar.SetActive(true);
+    }
+    public void MarkSetEnd()
+    {
+        setTarget.SetActive(true);
+    }
+    public void UnmarkSetEnd()
+    {
+        setTarget.SetActive(false);
     }
 }
 
