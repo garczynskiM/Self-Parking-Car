@@ -228,11 +228,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 405239692582285074, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 405239692582285074, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 90
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 405239692582285074, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -240,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 405239692717973902, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_Text
-      value: Perpendicular parking
+      value: "Parking prostopad\u0142y"
       objectReference: {fileID: 0}
     - target: {fileID: 405239692717973903, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -254,8 +254,41 @@ PrefabInstance:
       propertyPath: m_IsOn
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 405239692582285077, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
+--- !u!1 &29196983 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 405239692582285075, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
+  m_PrefabInstance: {fileID: 29196982}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &29196984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29196983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: a107f40f858bffa4190be74269dcf0f3, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &104011242
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,11 +836,13 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 405239692582285077, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 405239692717973902, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_Text
-      value: 'Angled parking
-
-'
+      value: "Sko\u015Bny parking\n"
       objectReference: {fileID: 0}
     - target: {fileID: 405239692717973903, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -821,8 +856,41 @@ PrefabInstance:
       propertyPath: m_IsOn
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 405239692582285077, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
+--- !u!1 &399219096 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 405239692582285075, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
+  m_PrefabInstance: {fileID: 399219095}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &399219097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399219096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 8bf518344ec189645959069c07a48f4f, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &416513820
 GameObject:
   m_ObjectHideFlags: 0
@@ -3403,7 +3471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 405239692582285074, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 90
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 405239692582285074, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3411,7 +3479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 405239692717973902, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_Text
-      value: Parallel parking
+      value: "Parking r\xF3wnoleg\u0142y"
       objectReference: {fileID: 0}
     - target: {fileID: 405239692717973903, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
       propertyPath: m_SizeDelta.y
@@ -3437,5 +3505,38 @@ PrefabInstance:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 405239692582285077, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
+--- !u!1 &405239691899698466 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 405239692582285075, guid: d873998c6e04dab4592d3d0cc3077d8f, type: 3}
+  m_PrefabInstance: {fileID: 405239691899698465}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &405239691899698467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405239691899698466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 947973e2483bb144ba30fdabbcedaa5e, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1

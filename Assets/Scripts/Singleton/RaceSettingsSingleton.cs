@@ -50,7 +50,6 @@ public class RaceSettingsSingleton : MonoBehaviour
     public List<ParkingSlot> sequentialParkingSlots;
     public List<ParkingSlot> playerParkingSlots;
     public List<ParkingSlot> modelParkingSlots;
-    private bool setEndSliderPressed;
     private int setEndParkingSlotNumber;
     public static RaceSettingsSingleton Instance;
     private void Awake()
@@ -110,7 +109,6 @@ public class RaceSettingsSingleton : MonoBehaviour
     }
     public void startSetEnd(int currentValue)
     {
-        setEndSliderPressed = true;
         setEndParkingSlotNumber = currentValue;
         switch (raceOrder)
         {
@@ -127,7 +125,6 @@ public class RaceSettingsSingleton : MonoBehaviour
     }
     public void endSetEnd(int currentValue)
     {
-        setEndSliderPressed = false;
         setEndParkingSlotNumber = currentValue;
         switch (raceOrder)
         {

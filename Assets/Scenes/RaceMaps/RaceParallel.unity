@@ -605,7 +605,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 319048605}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 70, z: -50}
+  m_LocalPosition: {x: 0, y: 70, z: -70}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3574,6 +3574,7 @@ MonoBehaviour:
   targetName: Target
   boundsName: slotBounds
   staticCarName: static-car
+  setTargetName: SetTarget
 --- !u!1001 &1798309259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3877,6 +3878,7 @@ MonoBehaviour:
   targetName: Target
   boundsName: slotBounds
   staticCarName: static-car
+  setTargetName: SetTarget
 --- !u!1 &1825169257
 GameObject:
   m_ObjectHideFlags: 0
@@ -5146,3 +5148,4 @@ MonoBehaviour:
   targetName: Target
   boundsName: slotBounds
   staticCarName: static-car
+  setTargetName: SetTarget

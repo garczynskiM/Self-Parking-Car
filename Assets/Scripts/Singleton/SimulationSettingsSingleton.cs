@@ -20,7 +20,6 @@ public class SimulationSettingsSingleton : MonoBehaviour
     public int numberOfParkingSlots;
     public Slider setEndSlider;
     public List<ParkingSlot> parkingSlots;
-    private bool setEndSliderPressed;
     private int setEndParkingSlotNumber;
 
     public static SimulationSettingsSingleton Instance;
@@ -60,13 +59,11 @@ public class SimulationSettingsSingleton : MonoBehaviour
     }
     public void startSetEnd(int currentValue)
     {
-        setEndSliderPressed = true;
         setEndParkingSlotNumber = currentValue;
         parkingSlots[currentValue].MarkSetEnd();
     }
     public void endSetEnd(int currentValue)
     {
-        setEndSliderPressed = false;
         setEndParkingSlotNumber = currentValue;
         parkingSlots[currentValue].UnmarkSetEnd();
     }
