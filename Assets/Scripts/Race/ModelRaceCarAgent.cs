@@ -11,20 +11,14 @@ using Unity.Barracuda;
 
 public class ModelRaceCarAgent : AbstractCarAgent
 {
-    //Nowe pola
-    //private Toggle m_autoRestartToggle;
-    //private Toggle m_otherCarsToggle;
     [SerializeField] public Transform m_scriptHolder;
-    //Koniec nowych pól
 
     private int numberOfSimulations;
     public int NumberOfSimulations { get => numberOfSimulations; }
 
-    [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
-    public float startingCollisionPenalty = 1 / 4f; // 1/3, 1/10
+    public float startingCollisionPenalty = 1 / 4f;
     private float currentCollisionPenalty;
-    [Tooltip("Liczba przez któr¹ przemna¿amy karê za uderzenie za ka¿de kolejne uderzenie. Iloraz ci¹gu geometrycznego o sumie 0.5.")]
-    public float collisionPenaltyMultiplier = 1 / 2f; // 1/3, 4/5
+    public float collisionPenaltyMultiplier = 1 / 2f;
     public float collisionPenalty = 0.2f;
 
     private float existencePenalty;
@@ -33,7 +27,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
     public float parkingRewardMultiplier = 0.4f;
     public float enteredBoundsFirstTimeReward = 0.05f;
     public float enteredTargetFirstTimeReward = 0.05f;
-    //public RaceState presetRaceState = RaceState.None;
     private float targetRewardMultiplier;
     private float currentDistanceReward = 0f;
     private float currentTargetReward = 0f;
@@ -44,7 +37,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
     public int framesToPark = 100;
     public List<WheelElements> wheelData;
     public Transform wheelSteer;
-    //private List<List<ParkingSlot>> parkingSlots;
     private List<ParkingSlot> parkingSlots;
     public List<ParkingSlot> ParkingSlots
     {
@@ -52,9 +44,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
     }
     public GameObject parking;
     private int currentSlotNumber = 0;
-    private List<ParkingSlot> listOfOccupiedSpaces;
-
-    //public BoxCollider targetCollider;
 
     public float maxTorque;
     public float maxSteerAngle;
@@ -85,10 +74,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
 
     public override void Initialize()
     {
-        //Nowe pola
-        //m_autoRestartToggle = MapLoadVarsSingleton.m_autoRestartTransform.GetComponentInChildren<Toggle>();
-        //m_otherCarsToggle = MapLoadVarsSingleton.m_otherCarsTransform.GetComponentInChildren<Toggle>();
-        //Koniec nowych pól
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
         existencePenalty = 1f / (MaxStep);
@@ -103,8 +88,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
         if (parking == null)
             throw new MissingReferenceException();
         parkingSlots = new List<ParkingSlot>();
-        //EDIT
-        //List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
         foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
             parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject,
                 parkingSlot.Find(staticCarName).gameObject, parkingSlot.Find(setTargetName).gameObject));
@@ -126,7 +109,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
     }
     public override void OnEpisodeBegin()
     {
-        //
         numberOfSimulations++;
         RaceSummarySingleton.Instance.carEnd = System.DateTime.Now;
         RaceSummarySingleton.Instance.carParkingSuccessful = currentParkingSuccess;
@@ -244,7 +226,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
         float currentDistance = Vector3.Distance(transform.localPosition, parkingSlots[currentSlotNumber].target.transform.parent.localPosition);
         if (enteredBoundsCount == 0 && enteredTarget)
         {
-            Debug.Log("Target stay!");
             currentDistanceReward += distanceRewardPerStep;
             currentTargetReward += targetRewardPerStep;
             AddReward(targetRewardPerStep + distanceRewardPerStep);
@@ -252,8 +233,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
             if (parkingCount >= framesToPark)
             {
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
-                Debug.Log("Parked! " + GetCumulativeReward());
-                Debug.Log("Parked!");
                 currentParkingSuccess = true;
                 EndEpisode();
             }
@@ -269,23 +248,18 @@ public class ModelRaceCarAgent : AbstractCarAgent
             {
                 if (currentDistance < lastDistance)
                 {
-                    //float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
                     float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
                     currentDistanceReward += 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
                     AddReward(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep);
                 }
                 else
-                {
-                    //float dot = Mathf.Abs(Vector3.Dot(transform.right, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.right));
-                    //currentNegativeDistanceReward -= 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
-                    //AddReward(-(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep));
+                { 
                     currentNegativeDistanceReward -= distanceRewardPerStep;
                     AddReward(-distanceRewardPerStep);
                 }
             }
         }
         lastDistance = currentDistance;
-        //Debug.Log(GetCumulativeReward());
 
     }
 
@@ -302,11 +276,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
     {
         if (collision.gameObject.tag == tagObstacle)
         {
-
-            /*Debug.Log("Collision!");
-            float penalty = CalculateCollisionPenalty();
-            AddReward(penalty);*/
-            Debug.Log("Collision!");
             float penalty = CalculateCollisionPenalty();
             AddReward(penalty - distanceRewardMultiplier + currentNegativeDistanceReward);
             EndEpisode();
@@ -318,7 +287,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
         enteredTarget = true;
         if (!enteredTargetFirstTime)
         {
-            Debug.Log("Target first time!");
             enteredTargetFirstTime = true;
             AddReward(enteredTargetFirstTimeReward);
         }
@@ -326,11 +294,9 @@ public class ModelRaceCarAgent : AbstractCarAgent
 
     public override void OnBoundsEnter(Collider other)
     {
-        Debug.Log("Bounds!");
         enteredBoundsCount++;
         if (!enteredBoundsFirstTime)
         {
-            Debug.Log("Bounds first time!");
             enteredBoundsFirstTime = true;
             AddReward(enteredBoundsFirstTimeReward);
         }
@@ -350,7 +316,6 @@ public class ModelRaceCarAgent : AbstractCarAgent
     {
         float result = currentCollisionPenalty;
         currentCollisionPenalty *= collisionPenaltyMultiplier;
-        //Debug.Log(-collisionPenalty * result);
         return -collisionPenalty * result;
     }
 

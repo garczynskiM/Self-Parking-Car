@@ -10,8 +10,6 @@ public class SimulationSetEndSlider : MonoBehaviour, IPointerUpHandler, IPointer
     {
         SimulationSettingsSingleton.Instance.startSetEnd((int)slider.value);
     }
-
-    //Do this when the mouse click on this selectable UI object is released.
     public void OnPointerUp(PointerEventData eventData)
     {
         SimulationSettingsSingleton.Instance.endSetEnd((int)slider.value);

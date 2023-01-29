@@ -11,19 +11,12 @@ using Unity.Barracuda;
 
 public class SimulationCarAgent : AbstractCarAgent
 {
-    //Nowe pola
-    //private Toggle m_autoRestartToggle;
-    //private Toggle m_otherCarsToggle;
-
     private int numberOfSimulations;
     public int NumberOfSimulations { get => numberOfSimulations; }
-    //Koniec nowych pól
 
-    [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
-    public float startingCollisionPenalty = 1 / 4f; // 1/3, 1/10
+    public float startingCollisionPenalty = 1 / 4f;
     private float currentCollisionPenalty;
-    [Tooltip("Liczba przez któr¹ przemna¿amy karê za uderzenie za ka¿de kolejne uderzenie. Iloraz ci¹gu geometrycznego o sumie 0.5.")]
-    public float collisionPenaltyMultiplier = 1 / 2f; // 1/3, 4/5
+    public float collisionPenaltyMultiplier = 1 / 2f;
     public float collisionPenalty = 0.2f;
 
     private float existencePenalty;
@@ -42,12 +35,9 @@ public class SimulationCarAgent : AbstractCarAgent
     public int framesToPark = 100;
     public List<WheelElements> wheelData;
     public Transform wheelSteer;
-    //private List<List<ParkingSlot>> parkingSlots;
     private List<ParkingSlot> parkingSlots;
     public GameObject parking;
     private int currentSlotNumber = 0;
-
-    //public BoxCollider targetCollider;
 
     public float maxTorque;
     public float maxSteerAngle;
@@ -78,10 +68,6 @@ public class SimulationCarAgent : AbstractCarAgent
     public override void Initialize()
     {
         numberOfSimulations = 0;
-        //Nowe pola
-        //m_autoRestartToggle = MapLoadVarsSingleton.m_autoRestartTransform.GetComponentInChildren<Toggle>();
-        //m_otherCarsToggle = MapLoadVarsSingleton.m_otherCarsTransform.GetComponentInChildren<Toggle>();
-        //Koniec nowych pól
 
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.centerOfMass = massCenter.localPosition;
@@ -92,8 +78,6 @@ public class SimulationCarAgent : AbstractCarAgent
         if (parking == null)
             throw new MissingReferenceException();
         parkingSlots = new List<ParkingSlot>();
-        //EDIT
-        //List<ParkingSlot> parkingSlotsInParking = new List<ParkingSlot>();
         foreach (Transform parkingSlot in GetParkingSlotsFromParking(parking))
             parkingSlots.Add(new ParkingSlot(parkingSlot.Find(targetName).gameObject, parkingSlot.Find(boundsName).gameObject,
                 parkingSlot.Find(staticCarName).gameObject, parkingSlot.Find(setTargetName).gameObject));
@@ -118,11 +102,6 @@ public class SimulationCarAgent : AbstractCarAgent
             occupySize--;
         }
     }
-    /*private void setSettings()
-    {
-        SimulationSettingsSingleton.autoRestart = m_autoRestartToggle.isOn;
-        SimulationSettingsSingleton.otherCars = m_otherCarsToggle.isOn;
-    }*/
     public override void OnEpisodeBegin()
     {
         //
@@ -131,7 +110,6 @@ public class SimulationCarAgent : AbstractCarAgent
         numberOfSimulations++;
         if (!SimulationSettingsSingleton.Instance.autoRestart && numberOfSimulations > 1 && !SimulationSettingsSingleton.Instance.manualRestart)
         {
-            //setSettings();
             SceneManager.LoadScene("SimulationSummary");
         }
         else
@@ -139,16 +117,11 @@ public class SimulationCarAgent : AbstractCarAgent
             SimulationSummarySingleton.Instance.parkingSuccessful = false;
             foreach (ParkingSlot parkingSlot in parkingSlots)
                 parkingSlot.Restart();
-            /*parking[currentParkingNumber].SetActive(false);
-            currentParkingNumber = Random.Range(0, parkingSlots.Count);
-            parking[currentParkingNumber].SetActive(true);*/
             SimulationSettingsSingleton.Instance.manualRestart = false;
-            currentSlotNumber = SimulationSettingsSingleton.Instance.calculateTargetSlot(); //Random.Range(0, parkingSlots.Count);
+            currentSlotNumber = SimulationSettingsSingleton.Instance.calculateTargetSlot();
             parkingSlots[currentSlotNumber].Activate();
-            //
             if (SimulationSettingsSingleton.Instance.otherCars)
                 RandomOccupy();
-            //
             TargetDetection targetDetection = parkingSlots[currentSlotNumber].target.GetComponent<TargetDetection>();
             targetDetection.Initialize(this);
             BoundDetection boundDetection = parkingSlots[currentSlotNumber].bounds.GetComponent<BoundDetection>();
@@ -187,9 +160,7 @@ public class SimulationCarAgent : AbstractCarAgent
                 DoTyres(element.leftWheel);
                 DoTyres(element.rightWheel);
             }
-            //
             SimulationSummarySingleton.Instance.simulationStart = System.DateTime.Now;
-            //
         }
     }
 
@@ -251,7 +222,6 @@ public class SimulationCarAgent : AbstractCarAgent
         float currentDistance = Vector3.Distance(transform.localPosition, parkingSlots[currentSlotNumber].target.transform.parent.localPosition);
         if (enteredBoundsCount == 0 && enteredTarget)
         {
-            Debug.Log("Target stay!");
             currentDistanceReward += distanceRewardPerStep;
             currentTargetReward += targetRewardPerStep;
             AddReward(targetRewardPerStep + distanceRewardPerStep);
@@ -259,8 +229,6 @@ public class SimulationCarAgent : AbstractCarAgent
             if (parkingCount >= framesToPark)
             {
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
-                //Debug.Log("Parked! " + GetCumulativeReward());
-                Debug.Log("Parked!");
                 SimulationSummarySingleton.Instance.parkingSuccessful = true;
                 EndEpisode();
             }
@@ -276,24 +244,18 @@ public class SimulationCarAgent : AbstractCarAgent
             {
                 if (currentDistance < lastDistance)
                 {
-                    //float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
                     float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
                     currentDistanceReward += 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
                     AddReward(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep);
                 }
                 else
                 {
-                    //float dot = Mathf.Abs(Vector3.Dot(transform.right, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.right));
-                    //currentNegativeDistanceReward -= 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
-                    //AddReward(-(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep));
                     currentNegativeDistanceReward -= distanceRewardPerStep;
                     AddReward(-distanceRewardPerStep);
                 }
             }
         }
         lastDistance = currentDistance;
-        //Debug.Log(GetCumulativeReward());
-
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -309,11 +271,6 @@ public class SimulationCarAgent : AbstractCarAgent
     {
         if (collision.gameObject.tag == tagObstacle)
         {
-
-            /*Debug.Log("Collision!");
-            float penalty = CalculateCollisionPenalty();
-            AddReward(penalty);*/
-            Debug.Log("Collision!");
             float penalty = CalculateCollisionPenalty();
             AddReward(penalty - distanceRewardMultiplier + currentNegativeDistanceReward);
             EndEpisode();
@@ -325,7 +282,6 @@ public class SimulationCarAgent : AbstractCarAgent
         enteredTarget = true;
         if (!enteredTargetFirstTime)
         {
-            Debug.Log("Target first time!");
             enteredTargetFirstTime = true;
             AddReward(enteredTargetFirstTimeReward);
         }
@@ -336,7 +292,6 @@ public class SimulationCarAgent : AbstractCarAgent
         enteredBoundsCount++;
         if (!enteredBoundsFirstTime)
         {
-            Debug.Log("Bounds first time!");
             enteredBoundsFirstTime = true;
             AddReward(enteredBoundsFirstTimeReward);
         }
@@ -356,7 +311,6 @@ public class SimulationCarAgent : AbstractCarAgent
     {
         float result = currentCollisionPenalty;
         currentCollisionPenalty *= collisionPenaltyMultiplier;
-        //Debug.Log(-collisionPenalty * result);
         return -collisionPenalty * result;
     }
 

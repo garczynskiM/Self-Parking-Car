@@ -17,17 +17,12 @@ public class SaveMapChoice: MonoBehaviour
 {
     [SerializeField] private Transform m_MapContentContainer;
     [SerializeField] private Transform m_ModelContentContainer;
-    private void Start()
-    {
-        //SimulationSettingsSingleton.Instance = new SimulationSettingsSingleton();
-    }
     public void startSimulationMode()
     {
         string title = ChooseMap();
         ModelInfo modelInfo = ChooseModel();
         MapLoadVarsSingleton.Instance.sceneName = title;
         MapLoadVarsSingleton.Instance.modelInfo = modelInfo;
-        //StaticVar.sceneName = "smallEmptyParking";
         MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
         SceneManager.LoadScene("SimulationOverlay", LoadSceneMode.Single);
     }
@@ -37,7 +32,6 @@ public class SaveMapChoice: MonoBehaviour
         ModelInfo modelInfo = ChooseModel();
         MapLoadVarsSingleton.Instance.sceneName = "Race" + title;
         MapLoadVarsSingleton.Instance.modelInfo = modelInfo;
-        //StaticVar.sceneName = "smallEmptyParking";
         MapLoadVarsSingleton.Instance.loadOnlyOnce = false;
         SceneManager.LoadScene("RaceOverlay", LoadSceneMode.Single);
     }

@@ -10,8 +10,6 @@ public class RaceSetEndSlider : MonoBehaviour, IPointerUpHandler, IPointerDownHa
     {
         RaceSettingsSingleton.Instance.startSetEnd((int)slider.value);
     }
-
-    //Do this when the mouse click on this selectable UI object is released.
     public void OnPointerUp(PointerEventData eventData)
     {
         RaceSettingsSingleton.Instance.endSetEnd((int)slider.value);

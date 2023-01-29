@@ -12,22 +12,8 @@ public enum SimulationCameraMode
 }
 public class SimulationCameraManager : MonoBehaviour
 {
-    //GameObject overheadCamera;
-    //GameObject behindCarCamera;
-    //bool camerasInit;
-    // Start is called before the first frame update
-    /*void Start()
-    {
-        camerasInit = false;
-    }
-    void InitCameras()
-    {
-        overheadCamera = GameObject.Find("OverheadCamera");
-        behindCarCamera = GameObject.Find("BehindCarCamera");
-    }*/
     public void DropdownChangeValue(TMP_Dropdown change)
     {
-        //if (!camerasInit) InitCameras();
         SimulationCameraMode cameraMode = (SimulationCameraMode)change.value;
         switch(cameraMode)
         {

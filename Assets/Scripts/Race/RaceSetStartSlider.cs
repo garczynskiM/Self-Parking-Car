@@ -8,8 +8,6 @@ public class RaceSetStartSlider : MonoBehaviour, IPointerUpHandler, IPointerDown
     {
         RaceSettingsSingleton.Instance.activateStartMarker(true);
     }
-
-    //Do this when the mouse click on this selectable UI object is released.
     public void OnPointerUp(PointerEventData eventData)
     {
         RaceSettingsSingleton.Instance.activateStartMarker(false);

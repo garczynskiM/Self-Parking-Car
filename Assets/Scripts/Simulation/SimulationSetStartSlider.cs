@@ -9,8 +9,6 @@ public class SimulationSetStartSlider : MonoBehaviour, IPointerUpHandler, IPoint
     {
         SimulationSettingsSingleton.Instance.startMarker.gameObject.SetActive(true);
     }
-
-    //Do this when the mouse click on this selectable UI object is released.
     public void OnPointerUp(PointerEventData eventData)
     {
         SimulationSettingsSingleton.Instance.startMarker.gameObject.SetActive(false);

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class LoadSimulationMap : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private Transform m_autoRestartTransform;
     [SerializeField] private Transform m_otherCarsTransform;
     [SerializeField] private Slider setStartSlider;

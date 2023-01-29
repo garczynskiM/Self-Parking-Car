@@ -20,7 +20,6 @@ public class LoadRaceCamerasAndMaps : MonoBehaviour
     [SerializeField] public float minimumZ;
     [SerializeField] public float maximumZ;
     [SerializeField] public int numberOfParkingSlots;
-    // Start is called before the first frame update
     void Start()
     {
         RaceSettingsSingleton.Instance.sequentialParking = m_sequentialParking.gameObject;

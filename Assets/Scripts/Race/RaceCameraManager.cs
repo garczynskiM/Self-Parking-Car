@@ -14,7 +14,6 @@ public class RaceCameraManager : MonoBehaviour
 {
     public void DropdownChangeValue(TMP_Dropdown change)
     {
-        //if (!camerasInit) InitCameras();
         RaceCameraMode cameraMode = (RaceCameraMode)change.value;
         RaceSettingsSingleton.Instance.raceCameraMode = cameraMode;
         switch (RaceSettingsSingleton.Instance.raceOrder)

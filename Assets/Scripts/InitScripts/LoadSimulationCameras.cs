@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class LoadSimulationCameras : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] public Transform carMarker;
     [SerializeField] public float minimumZ;
     [SerializeField] public float maximumZ;
