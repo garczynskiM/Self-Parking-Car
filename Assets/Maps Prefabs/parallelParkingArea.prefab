@@ -407,7 +407,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (2)
+      value: parkingSlot (2)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -477,7 +477,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (6)
+      value: parkingSlot (6)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -547,7 +547,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (10)
+      value: parkingSlot (10)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -617,7 +617,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (7)
+      value: parkingSlot (7)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -687,7 +687,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (3)
+      value: parkingSlot (3)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -757,7 +757,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (9)
+      value: parkingSlot (9)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -827,7 +827,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (11)
+      value: parkingSlot (11)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -897,7 +897,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (1)
+      value: parkingSlot (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -967,7 +967,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (4)
+      value: parkingSlot (4)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -1037,7 +1037,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot
+      value: parkingSlot
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -1107,7 +1107,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (8)
+      value: parkingSlot (8)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder
@@ -1177,7 +1177,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2795703449309583349, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_Name
-      value: parallelParkingSlot (5)
+      value: parkingSlot (5)
       objectReference: {fileID: 0}
     - target: {fileID: 2795703449309583350, guid: fa52f3cdb38d9574386d8b274b623b65, type: 3}
       propertyPath: m_RootOrder

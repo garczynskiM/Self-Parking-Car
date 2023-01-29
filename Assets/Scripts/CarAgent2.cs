@@ -77,10 +77,6 @@ public class CarAgent2 : AbstractCarAgent
 {
     [Tooltip("Kara za pierwsze uderzenie. Pierwszy wyraz ci¹gu geometrycznego o sumie 0.5.")]
     public float startingCollisionPenalty = 0.05f; // 1/3, 1/10
-    private float currentCollisionPenalty;
-    [Tooltip("Liczba przez któr¹ przemna¿amy karê za uderzenie za ka¿de kolejne uderzenie. Iloraz ci¹gu geometrycznego o sumie 0.5.")]
-    public float collisionPenaltyMultiplier = 1 / 2f; // 1/3, 4/5
-    public float collisionPenalty = 0.2f;
 
     private float existencePenalty;
 
@@ -93,7 +89,6 @@ public class CarAgent2 : AbstractCarAgent
     private float currentTargetReward = 0f;
     private float distanceRewardPerStep;
     private float targetRewardPerStep;
-    private float currentNegativeDistanceReward;
 
     public int framesToPark = 100;
     public List<WheelElements> wheelData;
@@ -102,8 +97,6 @@ public class CarAgent2 : AbstractCarAgent
     public List<GameObject> parkings;
     private int currentParkingNumber = 0;
     private int currentSlotNumber = 0;
-
-    //public BoxCollider targetCollider;
 
     public float maxTorque;
     public float maxSteerAngle;
@@ -128,9 +121,6 @@ public class CarAgent2 : AbstractCarAgent
     private bool enteredTargetFirstTime = false;
 
     private int parkingCount = 0;
-    private bool firstStep = true;
-    private float lastDistance;
-    private float closestDistance;
 
     private readonly string tagObstacle = "Obstacle";
     public bool isEmpty = true;
@@ -163,7 +153,7 @@ public class CarAgent2 : AbstractCarAgent
         List<ParkingSlot> tempParkingSlots = new List<ParkingSlot>();
         tempParkingSlots.AddRange(parkingSlots[currentParkingNumber]);
         tempParkingSlots.RemoveAt(currentSlotNumber);
-        int occupySize = Random.Range(tempParkingSlots.Count, tempParkingSlots.Count + 1);
+        int occupySize = Random.Range(0, tempParkingSlots.Count + 1);
         while(occupySize > 0)
         {
             int tempOccupied = Random.Range(0, tempParkingSlots.Count);
@@ -198,16 +188,10 @@ public class CarAgent2 : AbstractCarAgent
         enteredTarget = false;
         enteredBoundsFirstTime = false;
         enteredTargetFirstTime = false;
-        firstStep = true;
         parkingCount = 0;
         currentDistanceReward = 0f;
         currentTargetReward = 0f;
-        currentNegativeDistanceReward = 0f;
         currentTargetRewardReset = true;
-
-        closestDistance = float.MaxValue;
-
-        currentCollisionPenalty = startingCollisionPenalty;
 
 
         foreach (WheelElements element in wheelData)
@@ -231,27 +215,13 @@ public class CarAgent2 : AbstractCarAgent
     {
         sensor.AddObservation(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
         sensor.AddObservation(parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward);
-        //Debug.Log(parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward);
-        //Debug.Log(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
         sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.position - transform.position).normalized);
         sensor.AddObservation((parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.parent.position - transform.position).magnitude);
-
-        //sensor.AddObservation(transform.localPosition.normalized);
         sensor.AddObservation(transform.forward);
         sensor.AddObservation(transform.right);
         sensor.AddObservation(rigidBody.velocity.normalized);
         sensor.AddObservation(rigidBody.velocity.magnitude);
-        //sensor.AddObservation(wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f);
         sensor.AddObservation(Vector3.Dot(transform.forward, wheelSteer.right));
-        
-        /*Debug.Log("Dot: " + Vector3.Dot(transform.forward, parkingSlots[currentSlotNumber].target.transform.right));
-        Debug.Log("Dir: " + (parkingSlots[currentSlotNumber].target.transform.parent.localPosition - transform.localPosition).normalized);
-        Debug.Log("Pos: " + transform.localPosition.normalized);
-        Debug.Log("Forward: " + transform.forward);
-        Debug.Log("Right: " + transform.right);
-        Debug.Log("Vel: " + rigidBody.velocity.normalized);
-        //Debug.Log("Steer: " + (wheelSteer.localEulerAngles.y < 180f ? wheelSteer.localEulerAngles.y : wheelSteer.localEulerAngles.y - 360f));
-        Debug.Log("Steer: " + Vector3.Dot(transform.forward, wheelSteer.right));*/
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -313,7 +283,6 @@ public class CarAgent2 : AbstractCarAgent
             if(parkingCount >= framesToPark)
             {
                 AddReward(parkingRewardMultiplier - currentDistanceReward - currentTargetReward + (1 - StepCount / MaxStep) * (distanceRewardMultiplier + targetRewardMultiplier));
-                //Debug.Log("Parked! " + GetCumulativeReward());
                 Debug.Log("Parked!");
                 EndEpisode();
             }
@@ -328,46 +297,8 @@ public class CarAgent2 : AbstractCarAgent
             {
                 currentDistanceReward += dot * distanceRewardPerStep;
             }
-            else
-            {
-                currentNegativeDistanceReward += dot * distanceRewardPerStep;
-            }
-            //Debug.Log("Dot product: " + dot);
-            //Debug.Log("Distance: " + (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.position - transform.position).magnitude);
-            //Debug.Log("Target: " + parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.position);
-            //Debug.Log("Transform: " + transform.localPosition);
             AddReward(dot * distanceRewardPerStep);
-
-            //if (firstStep)
-            //{
-            //    firstStep = false;
-            //}
-            //else
-            //{
-            //if (currentDistance < lastDistance)
-            //if (currentDistance < closestDistance)
-            //{
-            //closestDistance = currentDistance;
-            //float dot = Mathf.Abs(Vector3.Dot(transform.forward, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.forward));
-            //float dot = Mathf.Abs(Vector3.Dot(transform.forward, (parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.localPosition - transform.localPosition).normalized));
-            //currentDistanceReward += 0.9f * distanceRewardPerStep * dot + 0.1f * distanceRewardPerStep;
-            //AddReward(0.9f * distanceRewardPerStep * dot + 0.1f * distanceRewardPerStep);
-            //currentDistanceReward += distanceRewardPerStep * dot;
-            //AddReward(distanceRewardPerStep * dot);
-            //}
-            //else
-            //{
-            //float dot = Mathf.Abs(Vector3.Dot(transform.right, parkingSlots[currentParkingNumber][currentSlotNumber].target.transform.right));
-            //currentNegativeDistanceReward -= 0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep;
-            //AddReward(-(0.5f * distanceRewardPerStep * dot + 0.5f * distanceRewardPerStep));
-            //currentNegativeDistanceReward -= distanceRewardPerStep;
-            //AddReward(-distanceRewardPerStep);
-            //}
-            //}
         }
-        //lastDistance = currentDistance;
-        //Debug.Log(GetCumulativeReward());
-
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -383,12 +314,6 @@ public class CarAgent2 : AbstractCarAgent
     {
         if (collision.gameObject.tag == tagObstacle)
         {
-
-            /*Debug.Log("Collision!");
-            float penalty = CalculateCollisionPenalty();
-            AddReward(penalty);*/
-            //float penalty = CalculateCollisionPenalty();
-            //AddReward(penalty - distanceRewardMultiplier + currentNegativeDistanceReward);
             AddReward(-startingCollisionPenalty);
             Debug.Log("Collision!");
             EndEpisode();
@@ -400,7 +325,6 @@ public class CarAgent2 : AbstractCarAgent
         enteredTarget = true;
         if(!enteredTargetFirstTime)
         {
-            Debug.Log("Target first time!");
             enteredTargetFirstTime = true;
             AddReward((1 - StepCount / MaxStep) * enteredTargetFirstTimeReward);
         }
@@ -411,7 +335,6 @@ public class CarAgent2 : AbstractCarAgent
         enteredBoundsCount++;
         if(!enteredBoundsFirstTime)
         {
-            Debug.Log("Bounds first time!");
             enteredBoundsFirstTime = true;
             AddReward((1 - StepCount / MaxStep) * enteredBoundsFirstTimeReward);
         }
@@ -429,10 +352,7 @@ public class CarAgent2 : AbstractCarAgent
 
     protected override float CalculateCollisionPenalty()
     {
-        float result = currentCollisionPenalty;
-        currentCollisionPenalty *= collisionPenaltyMultiplier;
-        //Debug.Log(-collisionPenalty * result);
-        return -collisionPenalty*result;
+        return -startingCollisionPenalty;
     }
 
     protected override void DoTyres(WheelCollider collider)

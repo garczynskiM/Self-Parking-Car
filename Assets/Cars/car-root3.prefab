@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 17
+    VectorObservationSize: 19
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -415,11 +415,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 3000
-  startingCollisionPenalty: 0.25
-  collisionPenaltyMultiplier: 0.5
-  collisionPenalty: 0.2
-  distanceRewardMultiplier: 0.2
-  parkingRewardMultiplier: 0.3
+  startingCollisionPenalty: 0.05
+  distanceRewardMultiplier: 0.25
+  parkingRewardMultiplier: 0.4
   enteredBoundsFirstTimeReward: 0.05
   enteredTargetFirstTimeReward: 0.05
   framesToPark: 100
@@ -448,7 +446,7 @@ MonoBehaviour:
   staticCarName: static-car
   maxRespawnZ: 10
   minRespawnZ: -10
-  isEmpty: 1
+  isEmpty: 0
 --- !u!114 &8297644100721779796
 MonoBehaviour:
   m_ObjectHideFlags: 0
